@@ -14,16 +14,17 @@
 # ../${targetname}/${targetname}.*.nc
 # mv latlon.nc ${targetname}.nc
 ###### convert to independent files (like input) ######
-cd /m2data2/yycheng/yycheng/MPAS/92-25km_VR_2005/out_convert_latlon
-path2input=/raid52/yycheng/MPAS/92-25km_VR_2005/out/history
+path2input=/raid52/yycheng/MPAS/92-25km_VR_2009/out/history
+path2output=/m2data2/yycheng/yycheng/MPAS/92-25km_VR_2009/postprocess/out_convert_latlon
+
 for IFILE in `ls ${path2input}/*.nc`;do
 # IFILE=path2input+'/history.2003-04-01_00.00.00.nc'
        echo ${IFILE}" ok"
         # ${NCKS} -h -A ${FNMOD} ${IFILE}
 /m2data2/yycheng/MPAS/TOOLS/convert_mpas_mpi/convert_mpas \
-/raid52/yycheng/MPAS/92-25km_VR_2005/ea.init.nc \
-${IFILE}
+/raid52/yycheng/MPAS/92-25km_VR_2003/ea.init.nc \
+${IFILE} 
 echo 'finish ${IFILE}'
-mv latlon.nc ./convert_output/`basename ${IFILE}`
+mv latlon.nc ${path2output}/convert_output/history/`basename ${IFILE}`
 
 done
