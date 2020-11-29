@@ -21,8 +21,8 @@ for IFILE in `ls ${path2input}/*.nc`;do
        echo ${IFILE}" ok"
         # ${NCKS} -h -A ${FNMOD} ${IFILE}
 /m2data2/yycheng/MPAS/TOOLS/convert_mpas_mpi/convert_mpas \
-/raid52/yycheng/MPAS/92-25km_VR_2003/ea.init.nc \
-${IFILE} \
+/raid52/yycheng/MPAS/92-25km_VR_2005/ea.init.nc \
+${IFILE}
 echo 'finish ${IFILE}'
 mv latlon.nc ./convert_output/`basename ${IFILE}`
 

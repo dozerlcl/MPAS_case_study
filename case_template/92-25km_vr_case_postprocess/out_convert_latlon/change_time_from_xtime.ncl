@@ -2,13 +2,16 @@
 ;;;     从原始数据 or_diri 读入 xtime 转换为正常的时间坐标之后写入需要使用的数据
 ;;;     暂时写入转变为经纬度网格的数据中
 ;;;     可参考同级目录下的code_older文件，也有些从文件名获取时间变量的方法
+;;;     11.29    处理 2005
+year = 2005
 
 begin
+
 ;;; diri of Time coordinate wanted to change
-    diri      = "/raid52/yycheng/MPAS/92-25km_VR/out_convert_latlon/convert_output/history/"
+    diri      = "/raid52/yycheng/MPAS/92-25km_VR_"+year+"/preprocess/out_convert_latlon/convert_output/history/"
     fili      = systemfunc("cd "+diri+"; ls *.nc")
-    ;;; ordiri for origin coordinate
-    or_diri   = "/raid52/yycheng/MPAS/92-25km_VR/out/history/"
+    ;;; ordiri for origin coordinate : xtime
+    or_diri   = "/raid52/yycheng/MPAS/92-25km_VR_"+year+"/out/history/"
     or_fili   = systemfunc("cd "+or_diri+"; ls *.nc")
 
     nfil   = dimsizes(fili)  ;  
@@ -33,7 +36,7 @@ begin
         ; time:units = "hours since 1800-1-1 00:00:0.0" ;
         ; time:calendar = "standard" ;
         ; time:axis = "T" ;
-        time_exact!0 = "time"
+        time_exact!0 = "Time"
         time_exact@standard_name = "time"
         time_exact@axis = "T"
         ; printVarSummary(time_exact)
