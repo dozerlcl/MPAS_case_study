@@ -1,0 +1,27 @@
+<streams>
+<immutable_stream name="input"
+                  type="input"
+                  filename_template="/raid52/yycheng/MPAS/92-25km_VR/ea.static.nc"
+                  input_interval="initial_only" />
+
+<immutable_stream name="output"
+                  type="output"
+                  filename_template="/m2data2/yycheng/data_stage/MPAS/92-25km_variable/ea.testsfc.nc"
+                  packages="initial_conds"
+                  output_interval="initial_only" />
+
+<immutable_stream name="surface"
+                  type="output"
+                  filename_template="/raid52/yycheng/MPAS/92-25km_VR/ea.sfc_update_4to8.nc"
+                  filename_interval="none"
+                  packages="sfc_update"
+                  output_interval="86400" />
+
+<immutable_stream name="lbc"
+                  type="output"
+                  filename_template="lbc.$Y-$M-$D_$h.$m.$s.nc"
+                  filename_interval="output_interval"
+                  packages="lbcs"
+                  output_interval="3:00:00" />
+
+</streams>

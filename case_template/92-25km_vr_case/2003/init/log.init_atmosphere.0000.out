@@ -1,0 +1,487 @@
+----------------------------------------------------------------------
+Beginning MPAS-init_atmosphere Output Log File for task       0 of      96
+    Opened at 2020/11/10 05:44:01
+----------------------------------------------------------------------
+
+ 
+ Using default double-precision reals
+ 
+ Reading namelist from file namelist.init_atmosphere
+ Reading streams configuration from file streams.init_atmosphere
+ Found mesh stream with filename template /m2data2/yycheng/data_stage/MPAS/92-25km_variable/ea.static.nc
+ Using default io_type for mesh stream
+  ** Attempting to bootstrap MPAS framework using stream: input
+ Bootstrapping framework with mesh fields from input file '/m2data2/yycheng/data_stage/MPAS/92-25km_variable/ea.static.nc'
+  * Requested field lbc_scalars is deactivated due to packages, or is a scratch variable.
+  * Requested field lbc_u is deactivated due to packages, or is a scratch variable.
+  * Requested field lbc_w is deactivated due to packages, or is a scratch variable.
+  * Requested field lbc_rho is deactivated due to packages, or is a scratch variable.
+  * Requested field lbc_theta is deactivated due to packages, or is a scratch variable.
+ 
+Parsing run-time I/O configuration from streams.init_atmosphere ...
+ 
+ -----  found immutable stream "input" in streams.init_atmosphere  -----
+         filename template:  /m2data2/yycheng/data_stage/MPAS/92-25km_variable/ea.static.nc
+         filename interval:  none
+         direction:          input
+         reference time:     initial_time
+         record interval:    -
+         input alarm:        initial_only
+ 
+ -----  found immutable stream "output" in streams.init_atmosphere  -----
+         filename template:  /m2data2/yycheng/data_stage/MPAS/92-25km_variable/ea.init.nc
+         filename interval:  none
+         direction:          output
+         reference time:     initial_time
+         record interval:    -
+         output alarm:       initial_only
+         package:            initial_conds
+
+ 
+ -----  found immutable stream "surface" in streams.init_atmosphere  -----
+         filename template:  x1.40962.sfc_update.nc
+         filename interval:  none
+         direction:          output
+         reference time:     initial_time
+         record interval:    -
+         output alarm:       86400
+         package:            sfc_update
+
+ 
+ -----  found immutable stream "lbc" in streams.init_atmosphere  -----
+         filename template:  lbc.$Y-$M-$D_$h.$m.$s.nc
+         filename interval:  3:00:00
+         direction:          output
+         reference time:     initial_time
+         record interval:    -
+         output alarm:       3:00:00
+         package:            lbcs
+
+ 
+ ----- done parsing run-time I/O from streams.init_atmosphere -----
+
+  ** Validating streams
+ 
+ 
+ Reading dimensions from input streams ...
+ 
+ ----- reading dimensions from stream 'input' using file /m2data2/yycheng/data_stage/MPAS/92-25km_variable/ea.static.nc
+        nCells = 163842
+        nEdges = 491520
+        nVertices = 327680
+        TWO = 2
+        maxEdges = 10
+        maxEdges2 = 20
+        vertexDegree = 3
+        R3 = 3
+        nMonths = 12
+        FIFTEEN = 15
+        TWENTYONE = 21
+ 
+ ----- done reading dimensions from input streams -----
+ 
+ 
+ Processing decomposed dimensions ...
+ 
+  ----- done processing decomposed dimensions -----
+ 
+ 
+ Assigning remaining dimensions from definitions in Registry.xml ...
+        THREE = 3
+        nVertLevels = 55 (config_nvertlevels)
+        nSoilLevels = 4 (config_nsoillevels)
+        nFGLevels = 38 (config_nfglevels)
+        nFGSoilLevels = 4 (config_nfgsoillevels)
+        nVertLevelsP1 = 56
+ 
+  ----- done assigning dimensions from Registry.xml -----
+ 
+ 
+  real-data GFS test case
+ Using option 'linear' for vertical extrapolation of temperature
+ max ter = 6016.71320148161
+ Setting up vertical levels as in 2014 TC experiments
+ 
+ --- config_tc_vertical_grid = T
+ --- als   = 0.750000000000000E-01
+ --- alt   = 1.70000000000000
+ --- zetal = 0.750000000000000
+ 
+ 1 0.00000000000000 1.00000000000000
+ 2 46.9369730361466 0.999981880543823
+ 3 106.239585942065 0.999907173212672
+ 4 178.372652141247 0.999738347716491
+ 5 263.800985057184 0.999427782875908
+ 6 362.989398113365 0.998916828522787
+ 7 476.402704733284 0.998134880516894
+ 8 604.505718340429 0.996998493628019
+ 9 747.763252358294 0.995410564912612
+ 10 906.640120210369 0.993259629478175
+ 11 1081.60113532014 0.990419321169535
+ 12 1273.11111111111 0.986748062621584
+ 13 1481.63486100676 0.982089062055763
+ 14 1707.63719843059 0.976270707715566
+ 15 1951.58293680608 0.969107464256883
+ 16 2213.93688955673 0.960401387740036
+ 17 2495.16387010602 0.949944385747343
+ 18 2795.72869187745 0.937521354776954
+ 19 3116.09616829452 0.922914326171071
+ 20 3456.73111278070 0.905907741670994
+ 21 3818.09833875950 0.886294957056537
+ 22 4200.66265965440 0.863886033703542
+ 23 4604.88888888889 0.838516819665014
+ 24 5031.24183988647 0.810059240706251
+ 25 5480.18632607063 0.778432615075087
+ 26 5952.18716086485 0.743615672692182
+ 27 6447.70915769263 0.705658801425632
+ 28 6967.21712997746 0.664695865303213
+ 29 7511.17589114284 0.620954751874755
+ 30 8080.05025461224 0.574765624419453
+ 31 8674.30503380917 0.526565702129059
+ 32 9294.40504215712 0.476899297760726
+ 33 9940.81509307956 0.426411843868447
+ 34 10614.0000000000 0.375836775910952
+ 35 11314.4245763419 0.325974453170923
+ 36 12042.5536355288 0.277662818993109
+ 37 12798.8519909842 0.231740245901469
+ 38 13583.7844561316 0.189001965528853
+ 39 14397.8158443944 0.150152593394577
+ 40 15241.4109691961 0.115758416999826
+ 41 16115.0346439603 0.862041558627387E-01
+ 42 17019.1516821104 0.616596014783140E-01
+ 43 17945.4545454545 0.422206134684788E-01
+ 44 18872.7272727273 0.277458661906918E-01
+ 45 19800.0000000000 0.173987764696426E-01
+ 46 20727.2727272727 0.103286688074047E-01
+ 47 21654.5454545455 0.574424802819415E-02
+ 48 22581.8181818182 0.295068938794838E-02
+ 49 23509.0909090909 0.137235436954317E-02
+ 50 24436.3636363636 0.561285876944062E-03
+ 51 25363.6363636364 0.192935573214365E-03
+ 52 26290.9090909091 0.516649317505360E-04
+ 53 27218.1818181818 0.934854131448420E-05
+ 54 28145.4545454545 0.830463051752906E-06
+ 55 29072.7272727273 0.130681110652606E-07
+ 56 30000.0000000000 0.00000000000000
+ 2 33 0.350907655307523E-06 0.997378049634335
+ 3 34 0.179777536316427E-05 0.991004645331636
+ 4 35 0.506779717506502E-05 0.982229948377575
+ 5 36 0.110844847834324E-04 0.970746315523381
+ 6 37 0.209870098884524E-04 0.956215696310751
+ 7 38 0.361502348209077E-04 0.938288467694967
+ 8 39 0.582054314210089E-04 0.916625777216032
+ 9 40 0.890616881732235E-04 0.890931195452493
+ 10 41 0.130928005597103E-03 0.860775045753914
+ 11 42 0.186336079894106E-03 0.825899762679124
+ 12 43 0.258163774850423E-03 0.786722432276037
+ 13 44 0.349659281995797E-03 0.743758770831640
+ 14 45 0.464465969018338E-03 0.697965419183825
+ 15 46 0.606647916435341E-03 0.650814908093608
+ 16 47 0.780716142520102E-03 0.604309067824673
+ 17 48 0.991655516484728E-03 0.560886748570257
+ 18 49 0.124495235991894E-02 0.519591964794372
+ 19 50 0.154662273648490E-02 0.482891441265223
+ 20 51 0.190324142986799E-02 0.455111532618009
+ 21 52 0.232197160998363E-02 0.437955359216594
+ 22 53 0.281059518744007E-02 0.429359057875446
+ 23 54 0.337754385625722E-02 0.419558355651846
+ 24 55 0.403193082484139E-02 0.421711793297726
+ 25 56 0.478358323521613E-02 0.434692075035557
+ 26 57 0.564307527050901E-02 0.452456456716592
+ 27 58 0.662176195069441E-02 0.467476579509721
+ 28 59 0.773181361659228E-02 0.486080650463948
+ 29 60 0.898625110212300E-02 0.501790947882166
+ 30 61 0.103989815948181E-01 0.512275242967785
+ 31 62 0.119848351845869E-01 0.525809111285584
+ 32 63 0.137596021007398E-01 0.541567362604740
+ 33 64 0.157400706372663E-01 0.560210663169115
+ 34 65 0.159280527650235E-01 0.585657899066989
+ 35 66 0.159280527650235E-01 0.613773933547104
+ 36 67 0.159280527650235E-01 0.644521888333342
+ 37 68 0.159280527650235E-01 0.678160535299025
+ 38 69 0.159280527650235E-01 0.714079848951342
+ 39 70 0.159280527650235E-01 0.751505047217443
+ 40 71 0.159280527650235E-01 0.789184687647341
+ 41 72 0.159280527650235E-01 0.826225301977374
+ 42 73 0.159280527650235E-01 0.861324527008869
+ 43 74 0.159280527650235E-01 0.893304920039178
+ 44 75 0.159280527650235E-01 0.920962476477522
+ 45 76 0.159280527650235E-01 0.943640491854273
+ 46 77 0.159280527650235E-01 0.961536302313430
+ 47 78 0.159280527650235E-01 0.975087971029989
+ 48 79 0.159280527650235E-01 0.984836801041455
+ 49 80 0.159280527650235E-01 0.991442161428046
+ 50 81 0.159280527650235E-01 0.995606898206156
+ 51 82 0.159280527650235E-01 0.998006871949715
+ 52 83 0.159280527650235E-01 0.999236305130171
+ 53 84 0.159280527650235E-01 0.999771450872751
+ 54 85 0.159280527650235E-01 0.999954031635193
+ 55 86 0.159280527650235E-01 0.999995592347475
+  grid metrics setup complete
+ minval, maxval of LANDSEA = 0.00000000000000 1.00000000000000
+ Interpolating TT at 1 200100.000000000
+ Interpolating U at 1 200100.000000000
+ Interpolating V at 1 200100.000000000
+ Interpolating RH at 1 200100.000000000
+ Interpolating SOILHGT
+ Interpolating PSFC
+ Interpolating PMSL
+ Interpolating SKINTEMP
+ Interpolating SEAICE
+ Interpolating SNOW
+ Interpolating ST000007
+ Interpolating ST007028
+ Interpolating ST028100
+ Interpolating ST100289
+ Interpolating SM000007
+ Interpolating SM007028
+ Interpolating SM028100
+ Interpolating SM100289
+ Interpolating GHT at 2 100000.000000000
+ Interpolating TT at 2 100000.000000000
+ Interpolating U at 2 100000.000000000
+ Interpolating V at 2 100000.000000000
+ Interpolating RH at 2 100000.000000000
+ Interpolating GHT at 3 97500.0000000000
+ Interpolating TT at 3 97500.0000000000
+ Interpolating U at 3 97500.0000000000
+ Interpolating V at 3 97500.0000000000
+ Interpolating RH at 3 97500.0000000000
+ Interpolating GHT at 4 95000.0000000000
+ Interpolating TT at 4 95000.0000000000
+ Interpolating U at 4 95000.0000000000
+ Interpolating V at 4 95000.0000000000
+ Interpolating RH at 4 95000.0000000000
+ Interpolating GHT at 5 92500.0000000000
+ Interpolating TT at 5 92500.0000000000
+ Interpolating U at 5 92500.0000000000
+ Interpolating V at 5 92500.0000000000
+ Interpolating RH at 5 92500.0000000000
+ Interpolating GHT at 6 90000.0000000000
+ Interpolating TT at 6 90000.0000000000
+ Interpolating U at 6 90000.0000000000
+ Interpolating V at 6 90000.0000000000
+ Interpolating RH at 6 90000.0000000000
+ Interpolating GHT at 7 87500.0000000000
+ Interpolating TT at 7 87500.0000000000
+ Interpolating U at 7 87500.0000000000
+ Interpolating V at 7 87500.0000000000
+ Interpolating RH at 7 87500.0000000000
+ Interpolating GHT at 8 85000.0000000000
+ Interpolating TT at 8 85000.0000000000
+ Interpolating U at 8 85000.0000000000
+ Interpolating V at 8 85000.0000000000
+ Interpolating RH at 8 85000.0000000000
+ Interpolating GHT at 9 82500.0000000000
+ Interpolating TT at 9 82500.0000000000
+ Interpolating U at 9 82500.0000000000
+ Interpolating V at 9 82500.0000000000
+ Interpolating RH at 9 82500.0000000000
+ Interpolating GHT at 10 80000.0000000000
+ Interpolating TT at 10 80000.0000000000
+ Interpolating U at 10 80000.0000000000
+ Interpolating V at 10 80000.0000000000
+ Interpolating RH at 10 80000.0000000000
+ Interpolating GHT at 11 77500.0000000000
+ Interpolating TT at 11 77500.0000000000
+ Interpolating U at 11 77500.0000000000
+ Interpolating V at 11 77500.0000000000
+ Interpolating RH at 11 77500.0000000000
+ Interpolating GHT at 12 75000.0000000000
+ Interpolating TT at 12 75000.0000000000
+ Interpolating U at 12 75000.0000000000
+ Interpolating V at 12 75000.0000000000
+ Interpolating RH at 12 75000.0000000000
+ Interpolating GHT at 13 70000.0000000000
+ Interpolating TT at 13 70000.0000000000
+ Interpolating U at 13 70000.0000000000
+ Interpolating V at 13 70000.0000000000
+ Interpolating RH at 13 70000.0000000000
+ Interpolating GHT at 14 65000.0000000000
+ Interpolating TT at 14 65000.0000000000
+ Interpolating U at 14 65000.0000000000
+ Interpolating V at 14 65000.0000000000
+ Interpolating RH at 14 65000.0000000000
+ Interpolating GHT at 15 60000.0000000000
+ Interpolating TT at 15 60000.0000000000
+ Interpolating U at 15 60000.0000000000
+ Interpolating V at 15 60000.0000000000
+ Interpolating RH at 15 60000.0000000000
+ Interpolating GHT at 16 55000.0000000000
+ Interpolating TT at 16 55000.0000000000
+ Interpolating U at 16 55000.0000000000
+ Interpolating V at 16 55000.0000000000
+ Interpolating RH at 16 55000.0000000000
+ Interpolating GHT at 17 50000.0000000000
+ Interpolating TT at 17 50000.0000000000
+ Interpolating U at 17 50000.0000000000
+ Interpolating V at 17 50000.0000000000
+ Interpolating RH at 17 50000.0000000000
+ Interpolating GHT at 18 45000.0000000000
+ Interpolating TT at 18 45000.0000000000
+ Interpolating U at 18 45000.0000000000
+ Interpolating V at 18 45000.0000000000
+ Interpolating RH at 18 45000.0000000000
+ Interpolating GHT at 19 40000.0000000000
+ Interpolating TT at 19 40000.0000000000
+ Interpolating U at 19 40000.0000000000
+ Interpolating V at 19 40000.0000000000
+ Interpolating RH at 19 40000.0000000000
+ Interpolating GHT at 20 35000.0000000000
+ Interpolating TT at 20 35000.0000000000
+ Interpolating U at 20 35000.0000000000
+ Interpolating V at 20 35000.0000000000
+ Interpolating RH at 20 35000.0000000000
+ Interpolating GHT at 21 30000.0000000000
+ Interpolating TT at 21 30000.0000000000
+ Interpolating U at 21 30000.0000000000
+ Interpolating V at 21 30000.0000000000
+ Interpolating RH at 21 30000.0000000000
+ Interpolating GHT at 22 25000.0000000000
+ Interpolating TT at 22 25000.0000000000
+ Interpolating U at 22 25000.0000000000
+ Interpolating V at 22 25000.0000000000
+ Interpolating RH at 22 25000.0000000000
+ Interpolating GHT at 23 22500.0000000000
+ Interpolating TT at 23 22500.0000000000
+ Interpolating U at 23 22500.0000000000
+ Interpolating V at 23 22500.0000000000
+ Interpolating RH at 23 22500.0000000000
+ Interpolating GHT at 24 20000.0000000000
+ Interpolating TT at 24 20000.0000000000
+ Interpolating U at 24 20000.0000000000
+ Interpolating V at 24 20000.0000000000
+ Interpolating RH at 24 20000.0000000000
+ Interpolating GHT at 25 17500.0000000000
+ Interpolating TT at 25 17500.0000000000
+ Interpolating U at 25 17500.0000000000
+ Interpolating V at 25 17500.0000000000
+ Interpolating RH at 25 17500.0000000000
+ Interpolating GHT at 26 15000.0000000000
+ Interpolating TT at 26 15000.0000000000
+ Interpolating U at 26 15000.0000000000
+ Interpolating V at 26 15000.0000000000
+ Interpolating RH at 26 15000.0000000000
+ Interpolating GHT at 27 12500.0000000000
+ Interpolating TT at 27 12500.0000000000
+ Interpolating U at 27 12500.0000000000
+ Interpolating V at 27 12500.0000000000
+ Interpolating RH at 27 12500.0000000000
+ Interpolating GHT at 28 10000.0000000000
+ Interpolating TT at 28 10000.0000000000
+ Interpolating U at 28 10000.0000000000
+ Interpolating V at 28 10000.0000000000
+ Interpolating RH at 28 10000.0000000000
+ Interpolating GHT at 29 7000.00000000000
+ Interpolating TT at 29 7000.00000000000
+ Interpolating U at 29 7000.00000000000
+ Interpolating V at 29 7000.00000000000
+ Interpolating RH at 29 7000.00000000000
+ Interpolating GHT at 30 5000.00000000000
+ Interpolating TT at 30 5000.00000000000
+ Interpolating U at 30 5000.00000000000
+ Interpolating V at 30 5000.00000000000
+ Interpolating RH at 30 5000.00000000000
+ Interpolating GHT at 31 3000.00000000000
+ Interpolating TT at 31 3000.00000000000
+ Interpolating U at 31 3000.00000000000
+ Interpolating V at 31 3000.00000000000
+ Interpolating RH at 31 3000.00000000000
+ Interpolating GHT at 32 2000.00000000000
+ Interpolating TT at 32 2000.00000000000
+ Interpolating U at 32 2000.00000000000
+ Interpolating V at 32 2000.00000000000
+ Interpolating RH at 32 2000.00000000000
+ Interpolating GHT at 33 1000.00000000000
+ Interpolating TT at 33 1000.00000000000
+ Interpolating U at 33 1000.00000000000
+ Interpolating V at 33 1000.00000000000
+ Interpolating RH at 33 1000.00000000000
+ Interpolating GHT at 34 700.000000000000
+ Interpolating TT at 34 700.000000000000
+ Interpolating U at 34 700.000000000000
+ Interpolating V at 34 700.000000000000
+ Interpolating RH at 34 700.000000000000
+ Interpolating GHT at 35 500.000000000000
+ Interpolating TT at 35 500.000000000000
+ Interpolating U at 35 500.000000000000
+ Interpolating V at 35 500.000000000000
+ Interpolating RH at 35 500.000000000000
+ Interpolating GHT at 36 300.000000000000
+ Interpolating TT at 36 300.000000000000
+ Interpolating U at 36 300.000000000000
+ Interpolating V at 36 300.000000000000
+ Interpolating RH at 36 300.000000000000
+ Interpolating GHT at 37 200.000000000000
+ Interpolating TT at 37 200.000000000000
+ Interpolating U at 37 200.000000000000
+ Interpolating V at 37 200.000000000000
+ Interpolating RH at 37 200.000000000000
+ Interpolating GHT at 38 100.000000000000
+ Interpolating TT at 38 100.000000000000
+ Interpolating U at 38 100.000000000000
+ Interpolating V at 38 100.000000000000
+ Interpolating RH at 38 100.000000000000
+ *************************************************
+ Found 38 levels in the first-guess data
+ *************************************************
+ Setting pressure field for isobaric data
+ Setting SST from SKINTEMP
+ Done with soil consistency check
+ SEAICE_FRACTIONAL file not found...
+ OMLD file not found...
+ 
+ --- global_sh_min = 0.00000000000000
+ --- global_sh_max = 0.00000000000000
+ 
+ --- config_use_spechumd = F
+  *** initializing water vapor mixing ratio using first-guess relative humidity
+ 
+ 
+ Recomputing RH w.r.t. ice below freezing
+ 
+ nSoilLevels   = 4
+ nFGSoilLevels = 4
+ 1 0.00000000000000
+ 2 0.350000000000000E-01
+ 3 0.175000000000000
+ 4 0.640000000000000
+ 5 1.94500000000000
+ 6 3.00000000000000
+ --- isice_lu   = 15
+ --- config_frac_seaice      : T
+ --- xice_threshold          : 0.200000000000000E-01
+ 
+ number of seaice cells converted to land cells 2 =           0
+ 
+ ********************************************************
+    Finished running the init_atmosphere core
+ ********************************************************
+ 
+ 
+  Timer information:
+     Globals are computed across all threads and processors
+ 
+  Columns:
+     total time: Global max of accumulated time spent in timer
+     calls: Total number of times this timer was started / stopped.
+     min: Global min of time spent in a single start / stop
+     max: Global max of time spent in a single start / stop
+     avg: Global max of average time spent in a single start / stop
+     pct_tot: Percent of the timer at level 1
+     pct_par: Percent of the parent timer (one level up)
+     par_eff: Parallel efficiency, global average total time / global max total time
+ 
+ 
+    timer_name                                            total       calls        min            max            avg      pct_tot   pct_par     par_eff
+  1 total time                                          11.87095         1       11.86920       11.87095       11.86973   100.00       0.00       1.00
+  2  initialize                                          1.19491         1        1.19166        1.19491        1.19291    10.07      10.07       1.00
+ 
+ -----------------------------------------
+ Total log messages printed:
+    Output messages =                  463
+    Warning messages =                   0
+    Error messages =                     0
+    Critical error messages =            0
+ -----------------------------------------
+ Logging complete.  Closing file at 2020/11/10 05:44:13

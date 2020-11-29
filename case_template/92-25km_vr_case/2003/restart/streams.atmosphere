@@ -1,0 +1,65 @@
+<streams>
+<immutable_stream name="input"
+                  type="input"
+                  filename_template="/raid52/yycheng/MPAS/92-25km_VR/ea.init.nc"
+                  input_interval="initial_only" />
+
+<immutable_stream name="restart"
+                  type="input;output"
+                  filename_template="/raid52/yycheng/MPAS/92-25km_VR/out/restart/restart.$Y-$M-$D_$h.$m.$s.nc"
+                  input_interval="initial_only"
+                  output_interval="1_00:00:00" />
+
+<stream name="output"
+        type="output"
+        filename_template="/raid52/yycheng/MPAS/92-25km_VR/out/history/history.$Y-$M-$D_$h.$m.$s.nc"
+        output_interval="24:00:00" >
+
+	<file name="stream_list.atmosphere.output"/>
+</stream>
+
+<stream name="output2"
+        type="output"
+        filename_template="/raid52/yycheng/MPAS/92-25km_VR/out/history_24hr/history.$Y-$M-$D.nc"
+        output_interval="24:00:00" >
+        <var name="t2m"/>
+        <var name="precipw"/>
+        <var name="rainc"/>
+        <var name="rainnc"/>
+        <var name="temperature"/>
+        <var name="xtime"/>
+	<file name="stream_list.atmosphere.output"/>
+</stream>
+
+<stream name="diagnostics"
+        type="output"
+        filename_template="/raid52/yycheng/MPAS/92-25km_VR/out/diag/diag.$Y-$M-$D_$h.$m.$s.nc"
+        output_interval="24:00:00" >
+
+	<file name="stream_list.atmosphere.diagnostics"/>
+</stream>
+
+<stream name="surface"
+        type="input"
+        filename_template="/raid52/yycheng/MPAS/92-25km_VR/ea.sfc_update_4to8.nc"
+        filename_interval="none"
+        input_interval="86400" >
+
+	<file name="stream_list.atmosphere.surface"/>
+</stream>
+
+<immutable_stream name="iau"
+                  type="input"
+                  filename_template="x1.40962.AmB.$Y-$M-$D_$h.$m.$s.nc"
+                  filename_interval="none"
+                  packages="iau"
+                  input_interval="initial_only" />
+
+<immutable_stream name="lbc_in"
+                  type="input"
+                  filename_template="lbc.$Y-$M-$D_$h.$m.$s.nc"
+                  filename_interval="input_interval"
+                  packages="limited_area"
+                  input_interval="3:00:00" />
+
+</streams>
