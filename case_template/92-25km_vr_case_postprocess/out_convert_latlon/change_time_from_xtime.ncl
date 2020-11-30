@@ -8,7 +8,7 @@ year = 2005
 begin
 
 ;;; diri of Time coordinate wanted to change
-    diri      = "/raid52/yycheng/MPAS/92-25km_VR_"+year+"/preprocess/out_convert_latlon/convert_output/history/"
+    diri      = "/raid52/yycheng/MPAS/92-25km_VR_"+year+"/postprocess/out_convert_latlon/convert_output/history/"
     fili      = systemfunc("cd "+diri+"; ls *.nc")
     ;;; ordiri for origin coordinate : xtime
     or_diri   = "/raid52/yycheng/MPAS/92-25km_VR_"+year+"/out/history/"

@@ -17,8 +17,13 @@ year = 2009
     precip_grid   = ncdf->$"precip_grid"$
     precip_conv   = ncdf->$"precip_conv"$
     ; delete(ncdf)
-    ; printVarSummary(pre_obs)
-    ; printVarSummary(pre_mod_daily)
+    ;;; check lat
+    print("----------check lat-------------")
+    if(all(abs(pre_obs&lat - pre_mod_daily&latitude).lt.0.01)) then
+      print("latitude all right!")
+    end if 
+    printMinMax(pre_obs&lat, 1)
+    printMinMax(pre_mod_daily&latitude, 1)
 ;;;>>>correction
     cor      = escorc_n(pre_obs, pre_mod_daily, 0, 0)
     cor_grid = escorc_n(pre_obs, precip_grid, 0, 0)
@@ -45,7 +50,7 @@ PLOT = True
 if (PLOT) then
     ;>>>绘图：画空间相关系数/离差
   plot = new(6,graphic) ;定义子图数组
-  wks = gsn_open_wks("png","./output_pic/"+year+"_precip_check")
+  wks = gsn_open_wks("png","./output_pic/precip_check_space/"+year+"_precip_check")
   ; gsn_define_colormap(wks,"MPL_Oranges+GMT_polar") ;在后续定义，不用
   res = True  
   res@gsnFrame    = False

@@ -1,10 +1,10 @@
 ;;;     11.16 MPAS后处理部分 将MPAS和观测的CMORPH进行对比
 ;;;         pre count 部分， 将文件整合，整合后的文件放到 ncdf 下
 ;;;     11.29 修改相应路径，将后处理部分单独并列出来
-;;;         处理 2005
+;;;         处理 %4y
 begin
 
-    year = 2009
+    year = 2003
 ;;;>>> data reader
     ;;;>>>  prepare model data
     ; /m2data2/yycheng/yycheng/MPAS/92-25km_VR_2003/postprocess/out_convert_latlon/history
@@ -13,13 +13,13 @@ begin
     f_mod = addfiles(diri+fili,"r")
     ;;; read time labels    
     ListSetType(f_mod,"join"); 打开多个文件并且返回文件句柄（批量读入后实质上是一个list
-    or_t2m=f_mod[:]->$"t2m"$;将臭氧8小时平均中的臭氧值赋值
-    time_fromxtime=f_mod[:]->$"Time"$;将臭氧8小时平均中的臭氧值赋值
+    ; or_t2m=f_mod[:]->$"t2m"$
+    time_fromxtime=f_mod[:]->$"Time"$
     ; time_fromxtime!0 = "Time"
     ; printVarSummary(time_fromxtime)
     ;;; read data for plotting
-    or_rainc=f_mod[:]->$"rainc"$;将臭氧8小时平均中的臭氧值赋值
-    or_rainnc=f_mod[:]->$"rainnc"$;将臭氧8小时平均中的臭氧值赋值
+    or_rainc=f_mod[:]->$"rainc"$
+    or_rainnc=f_mod[:]->$"rainnc"$
     precip = or_rainnc + or_rainc
     copy_VarMeta(or_rainnc, precip)
     precip!0 = "Time"
