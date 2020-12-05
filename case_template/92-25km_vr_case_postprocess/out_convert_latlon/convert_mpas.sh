@@ -14,7 +14,7 @@
 # ../${targetname}/${targetname}.*.nc
 # mv latlon.nc ${targetname}.nc
 ###### convert to independent files (like input) ######
-year='2005'
+year='2006'
 path2input=/raid52/yycheng/MPAS/92-25km_VR_${year}/out/history
 path2output=/m2data2/yycheng/yycheng/MPAS/92-25km_VR_${year}/postprocess/out_convert_latlon
 

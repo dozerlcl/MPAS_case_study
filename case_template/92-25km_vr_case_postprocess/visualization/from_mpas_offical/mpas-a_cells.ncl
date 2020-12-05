@@ -10,7 +10,7 @@ begin
 
   r2d = 57.2957795             ; radians to degrees
 
-  maxedges = 8 
+  maxedges = 12 
 
   wks = gsn_open_wks("png","./output_pic/atm_cells")
   gsn_define_colormap(wks,"BlAqGrYeOrReVi200")
@@ -18,8 +18,8 @@ begin
 ;   fname = getenv("FNAME")
 ;   filedir = "/m2data2/yycheng/MPAS/MESH/x1.40962/"
 ;   filename = "x1.40962.grid.nc"
-  filedir = "/raid52/yycheng/MPAS/92-25km_VR/out/history_24hr/"
-  filename = "history.2003-08-31.nc"
+  filedir = "/raid52/yycheng/MPAS/92-25km_VR_2003/out/history/"
+  filename = "history.2003-09-01_00.00.00.nc"
   f = addfile(filedir + filename,"r")
 
   nEdgesOnCell = f->nEdgesOnCell(:)
@@ -70,10 +70,10 @@ begin
   
   ;;; add limit
    res@mpProjection        = "CylindricalEquidistant"
-   res@mpMinLonF           = 120
-   res@mpMaxLonF           = 122
-   res@mpMinLatF           = 22
-   res@mpMaxLatF           = 26
+   res@mpMinLonF           = 140
+   res@mpMaxLonF           = 143
+   res@mpMinLatF           = 30
+   res@mpMaxLatF           = 33
    res@pmTickMarkDisplayMode = "Always"   ; better map tickmarks
 
   ;
@@ -104,7 +104,7 @@ begin
   h   = h - 273.15
   ; minfld = min(h)
   ; maxfld = max(h)
-  minfld = 14.
+  minfld = 15.
   maxfld = 30.
   fldrange = maxfld - minfld
   do iCell=0,nCells-1

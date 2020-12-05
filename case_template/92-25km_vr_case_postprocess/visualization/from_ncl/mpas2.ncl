@@ -30,7 +30,10 @@ begin
 
 ;--Open MPAS-O (ocean) file
 ; x1 x1.40962.grid.nc
-  filedir = "/raid52/yycheng/MPAS/92-25km_VR/"
+; x1 x1.40962.grid.nc
+  ; filedir = "/m2data2/yycheng/MPAS/MESH/x1.40962/"
+  filedir = "/raid52/yycheng/MPAS/92-25km_VR_2003/"
+  ; filename = "x1.40962.grid.nc"
   filename = "ea.grid.nc"
   f        = addfile(filedir+filename,"r")
 
@@ -55,18 +58,19 @@ begin
   res@mpGridAndLimbOn       = False
   res@mpOutlineOn           = True
 
-  res@tiMainString          = filename
+  res@tiMainString          = "VR mesh"
 
   if(POLAR_MAP) then
     res@gsnPolar            = "NH"
     res@mpMinLatF           = 70
+    res@mpCenterLonF        = 110                          ; center longitude
     map = gsn_csm_map_polar(wks,res)  ; Create the map, don't draw it.
   else
     res@mpProjection        = "CylindricalEquidistant"
-    res@mpMinLonF           = 80
-    res@mpMaxLonF           = 130
-    res@mpMinLatF           = 10
-    res@mpMaxLatF           = 60
+    res@mpMinLonF           = 130
+    res@mpMaxLonF           = 150
+    res@mpMinLatF           = 30
+    res@mpMaxLatF           = 45
     res@pmTickMarkDisplayMode = "Always"   ; better map tickmarks
 
     map = gsn_csm_map(wks,res)  ; Create the map, don't draw it.

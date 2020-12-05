@@ -35,7 +35,7 @@ do year = 2003,2009,1
     ; copy_VarCoords(pre_obs(0,:,:), cor_grid)
     ; copy_VarCoords(pre_obs(0,:,:), cor_conv)
     ; printVarSummary(cor)
-    total_error = dim_avg_n_Wrap(pre_obs - pre_mod_daily, 0)
+    total_error = dim_avg_n_Wrap(pre_mod_daily-pre_obs, 0)
     ; abs_error = dim_avg_n_Wrap(abs(pre_obs - pre_mod_daily), 0)
     copy_VarCoords(pre_obs(0,:,:), total_error)
     ; copy_VarCoords(pre_obs(0,:,:), abs_error)
@@ -61,7 +61,7 @@ do year = 2003,2009,1
   res@cnLineLabelsOn       = False
   res@cnLinesOn            = False ;填色线条 
   ; res@pmTickMarkDisplayMode = "Always"
-  res@lbLabelBarOn        = True            ; turn off individual cb's
+  res@lbLabelBarOn        = False            ; turn off individual cb's
 ;-------------------------------------------------------地图区域设置——中国区域res@mp
     res@mpMinLatF=15
     ; res@mpMinLatF=20
@@ -174,7 +174,7 @@ do year = 2003,2009,1
 ;   plot(2) = gsn_csm_contour_map(wks, ave_mod_conv, res_ave)
 ;   res_ave@gsnCenterString    = "grid scale"
 ;   plot(3) = gsn_csm_contour_map(wks, ave_mod_grid, res_ave)
-  res@gsnCenterString    = "(COMRPH - MPAS)"+year
+  res@gsnCenterString    = year
   plot(ind_year) = gsn_csm_contour_map(wks, total_error, res)
   delete(total_error)
 ;   res_ave@gsnCenterString    = "ABS(COMRPH - MPAS)"
@@ -190,9 +190,9 @@ ind_year = ind_year + 1
 end do
 ;;;;----------------------------------------------panel seeting
   pres = True
-  pres@txString              = year + " MEAN DAILY PRECIPITATION"
-;   pres@gsnPanelLabelBar      = True ; 公用一个色标
-  pres@gsnPanelFigureStrings = (/"A","B","C","D","E","F","G","H","I"/)
+  pres@txString              = "(MPAS - CMORPH) MEAN DAILY PRECIPITATION"
+  pres@gsnPanelLabelBar      = True ; 公用一个色标
+  pres@gsnPanelFigureStrings = (/"03","04","05","06","07","08","09","H","I"/)
   pres@amJust                = "TopLeft" ;调整标签顺序
   pres@gsnPanelRowSpec       = True
   gsn_panel(wks,plot,(/3,2,2/),pres)

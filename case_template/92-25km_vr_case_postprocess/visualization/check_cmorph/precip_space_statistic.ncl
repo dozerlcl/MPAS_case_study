@@ -2,7 +2,7 @@
 ;;; 11.29 单独将NCL脚本并列出
 
 
-;;; 绘制2005
+;;; 绘制某一年份
 
 begin
 
@@ -32,8 +32,8 @@ year = 2009
     copy_VarCoords(pre_obs(0,:,:), cor_grid)
     copy_VarCoords(pre_obs(0,:,:), cor_conv)
     ; printVarSummary(cor)
-    total_error = dim_avg_n_Wrap(pre_obs - pre_mod_daily, 0)
-    abs_error = dim_avg_n_Wrap(abs(pre_obs - pre_mod_daily), 0)
+    total_error = dim_avg_n_Wrap(pre_mod_daily-pre_obs, 0)
+    abs_error = dim_avg_n_Wrap(abs(pre_mod_daily-pre_obs), 0)
     copy_VarCoords(pre_obs(0,:,:), total_error)
     copy_VarCoords(pre_obs(0,:,:), abs_error)
     ; printVarSummary(abs_error)
@@ -171,9 +171,9 @@ if (PLOT) then
   plot(2) = gsn_csm_contour_map(wks, ave_mod_conv, res_ave)
   res_ave@gsnCenterString    = "grid scale"
   plot(3) = gsn_csm_contour_map(wks, ave_mod_grid, res_ave)
-  resc@gsnCenterString    = "(COMRPH - MPAS)"
+  resc@gsnCenterString    = "(MPAS - COMRPH)"
   plot(4) = gsn_csm_contour_map(wks, total_error, resc)
-  res_ave@gsnCenterString    = "ABS(COMRPH - MPAS)"
+  res_ave@gsnCenterString    = "ABS(MPAS - COMRPH)"
   plot(5) = gsn_csm_contour_map(wks, abs_error, res_ave)
   res@gsnCenterString    = "total precip correlation"
   ; plot(6) = gsn_csm_contour_map(wks, cor, res)
@@ -185,7 +185,7 @@ if (PLOT) then
 ;;;;----------------------------------------------panel seeting
   pres = True
   pres@txString              = year + " MEAN DAILY PRECIPITATION"
-;   pres@gsnPanelLabelBar      = True ; 公用一个色标
+  ; pres@gsnPanelLabelBar      = True ; 公用一个色标
   pres@gsnPanelFigureStrings = (/"A","B","C","D","E","F","G","H","I"/)
   pres@amJust                = "TopLeft" ;调整标签顺序
   pres@gsnPanelRowSpec       = True

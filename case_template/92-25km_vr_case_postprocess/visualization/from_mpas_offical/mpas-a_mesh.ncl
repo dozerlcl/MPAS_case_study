@@ -7,7 +7,7 @@ begin
 
   r2d = 57.2957795             ; radians to degrees
 
-  wks = gsn_open_wks("png","output_pic/VR_atm_mesh")
+  wks = gsn_open_wks("png","output_pic/VR_atm_mesh_12.5")
 
   colors = (/"white","black","lightskyblue1","lightskyblue1","bisque"/)
 ;  colors = (/"white","black","white","white","grey90"/)
