@@ -14,9 +14,9 @@
 # ../${targetname}/${targetname}.*.nc
 # mv latlon.nc ${targetname}.nc
 ###### convert to independent files (like input) ######
-year='2006'
+year='2010'
 path2input=/raid52/yycheng/MPAS/92-25km_VR_${year}/out/history
-path2output=/m2data2/yycheng/yycheng/MPAS/92-25km_VR_${year}/postprocess/out_convert_latlon
+path2output=/m2data2/yycheng/yycheng/MPAS/92-25km_VR_${year}/postprocess/out_convert_latlon/convert_output/history/
 
 for IFILE in `ls ${path2input}/*.nc`;do
 # IFILE=path2input+'/history.2003-04-01_00.00.00.nc'
@@ -26,6 +26,6 @@ for IFILE in `ls ${path2input}/*.nc`;do
 /raid52/yycheng/MPAS/92-25km_VR_${year}/ea.init.nc \
 ${IFILE} 
 echo "finish ${IFILE}"
-mv latlon.nc ${path2output}/convert_output/history/`basename ${IFILE}`
+mv latlon.nc ${path2output}`basename ${IFILE}`
 # break
 done

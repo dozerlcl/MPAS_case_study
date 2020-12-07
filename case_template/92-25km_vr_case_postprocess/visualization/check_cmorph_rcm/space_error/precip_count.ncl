@@ -6,10 +6,11 @@
 begin
 
     year = 2003
+    type = "RCM"
 ;;;>>> data reader
     ;;;>>>  prepare model data
     ; /m2data2/yycheng/yycheng/MPAS/92-25km_VR_2003/postprocess/out_convert_latlon/history
-    diri      = "/raid52/yycheng/MPAS/92-25km_VR_"+year+"/postprocess/out_convert_latlon/convert_output/history/"
+    diri      = "/raid52/yycheng/MPAS/92-25km_"+type+"_"+year+"/postprocess/out_convert_latlon/convert_output/history/"
     fili      = systemfunc("cd "+diri+"; ls *.nc")
     f_mod = addfiles(diri+fili,"r")
     ;;; read time labels    
@@ -32,7 +33,7 @@ begin
     ; printVarSummary(or_rainc)
     ;;;>>> prepare observation data : CMORPH
     ; /m2data2/yycheng/yycheng/MPAS/92-25km_VR_2003/postprocess/2003/cdo_merge/
-    diri_cmorph = "/m2data2/yycheng/yycheng/MPAS/92-25km_VR_"+year+"/postprocess/"+year+"/cdo_merge/"
+    diri_cmorph = "/m2data2/yycheng/yycheng/MPAS/92-25km_"+type+"_"+year+"/postprocess/"+year+"/cdo_merge/"
     fili_cmorph = "CMORPH_"+year+"04-08_sellon.nc"
     ; fili_cmorph = "CMORPH_200504-200508_sellon.nc"
     f_cmorph    = addfile(diri_cmorph + fili_cmorph,"r")
@@ -55,8 +56,8 @@ begin
 ;;;>>> output preprocess refine
     ; f_out = addfile(diri + fili(ind_fili), "c")
     ; /m2data2/yycheng/yycheng/MPAS/92-25km_VR_2003/postprocess/temp_data
-    diro = "/m2data2/yycheng/yycheng/MPAS/92-25km_VR_"+year+"/postprocess/temp_data/"
-    filo = year+"_daily_precip_combine_CMORPH_MPAS.nc"
+    diro = "/m2data2/yycheng/yycheng/MPAS/92-25km_"+type+"_"+year+"/postprocess/temp_data/"
+    filo = year+"_daily_precip_combine_CMORPH_MPAS_RCM.nc"
     system("rm -f "+ diro + filo) ;删除目录下的同名文件
     ncdf = addfile(diro + filo, "c") ; c表示创建netcdf文件
     ncdf->$"precip_CMORPH"$ = pre_obs
