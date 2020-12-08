@@ -1,17 +1,13 @@
-;;; 11.?? 进行简单后处理的检查，相关性非常差
-;;; 11.29 单独将NCL脚本并列出
-;;; 12.06 考虑用NCL一步到位绘制某个分位数的极端值的情况，直接调用quantile会出错，考虑qsort （remains
-;;;   绘制某一年份，修改select_year
-;;; 12.07 绘制 95 % 极端降水 占总体降水的百分数
+;;; 12.07 绘制 某一年 95 % 极端降水 占总体降水的百分数
 ;;;   用ipynb计算出了extreme（95%），在ncl中筛选，求平均，绘图；NCL效率足够
 
 load "./quantile.ncl"
 begin
 
 ind_year = 0
-select_year = 2003
+select_year = 2010
 plot = new(2,graphic) ;定义子图数组
-wks = gsn_open_wks("png","./output_pic/precip_check_space/extreme/"+ select_year + "_precip_check_extreme")
+wks = gsn_open_wks("png","../../output_pic/precip_check_space/extreme/"+ select_year + "_precip_check_extreme")
 do year = select_year,select_year,1
 
 ;;;>>>data reader
