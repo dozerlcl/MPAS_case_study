@@ -4,7 +4,7 @@
 ;;;         处理 %4y
 begin
 
-    year = 2010
+    year = 2013
 ;;;>>> data reader
     ;;;>>>  prepare model data
     ; /m2data2/yycheng/yycheng/MPAS/92-25km_VR_2003/postprocess/out_convert_latlon/history

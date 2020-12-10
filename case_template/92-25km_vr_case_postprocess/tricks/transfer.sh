@@ -1,4 +1,4 @@
-selectyear=2006
+selectyear=2013
 # modtype=RCM
 modtype=VR
 # part=
@@ -15,7 +15,8 @@ here=/raid52/yycheng/MPAS/92-25km_${modtype}_${selectyear}/
 # .19
 # there=/raid52/yycheng/MPAS/92-25km_${modtype}_${selectyear}/${part}
 # .11
-there=/raid51/yycheng/MPAS/92-25km_${modtype}_${selectyear}/
+# there=/raid51/yycheng/MPAS/92-25km_${modtype}_${selectyear}/
+there=/raid51/yycheng/MPAS/
 #.132
 # there=/data2/yycheng/MPAS/92-25km_${modtype}_${selectyear}/
 
