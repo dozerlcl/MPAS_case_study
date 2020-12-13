@@ -4,9 +4,9 @@
 begin
 
 ind_year = 0
-plot = new(8,graphic) ;定义子图数组
-wks = gsn_open_wks("png","../../output_pic/precip_check_space/space_error/"+"sdevt_"+"2003_2006"+"_precip_check")
-  do year = 2003,2006,1
+plot = new(2,graphic) ;定义子图数组
+wks = gsn_open_wks("png","../../output_pic/precip_check_space/space_error/"+"sdevt_"+"2004"+"_precip_check")
+  do year = 2010,2010,1
 
   ;;;>>>data reader
     print("start: "+year)
@@ -60,9 +60,9 @@ wks = gsn_open_wks("png","../../output_pic/precip_check_space/space_error/"+"sde
     ; res@mpMinLatF=20
     res@mpMaxLatF=55
     ; res@mpMaxLatF=
-    res@mpMinLonF=60
+    res@mpMinLonF=70
     ; res@mpMinLonF=120
-    res@mpMaxLonF=140
+    res@mpMaxLonF=135
     ; res@mpMaxLonF=125
     res@mpDataBaseVersion = "Ncarg4_1"   ;地图采用中等分辨率
     ; res@mpDataSetName="Earth..4"
@@ -95,8 +95,8 @@ wks = gsn_open_wks("png","../../output_pic/precip_check_space/space_error/"+"sde
   ; res@cnLineThicknessF     = 0.5
   
   ;;;>>>坐标轴的处理
-;   res@cnFillPalette         = "MPL_Oranges"; 用GMT_gray 进行填色。即调用了第2种色板(调色板设置)
-;   res@cnFillPalette         = "precip2_17lev"; 用GMT_gray 进行填色。即调用了第2种色板(调色板设置)
+  ; res@cnFillPalette         = "MPL_Oranges"; 用GMT_gray 进行填色。即调用了第2种色板(调色板设置)
+  ; res@cnFillPalette         = "precip2_"; 用GMT_gray 进行填色。即调用了第2种色板(调色板设置)
   ; res@tmXBMode = "automatic" ;指定X轴坐标标签
   ; res@tmYLMode = "Manual" ; 默认"automatic"
   res@tmYLTickStartF = 0  ; 起始最小刻度值
@@ -112,7 +112,7 @@ wks = gsn_open_wks("png","../../output_pic/precip_check_space/space_error/"+"sde
 ;   res@cnMinLevelValF = 0.
 ;   res@cnMaxLevelValF = 12.
 ;   res@cnLevelSpacingF = 1. ;等值线间隔
-;   res@cnFilllPalette         = "GMT_polar"; 用GMT_gray 进行填色。即调用了第2种色板(调色板设置)
+  res@cnFilllPalette         = "GMT_polar"; 用GMT_gray 进行填色。即调用了第2种色板(调色板设置)
 ;   res@cnLevelSelectionMode = "ExplicitLevels"                                                                                             
   ; res@cnFillDrawOrder="postDraw"                                                                                                     
 ;   res@cnLevels    = (/0.2,0.5,0.8,1.2,1.4,2,4,6,8,12,16,20,40/)
@@ -189,7 +189,7 @@ pres@gsnPanelLabelBar      = True ; 公用一个色标
 pres@gsnPanelFigureStrings = (/"obs","mod","obs","mod","obs","mod","obs","mod"/)
 pres@amJust                = "TopLeft" ;调整标签顺序
 pres@gsnPanelRowSpec       = True
-gsn_panel(wks,plot,(/2,2,2,2/),pres)
+gsn_panel(wks,plot,(/2/),pres)
 
 
 end

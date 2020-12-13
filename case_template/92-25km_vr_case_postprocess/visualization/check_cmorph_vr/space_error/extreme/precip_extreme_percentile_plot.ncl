@@ -5,8 +5,8 @@ load "./quantile.ncl"
 begin
 
 ind_year = 0
-select_year = 2010
-plot = new(2,graphic) ;定义子图数组
+select_year = 2008
+plot = new(3,graphic) ;定义子图数组
 wks = gsn_open_wks("png","../../output_pic/precip_check_space/extreme/"+ select_year + "_precip_check_extreme")
 do year = select_year,select_year,1
 
@@ -71,9 +71,9 @@ res = True
     ; res@mpMinLatF=20
     res@mpMaxLatF=55
     ; res@mpMaxLatF=
-    res@mpMinLonF=60
+    res@mpMinLonF=70
     ; res@mpMinLonF=120
-    res@mpMaxLonF=140
+    res@mpMaxLonF=135
     ; res@mpMaxLonF=125
     res@mpDataBaseVersion = "Ncarg4_1"   ;地图采用中等分辨率
     ; res@mpDataSetName="Earth..4"
@@ -182,6 +182,7 @@ res = True
   res@gsnCenterString    = year
   plot(ind_year) = gsn_csm_contour_map(wks, pre_obs_precentile, res)
   plot(ind_year+1) = gsn_csm_contour_map(wks, pre_mod_precentile, res)
+  ; plot(ind_year+2) = gsn_csm_contour_map(wks, pre_mod_precentile-pre_obs_precentile, res)
 ;   delete(total_error)
 ;   res_ave@gsnCenterString    = "ABS(COMRPH - MPAS)"
 ;   plot(5) = gsn_csm_contour_map(wks, abs_error, res_ave)
