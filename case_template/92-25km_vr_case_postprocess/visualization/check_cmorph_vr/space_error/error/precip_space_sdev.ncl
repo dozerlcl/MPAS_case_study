@@ -5,7 +5,7 @@ begin
 
 ind_year = 0
 plot = new(2,graphic) ;定义子图数组
-wks = gsn_open_wks("png","../../output_pic/precip_check_space/space_error/"+"sdevt_"+"2004"+"_precip_check")
+wks = gsn_open_wks("png","../../output_pic/precip_check_space/space_error/"+"sdevt_"+"2010"+"_precip_check")
   do year = 2010,2010,1
 
   ;;;>>>data reader
@@ -81,17 +81,18 @@ wks = gsn_open_wks("png","../../output_pic/precip_check_space/space_error/"+"sde
     res@mpGridLineDashPattern=2
     res@mpGridSpacingF=10
 
+  res@gsnMajorLatSpacing = 20              ; change maj lat tm spacing
+  res@gsnMajorLonSpacing = 50              ; change maj lon tm spacing
+  res@tmXBMinorOn        = False           ; no lon minor tickmark
 ;-------------------------------------------------------地图标题设置
   ;;;
-                
-  ; res@gsnCenterString = "MPAS simulation TPEMIP 4-8"
-  ; res@tiMainString    = "MEAN TEMPERATURE AT 2M HEIGHT"
+  
   res@gsnCenterStringFontHeightF = 0.02  
-  res@pmTickMarkDisplayMode = "Always" ;坐标标签上添加 度 符号(未起作用)
   res@gsnLeftString = "" ;不绘制左标题
   res@gsnRightString= "" ;不绘制右标题
 
 ;-------------------------------------------------------变量/x/y/刻度设置  
+  ; res@pmTickMarkDisplayMode = "Always" ;坐标标签上添加 度 符号(未起作用)(关掉之后能正常用间距显示)
   ; res@cnLineThicknessF     = 0.5
   
   ;;;>>>坐标轴的处理
@@ -102,7 +103,7 @@ wks = gsn_open_wks("png","../../output_pic/precip_check_space/space_error/"+"sde
   res@tmYLTickStartF = 0  ; 起始最小刻度值
   res@tmYLTickEndF   = 60 ;最大刻度值
   res@tmYLTickSpacingF = 10 ;刻度间隔
-  res@tmXBTickSpacingF = 15 
+  res@tmXBTickSpacingF = 10 
 ;    resc = res
 ;    res_ave = res
   ; res@lbOrientation = "Vertical" ; 把色板垂直地移动 
