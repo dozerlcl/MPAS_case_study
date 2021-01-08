@@ -1,0 +1,8 @@
+----------------------------------------------------------------------
+Beginning MPAS-init_atmosphere Error Log File for task       0 of      96
+    Opened at 2020/12/13 19:50:43
+----------------------------------------------------------------------
+
+ERROR: Could not open block decomposition file for 96 blocks.
+CRITICAL ERROR: Filename: /data2/yycheng/MPAS/92-25km_RCM_2007/china_rcm.graph.info.part.96
+Logging complete.  Closing file at 2020/12/13 19:50:43

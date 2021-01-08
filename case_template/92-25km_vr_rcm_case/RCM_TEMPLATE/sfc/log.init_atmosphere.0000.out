@@ -1,0 +1,285 @@
+----------------------------------------------------------------------
+Beginning MPAS-init_atmosphere Output Log File for task       0 of      96
+    Opened at 2020/12/13 23:01:17
+----------------------------------------------------------------------
+
+ 
+ Using default double-precision reals
+ 
+ Reading namelist from file namelist.init_atmosphere
+ Reading streams configuration from file streams.init_atmosphere
+ Found mesh stream with filename template /raid51/yycheng/MPAS/RCM_set/92-25km_RCM_TEMPLATE/china_rcm_blend.static.nc
+ Using default io_type for mesh stream
+  ** Attempting to bootstrap MPAS framework using stream: input
+ Bootstrapping framework with mesh fields from input file '/raid51/yycheng/MPAS/RCM_set/92-25km_RCM_TEMPLATE/china_rcm_blend.static.nc'
+  * Requested field lbc_scalars is deactivated due to packages, or is a scratch variable.
+  * Requested field lbc_u is deactivated due to packages, or is a scratch variable.
+  * Requested field lbc_w is deactivated due to packages, or is a scratch variable.
+  * Requested field lbc_rho is deactivated due to packages, or is a scratch variable.
+  * Requested field lbc_theta is deactivated due to packages, or is a scratch variable.
+ 
+Parsing run-time I/O configuration from streams.init_atmosphere ...
+ 
+ -----  found immutable stream "input" in streams.init_atmosphere  -----
+         filename template:  /raid51/yycheng/MPAS/RCM_set/92-25km_RCM_TEMPLATE/china_rcm_blend.static.nc
+         filename interval:  none
+         direction:          input
+         reference time:     initial_time
+         record interval:    -
+         input alarm:        initial_only
+ 
+ -----  found immutable stream "output" in streams.init_atmosphere  -----
+         filename template:
+         filename interval:  none
+         direction:          output
+         reference time:     initial_time
+         record interval:    -
+         output alarm:       initial_only
+         package:            initial_conds
+
+ 
+ -----  found immutable stream "surface" in streams.init_atmosphere  -----
+         filename template:  /raid51/yycheng/MPAS/RCM_set/92-25km_RCM_2007/china_rcm.sfc_update_4to8.nc
+         filename interval:  none
+         direction:          output
+         reference time:     initial_time
+         record interval:    -
+         output alarm:       24:00:00
+         package:            sfc_update
+
+ 
+ -----  found immutable stream "lbc" in streams.init_atmosphere  -----
+         filename template:  lbc.$Y-$M-$D_$h.$m.$s.nc
+         filename interval:  3:00:00
+         direction:          output
+         reference time:     initial_time
+         record interval:    -
+         output alarm:       3:00:00
+         package:            lbcs
+
+ 
+ ----- done parsing run-time I/O from streams.init_atmosphere -----
+
+  ** Validating streams
+ 
+ 
+ Reading dimensions from input streams ...
+ 
+ ----- reading dimensions from stream 'input' using file /raid51/yycheng/MPAS/RCM_set/92-25km_RCM_TEMPLATE/china_rcm_blend.static.nc
+        nCells = 84380
+        nEdges = 253852
+        nVertices = 169473
+        TWO = 2
+        maxEdges = 10
+        maxEdges2 = 20
+        vertexDegree = 3
+        R3 = 3
+        nMonths = 12
+        FIFTEEN = 15
+        TWENTYONE = 21
+ 
+ ----- done reading dimensions from input streams -----
+ 
+ 
+ Processing decomposed dimensions ...
+ 
+  ----- done processing decomposed dimensions -----
+ 
+ 
+ Assigning remaining dimensions from definitions in Registry.xml ...
+        THREE = 3
+        nVertLevels = 55 (config_nvertlevels)
+        nSoilLevels = 4 (config_nsoillevels)
+        nFGLevels = 38 (config_nfglevels)
+        nFGSoilLevels = 4 (config_nfgsoillevels)
+        nVertLevelsP1 = 56
+ 
+  ----- done assigning dimensions from Registry.xml -----
+ 
+ 
+ real-data surface (SST) update test case
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-01_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-02_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-03_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-04_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-05_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-06_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-07_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-08_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-09_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-10_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-11_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-12_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-13_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-14_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-15_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-16_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-17_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-18_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-19_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-20_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-21_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-22_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-23_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-24_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-25_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-26_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-27_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-28_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-29_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-04-30_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-01_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-02_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-03_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-04_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-05_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-06_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-07_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-08_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-09_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-10_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-11_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-12_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-13_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-14_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-15_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-16_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-17_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-18_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-19_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-20_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-21_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-22_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-23_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-24_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-25_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-26_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-27_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-28_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-29_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-30_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-05-31_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-01_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-02_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-03_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-04_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-05_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-06_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-07_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-08_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-09_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-10_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-11_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-12_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-13_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-14_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-15_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-16_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-17_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-18_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-19_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-20_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-21_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-22_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-23_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-24_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-25_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-26_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-27_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-28_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-29_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-06-30_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-01_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-02_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-03_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-04_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-05_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-06_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-07_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-08_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-09_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-10_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-11_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-12_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-13_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-14_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-15_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-16_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-17_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-18_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-19_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-20_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-21_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-22_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-23_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-24_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-25_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-26_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-27_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-28_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-29_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-30_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-07-31_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-01_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-02_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-03_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-04_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-05_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-06_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-07_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-08_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-09_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-10_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-11_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-12_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-13_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-14_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-15_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-16_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-17_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-18_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-19_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-20_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-21_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-22_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-23_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-24_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-25_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-26_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-27_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-28_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-29_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-30_00
+ Processing file /raid51/yycheng/ERA5/2007_ungrib/ERA5:2007-08-31_00
+ 
+ ********************************************************
+    Finished running the init_atmosphere core
+ ********************************************************
+ 
+ 
+  Timer information:
+     Globals are computed across all threads and processors
+ 
+  Columns:
+     total time: Global max of accumulated time spent in timer
+     calls: Total number of times this timer was started / stopped.
+     min: Global min of time spent in a single start / stop
+     max: Global max of time spent in a single start / stop
+     avg: Global max of average time spent in a single start / stop
+     pct_tot: Percent of the timer at level 1
+     pct_par: Percent of the parent timer (one level up)
+     par_eff: Parallel efficiency, global average total time / global max total time
+ 
+ 
+    timer_name                                            total       calls        min            max            avg      pct_tot   pct_par     par_eff
+  1 total time                                         532.35836         1      532.35569      532.35836      532.35669   100.00       0.00       1.00
+  2  initialize                                          0.59627         1        0.59228        0.59627        0.59422     0.11       0.11       1.00
+ 
+ -----------------------------------------
+ Total log messages printed:
+    Output messages =                  261
+    Warning messages =                   0
+    Error messages =                     0
+    Critical error messages =            0
+ -----------------------------------------
+ Logging complete.  Closing file at 2020/12/13 23:10:11

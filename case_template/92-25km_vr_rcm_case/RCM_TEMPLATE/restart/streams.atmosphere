@@ -1,0 +1,71 @@
+<streams>
+<immutable_stream name="input"
+                  type="input"
+                  filename_template="/data2/yycheng/MPAS/92-25km_RCM_2006/china_rcm.init.nc"
+                  input_interval="initial_only" />
+
+<immutable_stream name="restart"
+                  type="input;output"
+                  filename_template="/data2/yycheng/MPAS/92-25km_RCM_2006/out/restart/restart.$Y-$M-$D_$h.$m.$s.nc"
+                  input_interval="initial_only"
+                  reference_time="2006-05-01_00:00:00"
+                  output_interval="1-00_00:00:00"/>
+
+<stream name="output"
+        type="output"
+        filename_template="/data2/yycheng/MPAS/92-25km_RCM_2006/out/history/history.$Y-$M-$D_$h.$m.$s.nc"
+        output_interval="24:00:00" >
+
+	<file name="stream_list.atmosphere.output"/>
+</stream>
+
+<stream name="sfcwinds"
+        type="output"
+        filename_template="/data2/yycheng/MPAS/92-25km_RCM_2006/out/wind/wind.$Y-$M-$D.nc"
+        filename_interval="24:00:00"
+        output_interval="01:00:00" >
+        <var name="t2m"/>
+        <var name="u10"/>
+        <var name="v10"/>
+</stream>
+
+<stream name="diagnostics"
+        type="output"
+        filename_template="/data2/yycheng/MPAS/92-25km_RCM_2006/out/diag/diag.$Y-$M-$D_$h.$m.$s.nc"
+        output_interval="24:00:00" >
+
+	<file name="stream_list.atmosphere.diagnostics"/>
+</stream>
+
+<stream name="diagnostics_1hr"
+        type="output"
+        filename_template="/data2/yycheng/MPAS/92-25km_RCM_2006/out/diag_1hr/diag.$Y-$M-$D_$h.$m.$s.nc"
+        output_interval="1:00:00" >
+
+	<file name="stream_list.atmosphere.diagnostics"/>
+</stream>
+
+<stream name="surface"
+        type="input"
+        filename_template="/data2/yycheng/MPAS/92-25km_RCM_2006/china_rcm.sfc_update_4to8.nc"
+        filename_interval="none"
+        input_interval="24:00:00" >
+
+	<file name="stream_list.atmosphere.surface"/>
+</stream>
+
+<immutable_stream name="iau"
+                  type="input"
+                  filename_template="x1.40962.AmB.$Y-$M-$D_$h.$m.$s.nc"
+                  filename_interval="none"
+                  packages="iau"
+                  input_interval="initial_only" />
+
+<immutable_stream name="lbc_in"
+                  type="input"
+                  filename_template="/data2/yycheng/MPAS/92-25km_RCM_2006/lbc/lbc.$Y-$M-$D_$h.$m.$s.nc"
+                  filename_interval="input_interval"
+                  packages="limited_area"
+                  input_interval="6:00:00" />
+
+</streams>
