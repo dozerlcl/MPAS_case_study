@@ -17,10 +17,11 @@
     /raid52/yycheng/MPAS/RCM_postprocess 是RCM的后处理部分
         /RCM_model                       原始的进行了转换之后的RCM数据
             /92-25km_RCM_YYYY            原始数据
-            /change_files.sh             添加输出的文件夹的脚本
-            /merge_files.sh              将原始数据处理为 RCM_merge中数据的脚本
                 /out_convert_latlon/     转换之后的数据位置,对应streams的数据输出的类型
                     /diag
                     /history
-        /RCM_merge      原始model输出结果在时间上合并的结果
-            /diag       streams数据类型，每一年的合并都在此文件夹中
+            /change_files.sh             添加输出的文件夹的脚本
+            /merge_files.sh              将原始数据处理为 RCM_merge中数据的脚本
+        /RCM_merge                       原始model输出结果在时间上合并的结果
+            /diag                        streams数据类型，每一年的合并都在此文件夹中
+            /diag_mean_mon               进行月平均处理之后的RCM数据，删除了九月份
