@@ -1,8 +1,8 @@
 数据目录的说明文件
 
-考虑 49.11 下的数据目录：
+考虑 49.11 下的数据目录：/raid52/yycheng/MPAS
 
-    /raid52/yycheng/MPAS/REFERENCE 是参考的观测、再分析数据集
+    /REFERENCE 是参考的观测、再分析数据集
         /CMORPH/DAILY    降水参考数据  使用目录下的 convert_merge_CMORPH.sh 制作某一年的降水数据的合集
         /2003~2011       逐年降水数据
             /YYYYMM      逐月降水数据
@@ -14,7 +14,7 @@
 
 
 
-    /raid52/yycheng/MPAS/RCM_postprocess 是RCM的后处理部分
+    /RCM_postprocess 是RCM的后处理部分
         /RCM_model                       原始的进行了转换之后的RCM数据
             /92-25km_RCM_YYYY            原始数据
                 /out_convert_latlon/     转换之后的数据位置,对应streams的数据输出的类型
