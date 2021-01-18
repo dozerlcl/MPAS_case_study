@@ -4,8 +4,8 @@
 ;   2021.01.17
 ;   修改为将每年RCM和VR的误差合并绘制，不同层次的图
 ;   2021.01.18 
-;   _mean 修改为计算所有年 4-8五个月的平均误差 放置图片在/output_pic/mean之中
-;   因为图片过大的原因拆分两份来做，分别为03-08年 以及 09-15年
+;   _timemean
+;   计算不同层次的 所有时间上的平均值    
 begin
 ; selyear  = 2003
 ; do selyear=2003,2015,1
@@ -17,17 +17,7 @@ plot = new(6*3,graphic) ;定义子图数组
 wks = gsn_open_wks("png","./output_pic/mean/" + "hgt_timemean")
 do sellevel_ind = 0, 6-1, 1
 sellevel = sellevels(sellevel_ind)
-; print(selyear)
-; startyear = 2003
-; endyear   = 2008
-; startyear = 2009
-; endyear   = 2015
-; yearnum = endyear - startyear + 1
 
-; do selmon_ind=0,4,1
-
-; do year_ind = 0,yearnum-1,1 ; year #
-  ; selyear = startyear + year_ind ; real year
 ;>>> read data
     dir_in_ref  = "/raid52/yycheng/MPAS/REFERENCE/ERA5I_NC/ERA5I_NC_monthy"
     file_in_ref = "sel_hgt.mon.mean.nc"
@@ -53,11 +43,6 @@ sellevel = sellevels(sellevel_ind)
     rcm_varname = "height_"+sellevel+"hPa"
     rcm_hgt=f->$rcm_varname$
 
-    ; check plot variables
-    ; printVarSummary(ref_hgt)
-    ; printVarSummary(vr_hgt)
-    ; printVarSummary(rcm_hgt)
-
 ;>>>count time average ref_hgt vr_hgt rcm_hgt
     mean_hgt_ref  = dim_avg_n_Wrap(ref_hgt, 0)
     mean_hgt_vr   = dim_avg_n_Wrap(vr_hgt, 0)
@@ -70,10 +55,6 @@ sellevel = sellevels(sellevel_ind)
     copy_VarMeta(mean_hgt_rcm, error_hgt_rcm)
 
 ; ;;>>>>>plot
-; PLOT = True
-; if (PLOT) then
-    ;>>>绘图：画空间相关系数/离差
-  ; gsn_define_colormap(wks,"MPL_Oranges+GMT_polar") ;在后续定义，不用
   res = True  
   ; 页面控制
   res@gsnMaximize = True
@@ -202,9 +183,7 @@ sellevel = sellevels(sellevel_ind)
   resc@cnLevelSpacingF = 5 ;等值线间隔
 
   end if
-  ;--------------
-  ; resc@cnInfoLabelOn         = True       ; 关闭图右下 方的等值线信息标签
-  ; resc@lbLabelBarOn          = True       ; 关闭labelbar
+
 ;;;;-----------------------------------------------------resc 设置
   resc@cnFillPalette         ="GMT_polar"
   resc@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
