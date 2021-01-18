@@ -12,30 +12,33 @@ begin
 ; replace year loop with getenv, get it by shell script
 ; selyear = stringtoint( getenv("selyear") )
 ; sellevel = stringtoint( getenv("sellevel") )
-sellevel = 925
+sellevels = (/925, 850, 700, 500, 250, 200/)
+plot = new(6*3,graphic) ;定义子图数组
+wks = gsn_open_wks("png","./output_pic/mean/" + "hgt_timemean")
+do sellevel_ind = 0, 6-1, 1
+sellevel = sellevels(sellevel_ind)
 ; print(selyear)
-startyear = 2003
-endyear   = 2008
+; startyear = 2003
+; endyear   = 2008
 ; startyear = 2009
 ; endyear   = 2015
-yearnum = endyear - startyear + 1
-wks = gsn_open_wks("png","./output_pic/mean/" + sellevel + "_hgt_"+startyear+"-"+endyear)
-plot = new(yearnum*3,graphic) ;定义子图数组
+; yearnum = endyear - startyear + 1
 
 ; do selmon_ind=0,4,1
 
-do year_ind = 0,yearnum-1,1 ; year #
-  selyear = startyear + year_ind ; real year
+; do year_ind = 0,yearnum-1,1 ; year #
+  ; selyear = startyear + year_ind ; real year
 ;>>> read data
     dir_in_ref  = "/raid52/yycheng/MPAS/REFERENCE/ERA5I_NC/ERA5I_NC_monthy"
     file_in_ref = "sel_hgt.mon.mean.nc"
     
     modtype = "VR"
     dir_in_vr   = "/raid52/yycheng/MPAS/"+modtype+"_postprocess/"+modtype+"_merge/diag_mean_mon/"
-    file_in_vr  = "monmean_"+selyear+"_"+modtype+"_diag.nc"
+    file_in_vr  = "monmean_2003-2015"+"_"+modtype+"_diag.nc"
 
     f = addfile(dir_in_ref + "/" + file_in_ref ,"r")
-    ref=f->$"hgt"$
+    ref_hgt_alllevel=f->$"hgt"$
+    ref_hgt = ref_hgt_alllevel(:,{sellevel},:,:)
     f = addfile(dir_in_vr + "/" + file_in_vr, "r")
     ; time | 5 对应 4=8 共五个月
     vr_varname = "height_"+sellevel+"hPa"
@@ -43,49 +46,30 @@ do year_ind = 0,yearnum-1,1 ; year #
     
     modtype = "RCM"
     dir_in_vr   = "/raid52/yycheng/MPAS/"+modtype+"_postprocess/"+modtype+"_merge/diag_mean_mon/"
-    file_in_vr  = "monmean_"+selyear+"_"+modtype+"_diag.nc"
+    file_in_vr  = "monmean_2003-2015"+"_"+modtype+"_diag.nc"
 
-    f = addfile(dir_in_ref + "/" + file_in_ref ,"r")
-    ref=f->$"hgt"$
     f = addfile(dir_in_vr + "/" + file_in_vr, "r")
-    ; combine one year five months into one vars _hgt
-    ; time | 5 对应 4=8 共五个月
+
     rcm_varname = "height_"+sellevel+"hPa"
     rcm_hgt=f->$rcm_varname$
 
-    ref_time = cd_calendar(ref&time, 1)
-    ; print(ref_time)
-    ref_start_ind  = ind(ref_time.eq.(selyear*100+4)) ; 开始时间 例如 200304
-    ref_end_ind    = ind(ref_time.eq.(selyear*100+8)) ; 结束时间      200308
+    ; check plot variables
+    ; printVarSummary(ref_hgt)
+    ; printVarSummary(vr_hgt)
+    ; printVarSummary(rcm_hgt)
 
-    ; printVarSummary(vr_hgt_200)
-    ref_hgt=ref(ref_start_ind:ref_end_ind, {sellevel}, :, :)
+;>>>count time average ref_hgt vr_hgt rcm_hgt
+    mean_hgt_ref  = dim_avg_n_Wrap(ref_hgt, 0)
+    mean_hgt_vr   = dim_avg_n_Wrap(vr_hgt, 0)
+    mean_hgt_rcm  = dim_avg_n_Wrap(rcm_hgt, 0)
 
-; ;>>>count 4-8 months ref_hgt vr_hgt rcm_hgt all in one year
-;   ; every month error
-;   vr_hgt_plot = vr_hgt(selmon_ind,:,:)
-;   rcm_hgt_plot = rcm_hgt(selmon_ind,:,:)
-;   ref_hgt_plot = ref_hgt(selmon_ind,:,:)
-  
-;   hgt_vr_error_plot = vr_hgt_plot - ref_hgt_plot
-;   hgt_rcm_error_plot = rcm_hgt_plot - ref_hgt_plot
+    error_hgt_vr  = mean_hgt_vr  - mean_hgt_ref
+    error_hgt_rcm = mean_hgt_rcm - mean_hgt_ref
 
-;   ; 5months mean error 5 months mean
-  ref_hgt_mean_plot = dim_avg_n_Wrap(ref_hgt, 0)
-  vr_hgt_mean_plot = dim_avg_n_Wrap(vr_hgt, 0)
-  rcm_hgt_mean_plot = dim_avg_n_Wrap(rcm_hgt, 0)
-  hgt_vr_error_mean_plot = vr_hgt_mean_plot - ref_hgt_mean_plot
-  hgt_rcm_error_mean_plot = rcm_hgt_mean_plot - ref_hgt_mean_plot
+    copy_VarMeta(mean_hgt_vr , error_hgt_vr)
+    copy_VarMeta(mean_hgt_rcm, error_hgt_rcm)
 
-  copy_VarMeta(vr_hgt_mean_plot, hgt_vr_error_mean_plot)
-  copy_VarMeta(rcm_hgt_mean_plot, hgt_rcm_error_mean_plot)
-  ; printVarSummary(vr_hgt_mean_plot)
-
-  ; copy_VarMeta(ref_hgt(0,:,:), ref_hgt(0,:,:))
-  ; copy_VarMeta(vr_hgt(0,:,:), hgt_vr(0,:,:))
-  ; copy_VarMeta(rcm_hgt(0,:,:), hgt_rcm(0,:,:))
-
-;;>>>>>plot
+; ;;>>>>>plot
 ; PLOT = True
 ; if (PLOT) then
     ;>>>绘图：画空间相关系数/离差
@@ -160,21 +144,21 @@ do year_ind = 0,yearnum-1,1 ; year #
   res@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
   if (sellevel.eq.200) then
   ;------200-----
-  ; res@cnMinLevelValF = 11000. 
-  ; res@cnMaxLevelValF = 13000.
-  ; res@cnLevelSpacingF = 50 ;等值线间隔
-  resc@cnMinLevelValF = -240.
-  resc@cnMaxLevelValF = 240.
-  resc@cnLevelSpacingF = 20 ;等值线间隔
+  res@cnMinLevelValF = 11000. 
+  res@cnMaxLevelValF = 13000.
+  res@cnLevelSpacingF = 50 ;等值线间隔
+  resc@cnMinLevelValF = -60.
+  resc@cnMaxLevelValF = 60.
+  resc@cnLevelSpacingF = 5 ;等值线间隔
   end if
   if (sellevel.eq.250) then
   ;------250-----
   res@cnMinLevelValF = 10000. 
   res@cnMaxLevelValF = 12000.
   res@cnLevelSpacingF = 50 ;等值线间隔
-  resc@cnMinLevelValF = -140.
-  resc@cnMaxLevelValF = 140.
-  resc@cnLevelSpacingF = 20 ;等值线间隔
+  resc@cnMinLevelValF = -60.
+  resc@cnMaxLevelValF = 60.
+  resc@cnLevelSpacingF = 5 ;等值线间隔
 
   end if
   if (sellevel.eq.500) then
@@ -182,9 +166,9 @@ do year_ind = 0,yearnum-1,1 ; year #
   res@cnMinLevelValF = 5500. 
   res@cnMaxLevelValF = 6000.
   res@cnLevelSpacingF = 20 ;等值线间隔
-  resc@cnMinLevelValF = -100.
-  resc@cnMaxLevelValF = 100.
-  resc@cnLevelSpacingF = 10 ;等值线间隔
+  resc@cnMinLevelValF = -60.
+  resc@cnMaxLevelValF = 60.
+  resc@cnLevelSpacingF = 5 ;等值线间隔
 
   end if 
   if (sellevel.eq.700) then
@@ -193,8 +177,8 @@ do year_ind = 0,yearnum-1,1 ; year #
   res@cnMaxLevelValF = 3300.
   res@cnLevelSpacingF = 20 ;等值线间隔
 
-  resc@cnMaxLevelValF = 80
-  resc@cnMinLevelValF = -80 ;等值线间隔  resc@cnMinLevelValF = -240.
+  resc@cnMaxLevelValF = 40
+  resc@cnMinLevelValF = -40 ;等值线间隔  resc@cnMinLevelValF = -240.
   resc@cnLevelSpacingF = 5 ;等值线间隔
 
   end if 
@@ -203,8 +187,8 @@ do year_ind = 0,yearnum-1,1 ; year #
   res@cnMinLevelValF = 1300. 
   res@cnMaxLevelValF = 1600.
   res@cnLevelSpacingF = 10 ;等值线间隔
-  resc@cnMinLevelValF = -80
-  resc@cnMaxLevelValF = 80
+  resc@cnMinLevelValF = -40
+  resc@cnMaxLevelValF = 40
   resc@cnLevelSpacingF = 5 ;等值线间隔
 
   end if 
@@ -213,8 +197,8 @@ do year_ind = 0,yearnum-1,1 ; year #
   res@cnMinLevelValF = 600. 
   res@cnMaxLevelValF = 800.
   res@cnLevelSpacingF = 10 ;等值线间隔
-  resc@cnMinLevelValF = -80.
-  resc@cnMaxLevelValF = 80.
+  resc@cnMinLevelValF = -40.
+  resc@cnMaxLevelValF = 40.
   resc@cnLevelSpacingF = 5 ;等值线间隔
 
   end if
@@ -228,26 +212,23 @@ do year_ind = 0,yearnum-1,1 ; year #
 ;   print(selmon_ind)
   ; selmon = selmon_ind * 3
   res@gsnCenterString    = "ERA5I" 
-  plot(year_ind*3) = gsn_csm_contour_map(wks, ref_hgt_mean_plot(:,:), res)
+  plot(sellevel_ind*3) = gsn_csm_contour_map(wks, mean_hgt_ref, res)
   resc@gsnCenterString    = "VR" 
-  plot(year_ind*3 + 1) = gsn_csm_contour_map(wks, hgt_vr_error_mean_plot(:,:), resc)
+  plot(sellevel_ind*3 + 1) = gsn_csm_contour_map(wks, error_hgt_vr, resc)
   resc@gsnCenterString    = "RCM" 
-  plot(year_ind*3 + 2) = gsn_csm_contour_map(wks, hgt_rcm_error_mean_plot(:,:), resc)
+  plot(sellevel_ind*3 + 2) = gsn_csm_contour_map(wks, error_hgt_rcm, resc)
 
-; end do ; end month loop
-;mean plot
+end do ; end level loop
 
-end do ; end year loop
-
-; ;;;;----------------------------------------------panel seeting
+; ; ;;;;----------------------------------------------panel seeting
   pres = True
-  pres@txString              = startyear + "-" + endyear + " HGT " + sellevel + " hPa"
-;   pres@gsnPanelLabelBar      = False ; 公用一个色标
-; ;   pres@gsnPanelMainFontHeightF = 0.0002
+  pres@txString              = "2003-2015" + "mean HGT" 
+; ;   pres@gsnPanelLabelBar      = False ; 公用一个色标
+; ; ;   pres@gsnPanelMainFontHeightF = 0.0002
   ; pres@gsnPanelFigureStrings = (/"","4","4","4","5","5","5","6","6","6","7","7","7","8","8","8","M","M","M"/)
-  pres@amJust                = "TopLeft" ;调整标签顺序
-  ; pres@gsnPanelRowSpec       = True
-  gsn_panel(wks,plot,(/yearnum,3/),pres)
+;   pres@amJust                = "TopLeft" ;调整标签顺序
+;   ; pres@gsnPanelRowSpec       = True
+  gsn_panel(wks,plot,(/6,3/),pres)
 
 
 end
