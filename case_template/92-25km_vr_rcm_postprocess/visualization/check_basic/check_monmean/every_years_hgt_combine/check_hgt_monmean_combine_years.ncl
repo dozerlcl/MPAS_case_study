@@ -3,6 +3,8 @@
 ;   完成读取数据的部分
 ;   2021.01.17
 ;   修改为将每年RCM和VR的误差合并绘制，不同层次的图
+;   每年五个月误差绘制在一张panel图上
+;   需要使用 check_hgt_monmean_loop_years.sh 循环年份来并发NCL，同时进行13年的绘图的逐年五月的绘图
 begin
 ; selyear  = 2003
 ; do selyear=2003,2015,1
@@ -51,6 +53,7 @@ do selmon_ind=0,4,1
     ref_hgt=ref(ref_start_ind:ref_end_ind, {sellevel}, :, :)
 
 ;>>>count
+  ; PLOT variable : vr_hgt rcm_hgt ref_hgt, contains 5 months.(loop selmon_ind)
   ; every month error
   vr_hgt_plot = vr_hgt(selmon_ind,:,:)
   rcm_hgt_plot = rcm_hgt(selmon_ind,:,:)
