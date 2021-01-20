@@ -7,7 +7,7 @@ do
     {
         mkdir -p ./output_pic/years/${year_select}
         export selyear=${year_select}
-        ncl -Q ./check_hgt_monmean_combine_years.ncl
+        ncl -Q ./hgt_monmean_combine.ncl
     }&
 
 done
