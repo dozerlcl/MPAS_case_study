@@ -1,0 +1,17 @@
+GRIB | Level| Level| Level| metgrid  |  metgrid | metgrid                                  |
+Code | Code |   1  |   2  | Name     |  Units   | Description                              |
+-----+------+------+------+----------+----------+------------------------------------------+
+ 172 |  1   |   0  |      | LANDSEA  | 0/1 Flag | Land/Sea flag                            |
+  31 |  1   |   0  |      | SEAICE   | fraction | Sea-Ice Fraction                         |
+  34 |  1   |   0  |      | SST      | K        | Sea-Surface Temperature                  |
+-----+------+------+------+----------+----------+------------------------------------------+
+#
+#  For use with ERA-interim pressure-level output.
+#
+#  Grib codes are from Table 128
+#  http://www.ecmwf.int/services/archive/d/parameters/order=grib_parameter/table=128/
+#  
+# snow depth is converted to the proper units in rrpr.F
+#
+#  For ERA-interim data at NCAR, use the pl (sc and uv) and sfc sc files. 
+
