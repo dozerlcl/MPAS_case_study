@@ -1,0 +1,6 @@
+Name: china_rcm
+Type: ellipse
+Point: 32.5, 100.0
+Semi-major-axis:  4200000   # Meters
+Semi-minor-axis:  3500000   # Meters
+Orientation-angle: 90
