@@ -1,5 +1,10 @@
 此文件夹放置了MPAS的一些运行案例以及相应的后处理集
+
+
 ```
+MPAS_overview.md
+    简单的MPAS使用手册，对应的使用例在case中可以找到
+
 92-25km_vr_case 
     92-25km变分辨率 4-8月的模拟
 92-25km_rcm_case
