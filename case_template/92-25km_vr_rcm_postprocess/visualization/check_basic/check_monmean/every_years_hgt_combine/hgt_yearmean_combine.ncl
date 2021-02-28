@@ -10,8 +10,11 @@ begin
 ; sellevel = stringtoint( getenv("sellevel") )
 sellevel = 925
 ; print(selyear)
+; split into 2 parts
+; -----part 1-----
 startyear = 2003
 endyear   = 2008
+; -----part 2-----
 ; startyear = 2009
 ; endyear   = 2015
 yearnum = endyear - startyear + 1

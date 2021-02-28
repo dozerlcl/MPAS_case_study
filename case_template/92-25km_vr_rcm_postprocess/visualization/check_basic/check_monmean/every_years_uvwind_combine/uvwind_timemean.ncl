@@ -19,14 +19,14 @@ sellevel  = sellevels(sellevel_ind) ; test for loop on one level
 
 ;>>> read data
     dir_in_ref  = "/raid52/yycheng/MPAS/REFERENCE/ERA5I_NC/ERA5I_NC_monthy"
+    f = addfile(dir_in_ref + "/" + file_in_ref ,"r")
+    ref_var_alllevel=f->$ref_varname$ ; every level
+    ref_var = ref_var_alllevel(:,{sellevel},:,:) ; specific level
     
     modtype = "VR"
     dir_in_vr   = "/raid52/yycheng/MPAS/"+modtype+"_postprocess/"+modtype+"_merge/diag_mean_mon/"
     file_in_vr  = "monmean_2003-2015"+"_"+modtype+"_diag.nc"
 
-    f = addfile(dir_in_ref + "/" + file_in_ref ,"r")
-    ref_var_alllevel=f->$ref_varname$ ; every level
-    ref_var = ref_var_alllevel(:,{sellevel},:,:) ; specific level
     f = addfile(dir_in_vr + "/" + file_in_vr, "r")
     ; time | 5 对应 4=8 共五个月
     vr_var=f->$vr_varname$
