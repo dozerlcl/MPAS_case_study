@@ -190,11 +190,11 @@ sellevel = sellevels(sellevel_ind)
 
 ;   print(selmon_ind)
   ; selmon = selmon_ind * 3
-  res@gsnCenterString    = "ERA5I" 
+  res@gsnCenterString    = "ERA5I " + sellevel 
   plot(sellevel_ind*3) = gsn_csm_contour_map(wks, mean_hgt_ref, res)
-  resc@gsnCenterString    = "VR" 
+  resc@gsnCenterString    = "VR " + sellevel 
   plot(sellevel_ind*3 + 1) = gsn_csm_contour_map(wks, error_hgt_vr, resc)
-  resc@gsnCenterString    = "RCM" 
+  resc@gsnCenterString    = "RCM " + sellevel 
   plot(sellevel_ind*3 + 2) = gsn_csm_contour_map(wks, error_hgt_rcm, resc)
 
 end do ; end level loop

@@ -61,13 +61,19 @@ sellevel  = sellevels(sellevel_ind) ; test for loop on one level
   ; 页面控制
   res@gsnMaximize = True
 
-  res@gsnFrame    = False
-  res@gsnDraw     = False     ; don't draw plot yet， 避免plot = 之后再draw，画两张图；有叠加的时候使用
-  res@cnInfoLabelOn       = False            ; turn on/off cn info label
-  res@lbLabelBarOn        = True            ; turn on/off individual cb's
+  res@gsnFrame             = False
+  res@gsnDraw              = False     ; don't draw plot yet， 避免plot = 之后再draw，画两张图；有叠加的时候使用
+  res@cnInfoLabelOn        = False            ; turn on/off cn info label
+  res@lbLabelBarOn         = True            ; turn on/off individual cb's
   res@cnFillOn             = True
-  res@cnLineLabelsOn       = False
+
+  ;;;;------------------------------ 等值线标注
+  ; res@cnLineLabelInterval = 4
+  res@cnLineLabelPlacementMode = "Computed"
+  res@cnLineLabelDensityF = 1.5
+  res@cnLineLabelsOn       = True
   res@cnLinesOn            = False ;填色线条 
+  ; res@cnLineLabelPlacementMode = "Constant"
 
 ;-------------------------------------------------------地图区域设置——中国区域res@mp
     res@mpDataBaseVersion = "Ncarg4_1"   ;地图采用中等分辨率
@@ -116,13 +122,12 @@ sellevel  = sellevels(sellevel_ind) ; test for loop on one level
   res@lbOrientation = "Vertical" ; 把色板垂直地移动 
   
 
-;;;;----------------------------------------------------res 设置 --- add resc
-  res@cnLineLabelInterval = 1
-  res@cnLineLabelPlacementMode = "Computed"
-  res@cnLineLabelDensityF = 2
+
   resc = res
 
-  res@cnFillPalette         = "wind_17lev"; 用GMT_gray 进行填色。即调用了第2种色板(调色板设置)
+  res@cnFillPalette         = "wind_17lev"; 
+  ; res@cnFillPalette         = "hotcolr_19lev";
+  ; res@cnFillPalette         = "srip_reanalysis";
 
   res@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
   if (sellevel.eq.200) then
@@ -192,11 +197,11 @@ sellevel  = sellevels(sellevel_ind) ; test for loop on one level
 
     ;   print(selmon_ind)
   ; selmon = selmon_ind * 3
-  res@gsnCenterString    = "ERA5I" 
+  res@gsnCenterString    = "ERA5I "  + sellevel
   plot(sellevel_ind*3) = gsn_csm_contour_map(wks, ref_var_timemean, res)
-  resc@gsnCenterString    = "VR" 
+  resc@gsnCenterString    = "VR "  + sellevel
   plot(sellevel_ind*3 + 1) = gsn_csm_contour_map(wks, vr_var_timemean_error, resc)
-  resc@gsnCenterString    = "RCM" 
+  resc@gsnCenterString    = "RCM " + sellevel 
   plot(sellevel_ind*3 + 2) = gsn_csm_contour_map(wks, rcm_var_timemean_error, resc)
 
 
