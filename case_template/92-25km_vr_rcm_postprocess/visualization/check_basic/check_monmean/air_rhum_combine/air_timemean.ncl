@@ -1,21 +1,23 @@
  ;  2021.01.18 
  ;  单独将数据读入的部分放一个模板 
  ;  读入 REF VR RCM 三组 timemean
-  
+ ;  2021.03.03
+ ;  绘制不同高度温度的脚本   air
+ ;  remark:误差太大的值被认为是因为地形在p系上的一些虚假值，设置为了0，为了绘制为透明，500以下不含这部分
 begin
 ;------------------------------------------------------------
 sellevels = (/925, 850, 700, 500, 250, 200/)
 plot = new(6*3,graphic) ;定义子图数组 
-wks = gsn_open_wks("png","./output_pic/mean/" + "uwnd_timemean")
+wks = gsn_open_wks("png","./output_pic/mean/" + "air_timemean")
 ;------------------------------------------------------------
 do sellevel_ind = 0,5,1
 sellevel  = sellevels(sellevel_ind) ; test for loop on one level
 
 ; 为数据读入选取对应的 ERA5I VR RCM的文件名、变量名
-    file_in_ref = "sel_uwnd.mon.mean.nc"
-    ref_varname = "uwnd"
-    vr_varname = "uzonal_"+sellevel+"hPa"
-    rcm_varname = "uzonal_"+sellevel+"hPa"
+    file_in_ref = "sel_air.mon.mean.nc"
+    ref_varname = "air"
+    vr_varname = "temperature_"+sellevel+"hPa"
+    rcm_varname = "temperature_"+sellevel+"hPa"
 
 ;>>> read data
     dir_in_ref  = "/raid52/yycheng/MPAS/REFERENCE/ERA5I_NC/ERA5I_NC_monthy"
@@ -42,6 +44,11 @@ sellevel  = sellevels(sellevel_ind) ; test for loop on one level
     ; printVarSummary(ref_var)
     ; printVarSummary(vr_var)
     ; printVarSummary(rcm_var)
+; convert Kelvin to Celsius
+    ref_var = ref_var - 273.15
+    vr_var  = vr_var  - 273.15
+    rcm_var = rcm_var - 273.15
+
     ref_var_timemean = dim_avg_n_Wrap(ref_var, 0)
     vr_var_timemean = dim_avg_n_Wrap(vr_var, 0)
     rcm_var_timemean = dim_avg_n_Wrap(rcm_var, 0)
@@ -55,6 +62,9 @@ sellevel  = sellevels(sellevel_ind) ; test for loop on one level
     printMinMax(ref_var_timemean, 1)
     printMinMax(vr_var_timemean_error, 1)
     printMinMax(rcm_var_timemean_error, 1)
+;;; mask error data
+  vr_var_timemean_error  = where(abs(vr_var_timemean_error).gt.5,  0,  vr_var_timemean_error)
+  rcm_var_timemean_error = where(abs(rcm_var_timemean_error).gt.5, 0, rcm_var_timemean_error)
 ;;;PLOT
 ; ;;>>>>>plot
   res = True  
@@ -125,69 +135,75 @@ sellevel  = sellevels(sellevel_ind) ; test for loop on one level
 
   resc = res
 
-  res@cnFillPalette         = "wind_17lev"; 
+  res@cnFillPalette         = "temp_19lev"; 
+  ; res@cnFillPalette         = "wind_17lev"; 
   ; res@cnFillPalette         = "hotcolr_19lev";
   ; res@cnFillPalette         = "srip_reanalysis";
 
   res@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
   if (sellevel.eq.200) then
   ;------200-----
-  res@cnMaxLevelValF = 30.
-  res@cnMinLevelValF = -30. 
+  res@cnMaxLevelValF = -40.
+  res@cnMinLevelValF = -70. 
   res@cnLevelSpacingF = 2. ;等值线间隔
-  resc@cnMaxLevelValF = 10.
-  resc@cnMinLevelValF = -10.
-  resc@cnLevelSpacingF = 1. ;等值线间隔
+
+  resc@cnMaxLevelValF = 3.
+  resc@cnMinLevelValF = -3.
+  resc@cnLevelSpacingF = 0.2 ;等值线间隔
   end if
   if (sellevel.eq.250) then
   ;------250-----
-  res@cnMaxLevelValF = 30.
-  res@cnMinLevelValF = -30. 
+  res@cnMaxLevelValF = -30.
+  res@cnMinLevelValF = -60. 
   res@cnLevelSpacingF = 2. ;等值线间隔
-  resc@cnMaxLevelValF = 10.
-  resc@cnMinLevelValF = -10.
-  resc@cnLevelSpacingF = 1. ;等值线间隔
+
+  resc@cnMaxLevelValF = 3.
+  resc@cnMinLevelValF = -3.
+  resc@cnLevelSpacingF = 0.2 ;等值线间隔
 
   end if
   if (sellevel.eq.500) then
   ;------500-----
-  res@cnMaxLevelValF = 20.
-  res@cnMinLevelValF = -20. 
-  res@cnLevelSpacingF = 1. ;等值线间隔
-  resc@cnMaxLevelValF = 5.
-  resc@cnMinLevelValF = -5.
-  resc@cnLevelSpacingF = 0.5 ;等值线间隔
+  res@cnMaxLevelValF = 0.
+  res@cnMinLevelValF = -30. 
+  res@cnLevelSpacingF = 2. ;等值线间隔
+
+  resc@cnMaxLevelValF = 3.
+  resc@cnMinLevelValF = -3.
+  resc@cnLevelSpacingF = 0.2 ;等值线间隔
 
   end if 
   if (sellevel.eq.700) then
   ;------700-----
-  res@cnMaxLevelValF = 10.
+  res@cnMaxLevelValF = 20.
   res@cnMinLevelValF = -10. 
-  res@cnLevelSpacingF = 1. ;等值线间隔
+  res@cnLevelSpacingF = 2. ;等值线间隔
 
-  resc@cnMaxLevelValF = 5.
-  resc@cnMinLevelValF = -5 ;等值线间隔  resc@cnMinLevelValF = -240.
-  resc@cnLevelSpacingF = 0.5 ;等值线间隔
+  resc@cnMaxLevelValF = 3.
+  resc@cnMinLevelValF = -3. 
+  resc@cnLevelSpacingF = 0.2 ;等值线间隔
 
   end if 
   if (sellevel.eq.850) then
   ;------850-----
-  res@cnMaxLevelValF = 10.
-  res@cnMinLevelValF = -10. 
+  res@cnMaxLevelValF = 20.
+  res@cnMinLevelValF = 0. 
   res@cnLevelSpacingF = 1. ;等值线间隔
-  resc@cnMaxLevelValF = 5.
-  resc@cnMinLevelValF = -5
-  resc@cnLevelSpacingF = 0.5 ;等值线间隔
+
+  resc@cnMaxLevelValF = 3.
+  resc@cnMinLevelValF = -3.
+  resc@cnLevelSpacingF = 0.2 ;等值线间隔
 
   end if 
   if (sellevel.eq.925) then
   ;------925-----
-  res@cnMaxLevelValF = 10.
-  res@cnMinLevelValF = -10. 
+  res@cnMaxLevelValF = 30.
+  res@cnMinLevelValF = 10. 
   res@cnLevelSpacingF = 1. ;等值线间隔
-  resc@cnMaxLevelValF = 5.
-  resc@cnMinLevelValF = -5.
-  resc@cnLevelSpacingF = 0.5 ;等值线间隔
+
+  resc@cnMaxLevelValF = 3.
+  resc@cnMinLevelValF = -3.
+  resc@cnLevelSpacingF = 0.2 ;等值线间隔
 
   end if
 
