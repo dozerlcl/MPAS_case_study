@@ -12,5 +12,7 @@ every_years_hgt_combine/
 
         将RCM和VR的误差放在一起（combine） 同时进行了年平均（绘制13年） 整个时间平均 的绘制 
 
+
+
 remains:
 将ERA5I中能对比的数据尽可能的绘制，不需要太多时次的图，先将平均图全部绘制一遍
