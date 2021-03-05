@@ -32,10 +32,15 @@ fout = addfile(pathout+ "mask_template.nc","c")
 fout->mask_array = mask_array
 
 
+
 ; cdo comand to mask, choose mask file 
 ; mask_file = "rcm_pre_03-15.nc"
+; mask_file = "vr_pre_03-15.nc"
+; mask_file = "sel_CMORPH_03-15.nc"
 mask_file = "sel_CN05.1_Pre_1961_2018_daily_025x025.nc"
 print("-----check mask template by CDO-----")
-print("cdo -mul " + pathin + mask_file +" " + pathout + "mask_template.nc " + pathout + "mask_" + mask_file)
-system("cdo -mul " + pathin + mask_file +" " + pathout +"mask_template.nc " + pathout + "mask_" + mask_file)
+; print("cdo -mul " + pathin + mask_file +" " + pathout + "mask_template.nc " + pathout + "mask_" + mask_file)
+; system("cdo -mul " + pathin + mask_file +" " + pathout +"mask_template.nc " + pathout + "mask_" + mask_file)
+print("cdo -f nc ifthen " + pathout + "mask_template.nc " + pathin + mask_file + " " + pathout + "mask_" + mask_file)
+system("cdo -f nc ifthen " + pathout +"mask_template.nc " + pathin + mask_file + " " + pathout + "mask_" + mask_file)
 end
