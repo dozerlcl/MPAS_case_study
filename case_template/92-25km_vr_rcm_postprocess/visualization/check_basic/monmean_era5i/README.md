@@ -16,3 +16,5 @@ every_years_hgt_combine/
 
 remains:
 将ERA5I中能对比的数据尽可能的绘制，不需要太多时次的图，先将平均图全部绘制一遍
+
+准备利用一个绘制 time x latitude 廓线的脚本绘制hgt的廓线分布

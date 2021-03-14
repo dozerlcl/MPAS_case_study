@@ -111,17 +111,11 @@ res                  = True                ; plot mods desired
 
 ;  plot(0) = gsn_csm_lat_time(wks, pre_cn051_mean(lat|:, time|:), res ) 
   time_axis_labels(pre_cn051_mean&time, res, restick)
-  res@gsnLeftString = "CN05.1"
-  res@gsnRightString = "mm/day"
  plot(0) = gsn_csm_contour(wks, pre_cn051_mean(lat|:, time|:), res ) 
 ;  plot(1) = gsn_csm_lat_time(wks, pre_vr_mean(latitude|:, Time|:), res ) 
   time_axis_labels(pre_vr_mean&Time, res, restick)
-  res@gsnLeftString = "VR"
-  res@gsnRightString = "mm/day"
  plot(1) = gsn_csm_contour(wks, pre_vr_mean(latitude|:, Time|:), res ) 
   ; time_axis_labels(pre__mean&Time, res, restick)
-  res@gsnLeftString = "RCM"
-  res@gsnRightString = "mm/day"
  plot(2) = gsn_csm_contour(wks, pre_rcm_mean(latitude|:, Time|:), res ) 
 
 ; ; ; ;;;;----------------------------------------------panel seeting
