@@ -1,6 +1,7 @@
-;;; 12.08 绘制某一年份情况，以及直接做差，包含格点、对流尺度降水
 ;;; 21.03.05
 ;;;     修改为进行CN05.1 CMORPH 的降水后处理的读取文件
+;;;     在 TEMP_DATA下先进行的了 mask 处理
+;;;     处理的 ncl脚本（其中顺带使用了 cdo 命令） 在 ../precip_preprocess/ncl_mask.ncl 文件之中
 
 begin
 
