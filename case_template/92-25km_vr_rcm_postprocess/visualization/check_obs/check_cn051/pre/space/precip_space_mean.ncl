@@ -78,7 +78,7 @@ begin
 
   ;;;;------------------------------ 等值线标注
   res@cnLineLabelsOn       = False
-  ; res@cnLineLabelInterval = 4
+  ; res@cnLineLabelInterval = 2
   res@cnLineLabelPlacementMode = "Computed"
   res@cnLineLabelDensityF = 1.5
   res@cnLinesOn            = False ;填色线条 
