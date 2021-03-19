@@ -5,14 +5,15 @@
 ;;; 21.03.18
 ;;;   修改绘图方式，将 gsn_csm_contour overlay到 map上，需要单独绘制每个map，为之后的统计检验做准备
 ;;;   进行均值差异的 t 检验
-;;; 21.03.08
-;;;   进行空间相关系数的绘制，以及 r test
+
 begin
 
 ;;;>>>plot set
-  fignum = 2
+  fignum = 4
+  ; sel_month = 4
+  sel_month = getenv("selmonth")
   plot = new(fignum,graphic) ;定义子图数组
-  wks = gsn_open_wks("png","./output_pic/"+"precip_03-15_cor_rtest")
+  wks = gsn_open_wks("png","./output_pic/"+"ttest_everymonths/ttest_0"+sel_month)
 ;;;>>>data reader
   ;   mask 之后集中存放降水数据的位置：   /raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res
   dir_cn051 = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res/"
@@ -39,26 +40,55 @@ begin
   f = addfile(dir_rcm + filename_rcm, "r") 
   pre_rcm  = f->$"precip_MPAS"$
 
-;;;-----count corr-----
+;;;-----select months------
 
-  cor_vr  = escorc_n(pre_vr,  pre_cn051, 0, 0)
-  cor_rcm = escorc_n(pre_rcm, pre_cn051, 0, 0)
-  copy_VarCoords(pre_cn051(0,:,:), cor_vr)
-  copy_VarCoords(pre_cn051(0,:,:), cor_rcm)
-  dims_vr = dimsizes(pre_vr)
-  ; add mask
-  cor_vr = where(ismissing(pre_cn051(0,:,:)), cor_vr@_FillValue, cor_vr)
-  cor_rcm= where(ismissing(pre_cn051(0,:,:)), cor_rcm@_FillValue, cor_rcm)
+  time_dt = cd_calendar(pre_vr&Time, 0)
+  sel_month_inds = ind(time_dt(:,1).eq.sel_month)
+  pre_cn051_selmonth = pre_cn051(sel_month_inds, :, :)
+  pre_vr_selmonth    = pre_vr(sel_month_inds, :, :)
+  pre_rcm_selmonth   = pre_rcm(sel_month_inds, :, :)
 
-  ; rtest
-  cor_vr_prob = rtest(cor_vr, dims_vr(0), 0)
-  cor_rcm_prob = rtest(cor_rcm, dims_vr(0), 0)
-  copy_VarCoords(pre_cn051(0,:,:), cor_vr_prob)
-  copy_VarCoords(pre_cn051(0,:,:), cor_rcm_prob)
-  cor_vr_prob = where(ismissing(pre_cn051(0,:,:)), 999, cor_vr_prob)
-  cor_rcm_prob= where(ismissing(pre_cn051(0,:,:)), 999, cor_rcm_prob)
+;;;-----remove wet day-----
 
+  ; pre_cn051 = where(pre_cn051.gt.0.005, pre_cn051, 0)
+  pre_vr_selmonth = where(pre_vr_selmonth.gt.0.1, pre_vr_selmonth, 0)
+  pre_rcm_selmonth = where(pre_rcm_selmonth.gt.0.1, pre_rcm_selmonth, 0)
 
+;;;-----count time mean-----
+  pre_cn051_mean  = dim_avg_n_Wrap(pre_cn051_selmonth, (/0/) )
+  ; pre_cmorph_mean = dim_avg_n_Wrap(pre_cmorph, (/0,1/) )
+  pre_vr_mean     = dim_avg_n_Wrap(pre_vr_selmonth, (/0/) )
+  pre_rcm_mean    = dim_avg_n_Wrap(pre_rcm_selmonth, (/0/) )
+;;;-----count abs error-----
+  vr_error_cn051  = pre_vr_mean - pre_cn051_mean
+  rcm_error_cn051 = pre_rcm_mean - pre_cn051_mean
+  copy_VarMeta(pre_vr_mean, vr_error_cn051)
+  copy_VarMeta(pre_rcm_mean, rcm_error_cn051)
+
+  ; vr_error_cmorph = pre_vr_mean - pre_cmorph_mean
+  ; rcm_error_cmorph = pre_rcm_mean - pre_cmorph_mean
+  ; copy_VarMeta(pre_vr_mean, vr_error_cmorph)
+  ; copy_VarMeta(pre_rcm_mean, rcm_error_cmorph)
+;;;-----add rmsd-----
+  ; dim_rmsd_n_Wrap
+  vr_rmsd_cn051  = dim_rmsd_n_Wrap(pre_vr_selmonth, pre_cn051_selmonth, 0)
+  rcm_rmsd_cn051   = dim_rmsd_n_Wrap(pre_rcm_selmonth, pre_cn051_selmonth, 0)
+  copy_VarCoords(pre_vr_mean, vr_rmsd_cn051)
+  copy_VarCoords(pre_rcm_mean, rcm_rmsd_cn051)
+
+;;;-----count variance-----
+  cn051_variance= dim_variance_n(pre_cn051_selmonth, 0)
+  vr_variance   = dim_variance_n(pre_vr_selmonth, 0)
+  rcm_variance  = dim_variance_n(pre_rcm_selmonth, 0)
+  dims_vr       = dimsizes(pre_vr_selmonth)
+  series_num    = dims_vr(0)
+  vr_prob       = ttest(pre_cn051_mean, cn051_variance, series_num, pre_vr_mean, vr_variance, series_num, True, False)
+  rcm_prob      = ttest(pre_cn051_mean, cn051_variance, series_num, pre_rcm_mean, rcm_variance, series_num, True, False)
+  ; copy_VarMeta(pre_cn051_mean, prob)
+  copy_VarCoords(pre_cn051_mean, vr_prob)
+  copy_VarCoords(pre_cn051_mean, rcm_prob)
+  ; printVarSummary(prob)
+  ; printMinMax(prob, 1)
 
 ;;;PLOT
   res = True  
@@ -91,8 +121,6 @@ begin
   mpres@mpCountyLineThicknessF = 10
   ; mpres@mpOutlineSpecifiers=
   mpres@mpFillOn=False
-
-
 ;-------------------------------------------------------变量/x/y/刻度设置  
 ;   res@pmTickMarkDisplayMode = "Always"
   mpres@mpMinLatF=15
@@ -100,7 +128,6 @@ begin
 
   mpres@mpMinLonF=70
   mpres@mpMaxLonF=140
-
 
   mpres@gsnMajorLatSpacing = 10              ; change maj lat tm spacing
   mpres@gsnMajorLonSpacing = 10              ; change maj lon tm spacing
@@ -113,12 +140,11 @@ begin
   mpres@mpGridSpacingF=10
     
   ;-------------------------------------------------------地图标题设置
-  ;;;
                 
   ; res@gsnCenterString = "MPAS simulation TPEMIP 4-8"
   ; res@tiMainString    = "MEAN TEMPERATURE AT 2M HEIGHT"
-  ;   res@gsnCenterStringFontHeightF = 0.02  
-  ;   res@pmTickMarkDisplayMode = "Always" ;坐标标签上添加 度 符号(未起作用)
+  ; res@gsnCenterStringFontHeightF = 0.02  
+  ; res@pmTickMarkDisplayMode = "Always" ;坐标标签上添加 度 符号(未起作用)
   res@gsnLeftString = "" ;不绘制左标题
   res@gsnRightString= "" ;不绘制右标题
 
@@ -137,13 +163,18 @@ begin
   res@cnLevelSpacingF = 1 ;等值线间隔
 
   resc@lbOrientation = "Vertical" ; 把色板垂直地移动 
-  resc@cnLevelSelectionMode  = "ManualLevels" ;等间隔地指定等值线范围
-  resc@cnFillPalette         = "temp_19lev"; 
-  ; resc@cnFillPalette         = "precip4_diff_19lev"
+  resc@cnFillPalette         = "precip4_diff_19lev"
+  res_error = res
+  res_error@cnFillPalette         = "precip4_diff_19lev"
 
-  resc@cnMaxLevelValF = .5
-  resc@cnMinLevelValF = -0.5
-  resc@cnLevelSpacingF = 0.05 ;等值线间隔 
+  ; resc@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
+  ; resc@cnMinLevelValF = -15
+  ; resc@cnMaxLevelValF = 15.
+  ; resc@cnLevelSpacingF = 1. ;等值线间隔 
+
+  resc@cnLevelSelectionMode  = "ExplicitLevels"
+  resc@cnLevels              = (/-5,-4,-3,-2,-1, 0, 2, 4, 6, 8, 10, 12, 16, 18, 22/)   
+  resc@cnFillColors          = (/1,2,4,6,7,8,9,10,12,13,14,15,16,17,18,19/); -1 为透明
 
 ;----------------------------prob 显著性检验 res设置-------------
   ;=========================For p<0.05, fill using MonoPattern and Monocolor==============================
@@ -162,14 +193,14 @@ begin
   ; res_prob@cnFillPattern = 6         ; stipple dot fill pattern
   ; res_prob@cnMonoFillColor = False
   ; res_prob@cnFillColor   = "black"
-  res_prob@cnFillScaleF  = .5     ; default is 1, larger is corse, lower is dense
+  res_prob@cnFillScaleF  = 0.5     ; default is 1, larger is corse, lower is dense
+  ; res_prob@cnFillPatterns       = (/-1,17/)     ; the patterns 
   res_prob@cnFillPatterns       = (/17, -1/)     ; the patterns 
-  ; res_prob@cnFillPatterns       = (/-1, 17/)     ; the patterns 
 
   res_prob@cnMonoFillScale      = False            ; want different densities                                                            
-  res_prob@cnFillScales         = (/0.5,1/)    ; change densities                                                                        
+  res_prob@cnFillScales         = (/1,1/)    ; change densities                                                                        
   res_prob@cnMonoFillColor      =True                                                                                                     
-  res_prob@cnFillDotSizeF       = 0.0010
+  res_prob@cnFillDotSizeF       = 0.003
 
 
 ;------------------------------plot------------------------------
@@ -177,23 +208,47 @@ begin
   plot(i) = gsn_csm_map(wks, mpres)
   end do
   
-  res@gsnCenterString    = "VR"
-  overlay(plot(0),gsn_csm_contour(wks, cor_vr, resc))
-  overlay(plot(0),gsn_csm_contour(wks, cor_vr_prob, res_prob))
-  res@gsnCenterString    = "RCM"
-  overlay(plot(1),gsn_csm_contour(wks, cor_rcm, resc))
-  overlay(plot(1),gsn_csm_contour(wks, cor_rcm_prob, res_prob))
+  ; res@gsnCenterString    = "COMRPH"
+  ; overlay(plot(0),gsn_csm_contour(wks, pre_cmorph_mean, res))
+  ; res@gsnCenterString    = "CN05.1"
+  ; overlay(plot(1),gsn_csm_contour(wks, pre_cn051_mean, res))
+  ; res@gsnCenterString    = "VR"
+  ; overlay(plot(2),gsn_csm_contour(wks, pre_vr_mean, res))
+  ; res@gsnCenterString    = "RCM"
+  ; overlay(plot(3),gsn_csm_contour(wks, pre_rcm_mean, res))
 
+  resc@gsnCenterString    = "VR RMSD"
+  overlay(plot(0),gsn_csm_contour(wks, vr_rmsd_cn051, resc))
+  overlay(plot(0),gsn_csm_contour(wks, vr_prob, res_prob))
+  resc@gsnCenterString    = "RCM RMSD"
+  overlay(plot(1),gsn_csm_contour(wks, rcm_rmsd_cn051, resc))
+  overlay(plot(1),gsn_csm_contour(wks, rcm_prob, res_prob))
+
+  ; res@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
+  res_error@cnMaxLevelValF =  5.0
+  res_error@cnMinLevelValF = -5.0
+  ; res_error@cnLevelSpacingF = 0.5
+  res_error@gsnCenterString    = "VR - CMORPH"
+  overlay(plot(2),gsn_csm_contour(wks, vr_error_cn051, res_error))
+  overlay(plot(2), gsn_csm_contour(wks, vr_prob, res_prob))
+  res@gsnCenterString    = "RCM - CMORPH"
+  overlay(plot(3),gsn_csm_contour(wks, rcm_error_cn051, res_error))
+  overlay(plot(3), gsn_csm_contour(wks, rcm_prob, res_prob))
+
+  ; resc@gsnCenterString    = "VR - CN05.1"
+  ; plot(6) = gsn_csm_contour_map(wks, vr_error_cn051, resc)
+  ; resc@gsnCenterString    = "RCM - CN05.1"
+  ; plot(7) = gsn_csm_contour_map(wks, rcm_error_cn051, resc)
 
 ;;;;--------------------------panel seeting---------------------------------
   pres = True
-  pres@txString              = "2003-2015" + " mean (CN051)" 
+  pres@txString              = "2003-2015" +"_0" + sel_month + " mean" 
   ; pres@gsnPanelLabelBar      = False ; 公用一个色标
   ; pres@gsnPanelMainFontHeightF = 0.0002
   ; pres@gsnPanelFigureStrings = (/"","4","4","4","5","5","5","6","6","6","7","7","7","8","8","8","M","M","M"/)
   ; pres@amJust                = "TopLeft" ;调整标签顺序
   pres@gsnPanelRowSpec       = True
-  gsn_panel(wks,plot,(/2/),pres)
+  gsn_panel(wks,plot,(/2, 2/),pres)
 
 
 end

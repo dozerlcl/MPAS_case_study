@@ -130,7 +130,6 @@ begin
   mpres@mpGridSpacingF=10
     
   ;-------------------------------------------------------地图标题设置
-  ;;;
                 
   ; res@gsnCenterString = "MPAS simulation TPEMIP 4-8"
   ; res@tiMainString    = "MEAN TEMPERATURE AT 2M HEIGHT"
