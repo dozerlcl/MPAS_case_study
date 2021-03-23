@@ -3,7 +3,7 @@
 ;       有 T2M 和 PRE 两部分需要mask，注意修改路径
 begin
 
-    pathin = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_t2m/"
+    pathin = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_t2m/ordata/"
     f = addfile(pathin+"sel_CN05.1_Tm_1961_2018_daily_025x025.nc","r")
     v = f->$"tm"$
     v@lat = f->lat
@@ -38,7 +38,7 @@ fout->mask_array = mask_array
 
 ; cdo comand to mask, choose mask file 
 
-mask_file = "rcm_t2m_03-15.nc"
+mask_file = "min_vr_03-15.nc"
 print("-----check mask template by CDO-----")
 ; print("cdo -mul " + pathin + mask_file +" " + pathout + "mask_template.nc " + pathout + "mask_" + mask_file)
 ; system("cdo -mul " + pathin + mask_file +" " + pathout +"mask_template.nc " + pathout + "mask_" + mask_file)

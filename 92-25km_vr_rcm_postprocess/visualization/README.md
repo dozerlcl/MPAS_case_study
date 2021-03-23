@@ -36,3 +36,4 @@
         - /diag                        daily diag，每一年的合并都在此文件夹中
         - /diag_mean_mon               进行月平均处理之后的RCM数据，删除了九月份
         - /pre                         合成之后的降水数据
+        - /t2m_hourly                  逐年两米气温的逐小时资料
