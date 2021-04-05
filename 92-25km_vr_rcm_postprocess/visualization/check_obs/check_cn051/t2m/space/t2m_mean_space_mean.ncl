@@ -9,14 +9,14 @@ begin
     wks = gsn_open_wks("png","./output_pic/"+"t2m_03-15_timemean")
 ;;;>>>data reader
     ;   mask 之后集中存放降水数据的位置：   /raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res
-    dir_cn051 = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_t2m/"
+    dir_cn051 = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_t2m/ordata/"
     filename_cn051 = "sel_CN05.1_Tm_1961_2018_daily_025x025.nc"
     
     dir_vr = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_t2m/mask_res/"
-    filename_vr = "mask_vr_t2m_03-15.nc"
+    filename_vr = "mask_mean_vr_03-15.nc"
     
     dir_rcm = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_t2m/mask_res/"
-    filename_rcm = "mask_rcm_t2m_03-15.nc"
+    filename_rcm = "mask_mean_rcm_03-15.nc"
 
     f = addfile(dir_cn051 + filename_cn051, "r") 
     pre_cn051 = f->$"tm"$
