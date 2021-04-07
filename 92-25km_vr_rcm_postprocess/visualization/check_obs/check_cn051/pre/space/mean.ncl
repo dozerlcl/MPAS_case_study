@@ -141,14 +141,14 @@ begin
   ; res@cnFillPalette         = "hotcolr_19lev";
   ; res@cnFillPalette         = "srip_reanalysis";
   res@cnMinLevelValF = 0.
-  res@cnMaxLevelValF = 15.
+  res@cnMaxLevelValF = 20.
   res@cnLevelSpacingF = 1 ;等值线间隔
 
   resc@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
 
   resc@cnFillPalette         = "precip4_diff_19lev"
-  resc@cnMinLevelValF = -5
-  resc@cnMaxLevelValF = 5.
+  resc@cnMinLevelValF = -6
+  resc@cnMaxLevelValF = 6.
   resc@cnLevelSpacingF = 0.5 ;等值线间隔 
 
 ;------------------------------plot------------------------------
@@ -171,9 +171,19 @@ begin
   resc@gsnCenterString    = "RCM - CN05.1"
   plot(7) = gsn_csm_contour_map(wks, rcm_error_cn051, resc)
 
+
+;---Section to add polylines to map. 添加一级河流 -----------
+; overlay 到 countermap上会出错,但是overlay到csm_map就ok,修改到ttest脚本中,使用了csm_map
+; plot_new_for_shape = new(8, graphic)
+; do i = 0,7,1
+;   plres             = True           ; resource list for polylines
+;   plres@gsLineColor = "blue"
+;   shapefile_path = "/raid52/yycheng/MPAS/REFERENCE/MODEL_CONSTANT/R1/" + "hyd1_4l.shp"
+;   plot_new_for_shape(i) = gsn_add_shapefile_polylines(wks, plot(i), shapefile_path ,plres)
+; end do
 ; ; ;;;;----------------------------------------------panel seeting
   pres = True
-  pres@txString              = "2003-2015" + " mean " 
+  pres@txString              = "2003-2015" + " mean" 
 ; ;   pres@gsnPanelLabelBar      = False ; 公用一个色标
 ; ; ;   pres@gsnPanelMainFontHeightF = 0.0002
   ; pres@gsnPanelFigureStrings = (/"","4","4","4","5","5","5","6","6","6","7","7","7","8","8","8","M","M","M"/)

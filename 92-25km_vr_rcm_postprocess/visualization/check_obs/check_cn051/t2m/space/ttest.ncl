@@ -5,11 +5,16 @@
 ;;; 21.03.18
 ;;;   修改绘图方式，将 gsn_csm_contour overlay到 map上，需要单独绘制每个map，为之后的统计检验做准备
 ;;;   进行均值差异的 t 检验
+;;; 21.04.05
+;;;   添加一级河流shape,弃用rmsd分布
 
+load "./shapefile_utils.ncl"
 begin
 
 ;;;>>>plot set
-  fignum = 7
+  fignum = 5   ; 04.05 only mean bias & ttest & shapefile
+
+
   plot = new(fignum,graphic) ;定义子图数组
   wks = gsn_open_wks("png","./output_pic/"+"t2m_mean_03-15_timemean_ttest")
 ;;;>>>data reader
@@ -43,12 +48,7 @@ begin
   rcm_error_cn051 = pre_rcm_mean - pre_cn051_mean
   copy_VarMeta(pre_vr_mean, vr_error_cn051)
   copy_VarMeta(pre_rcm_mean, rcm_error_cn051)
-
-  ; vr_error_cmorph = pre_vr_mean - pre_cmorph_mean
-  ; rcm_error_cmorph = pre_rcm_mean - pre_cmorph_mean
-  ; copy_VarMeta(pre_vr_mean, vr_error_cmorph)
-  ; copy_VarMeta(pre_rcm_mean, rcm_error_cmorph)
-;;;-----add rmsd-----
+;;;-----add rmsd-----04.05 turn off ------------
   ; dim_rmsd_n_Wrap
   vr_rmsd_cn051  = dim_rmsd_n_Wrap(pre_vr, pre_cn051, 0)
   rcm_rmsd_cn051   = dim_rmsd_n_Wrap(pre_rcm, pre_cn051, 0)
@@ -195,29 +195,33 @@ begin
   res@gsnCenterString    = "RCM"
   overlay(plot(2),gsn_csm_contour(wks, pre_rcm_mean, res))
 
-  resc@gsnCenterString    = "VR RMSD"
-  overlay(plot(3),gsn_csm_contour(wks, vr_rmsd_cn051, resc))
-  overlay(plot(3),gsn_csm_contour(wks, vr_prob, res_prob))
-  resc@gsnCenterString    = "RCM RMSD"
-  overlay(plot(4),gsn_csm_contour(wks, rcm_rmsd_cn051, resc))
-  overlay(plot(4),gsn_csm_contour(wks, rcm_prob, res_prob))
+  ; resc@gsnCenterString    = "VR RMSD"
+  ; overlay(plot(3),gsn_csm_contour(wks, vr_rmsd_cn051, resc))
+  ; overlay(plot(3),gsn_csm_contour(wks, vr_prob, res_prob))
+  ; resc@gsnCenterString    = "RCM RMSD"
+  ; overlay(plot(4),gsn_csm_contour(wks, rcm_rmsd_cn051, resc))
+  ; overlay(plot(4),gsn_csm_contour(wks, rcm_prob, res_prob))
 
   ; res@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
   ; res_error@cnMaxLevelValF =  5.0
   ; res_error@cnMinLevelValF = -5.0
   ; res_error@cnLevelSpacingF = 0.5
   res_error@gsnCenterString    = "VR - CN05.1"
-  overlay(plot(5),gsn_csm_contour(wks, vr_error_cn051, res_error))
-  overlay(plot(5), gsn_csm_contour(wks, vr_prob, res_prob))
+  overlay(plot(3),gsn_csm_contour(wks, vr_error_cn051, res_error))
+  overlay(plot(3), gsn_csm_contour(wks, vr_prob, res_prob))
   res@gsnCenterString    = "RCM - cn05.1"
-  overlay(plot(6),gsn_csm_contour(wks, rcm_error_cn051, res_error))
-  overlay(plot(6), gsn_csm_contour(wks, rcm_prob, res_prob))
+  overlay(plot(4),gsn_csm_contour(wks, rcm_error_cn051, res_error))
+  overlay(plot(4), gsn_csm_contour(wks, rcm_prob, res_prob))
 
-  ; resc@gsnCenterString    = "VR - CN05.1"
-  ; plot(6) = gsn_csm_contour_map(wks, vr_error_cn051, resc)
-  ; resc@gsnCenterString    = "RCM - CN05.1"
-  ; plot(7) = gsn_csm_contour_map(wks, rcm_error_cn051, resc)
-
+;;;-----------------------add shape file ----------------------------------
+plot_new_for_shape = new(fignum, graphic)
+do i = 0,fignum-1,1
+  ; print(i)
+  plres             = True           ; resource list for polylines
+  plres@gsLineColor = "blue"
+  shapefile_path = "/raid52/yycheng/MPAS/REFERENCE/MODEL_CONSTANT/R1/" + "hyd1_4l.shp"
+  plot_new_for_shape(i) = gsn_add_shapefile_polylines(wks, plot(i), shapefile_path ,plres)
+end do
 ;;;;--------------------------panel seeting---------------------------------
   pres = True
   pres@txString              = "2003-2015" + " mean " 
@@ -226,7 +230,7 @@ begin
   ; pres@gsnPanelFigureStrings = (/"","4","4","4","5","5","5","6","6","6","7","7","7","8","8","8","M","M","M"/)
   ; pres@amJust                = "TopLeft" ;调整标签顺序
   pres@gsnPanelRowSpec       = True
-  gsn_panel(wks,plot,(/1, 2, 2, 2/),pres)
+  gsn_panel(wks,plot,(/1, 2, 2/),pres)
 
 
 end
