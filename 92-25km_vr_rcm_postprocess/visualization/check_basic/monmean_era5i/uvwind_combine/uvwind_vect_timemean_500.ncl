@@ -247,27 +247,32 @@ wks = gsn_open_wks("png","./output_pic/mean/" + "uvwnd_vector_" + sellevel)
   end do
 ;   map     = gsn_csm_map(wks,mpres)
 ;   contour = gsn_csm_contour(wks,t,cnres)
+  res_vect@tiMainString = "ERA5I"
   vector_plot  = gsn_csm_vector(wks, ref_u_timemean, ref_v_timemean, res_vect)
   contour_plot = gsn_csm_contour(wks, ref_speed, resc)
   overlay(plot(0), vector_plot)
   overlay(plot(0), contour_plot)
   
+  res_vect@tiMainString = "VR"
   vector_plot  = gsn_csm_vector(wks, vr_u_timemean, vr_v_timemean, res_vect)
   contour_plot = gsn_csm_contour(wks, vr_speed, resc)
   overlay(plot(1), vector_plot)
   overlay(plot(1), contour_plot)
 
+  res_vect@tiMainString = "RCM"
   vector_plot  = gsn_csm_vector(wks, rcm_u_timemean, rcm_v_timemean, res_vect)
   contour_plot = gsn_csm_contour(wks, rcm_speed, resc)
   overlay(plot(2), vector_plot)
   overlay(plot(2), contour_plot)
 
-  vector_plot  = gsn_csm_vector(wks, vr_u_bias, rcm_u_bias, res_vect_bias)
+  res_vect_bias@tiMainString = "VR bias"
+  vector_plot  = gsn_csm_vector(wks, vr_u_bias, vr_v_bias, res_vect_bias)
   contour_plot = gsn_csm_contour(wks, vr_speed_error, res_diff)
   overlay(plot(3), vector_plot)
   overlay(plot(3), contour_plot)
 
-  vector_plot  = gsn_csm_vector(wks, rcm_v_bias, rcm_v_bias, res_vect_bias)
+  res_vect_bias@tiMainString = "RCM bias"
+  vector_plot  = gsn_csm_vector(wks, rcm_u_bias, rcm_v_bias, res_vect_bias)
   contour_plot = gsn_csm_contour(wks, rcm_speed_error, res_diff)
   overlay(plot(4), vector_plot)
   overlay(plot(4), contour_plot)

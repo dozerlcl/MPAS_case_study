@@ -147,7 +147,7 @@ begin
   ;-------------------------------------------------------地图标题设置
   ;;;
                 
-  ; res@gsnCenterString = "MPAS simulation TPEMIP 4-8"
+  ; res@tiMainString = "MPAS simulation TPEMIP 4-8"
   ; res@tiMainString    = "MEAN TEMPERATURE AT 2M HEIGHT"
   ;   res@gsnCenterStringFontHeightF = 0.02  
   ;   res@pmTickMarkDisplayMode = "Always" ;坐标标签上添加 度 符号(未起作用)
@@ -208,27 +208,27 @@ begin
   plot(i) = gsn_csm_map(wks, mpres)
   end do
   
-  resc@gsnCenterString    = "VR AM COR"
+  resc@tiMainString    = "VR AM COR"
   overlay(plot(0),gsn_csm_contour(wks, cor_vr_am, resc))
   overlay(plot(0),gsn_csm_contour(wks, cor_vr_prob_am, res_prob))
-  resc@gsnCenterString    = "RCM AM COR"
+  resc@tiMainString    = "RCM AM COR"
   overlay(plot(1),gsn_csm_contour(wks, cor_rcm_am, resc))
   overlay(plot(1),gsn_csm_contour(wks, cor_rcm_prob_am, res_prob))
   
-  resc@gsnCenterString    = "VR JJA COR"
+  resc@tiMainString    = "VR JJA COR"
   overlay(plot(2),gsn_csm_contour(wks, cor_vr_jja, resc))
   overlay(plot(2),gsn_csm_contour(wks, cor_vr_prob_jja, res_prob))
-  resc@gsnCenterString    = "RCM JJA COR"
+  resc@tiMainString    = "RCM JJA COR"
   overlay(plot(3),gsn_csm_contour(wks, cor_rcm_jja, resc))
   overlay(plot(3),gsn_csm_contour(wks, cor_rcm_prob_jja, res_prob))
 
-  res@gsnCenterString    = "VR AM RMSD"
+  res@tiMainString    = "VR AM RMSD"
   overlay(plot(4),gsn_csm_contour(wks, rmsd_vr_am, res) )
-  res@gsnCenterString    = "RCM AM RMSD"
+  res@tiMainString    = "RCM AM RMSD"
   overlay(plot(5),gsn_csm_contour(wks, rmsd_rcm_am, res) )
-  res@gsnCenterString    = "VR AM RMSD"
+  res@tiMainString    = "VR JJA RMSD"
   overlay(plot(6),gsn_csm_contour(wks, rmsd_vr_jja, res) )
-  res@gsnCenterString    = "RCM AM RMSD"
+  res@tiMainString    = "RCM JJA RMSD"
   overlay(plot(7),gsn_csm_contour(wks, rmsd_rcm_jja, res) )
 ;;;;--------------------------panel seeting---------------------------------
   pres = True

@@ -222,27 +222,27 @@ begin
   plot(i) = gsn_csm_map(wks, mpres)
   end do
   
-  resc@gsnCenterString    = "VR AM"
+  resc@tiMainString    = "VR AM"
   overlay(plot(0),gsn_csm_contour(wks, cor_vr_am, resc))
   overlay(plot(0),gsn_csm_contour(wks, cor_vr_prob_am, res_prob))
-  resc@gsnCenterString    = "RCM AM"
+  resc@tiMainString    = "RCM AM"
   overlay(plot(1),gsn_csm_contour(wks, cor_rcm_am, resc))
   overlay(plot(1),gsn_csm_contour(wks, cor_rcm_prob_am, res_prob))
   
-  resc@gsnCenterString    = "VR JJA"
+  resc@tiMainString    = "VR JJA"
   overlay(plot(2),gsn_csm_contour(wks, cor_vr_jja, resc))
   overlay(plot(2),gsn_csm_contour(wks, cor_vr_prob_jja, res_prob))
-  resc@gsnCenterString    = "RCM JJA"
+  resc@tiMainString    = "RCM JJA"
   overlay(plot(3),gsn_csm_contour(wks, cor_rcm_jja, resc))
   overlay(plot(3),gsn_csm_contour(wks, cor_rcm_prob_jja, res_prob))
 
-  res@gsnCenterString    = "VR AM RMSD"
+  res@tiMainString    = "VR AM RMSD"
   overlay(plot(4),gsn_csm_contour(wks, rmsd_vr_am, res) )
-  res@gsnCenterString    = "RCM AM RMSD"
+  res@tiMainString    = "RCM AM RMSD"
   overlay(plot(5),gsn_csm_contour(wks, rmsd_rcm_am, res) )
-  res@gsnCenterString    = "VR AM RMSD"
+  res@tiMainString    = "VR JJA RMSD"
   overlay(plot(6),gsn_csm_contour(wks, rmsd_vr_jja, res) )
-  res@gsnCenterString    = "RCM AM RMSD"
+  res@tiMainString    = "RCM JJA RMSD"
   overlay(plot(7),gsn_csm_contour(wks, rmsd_rcm_jja, res) )
 
 ;;;;--------------------------panel seeting---------------------------------

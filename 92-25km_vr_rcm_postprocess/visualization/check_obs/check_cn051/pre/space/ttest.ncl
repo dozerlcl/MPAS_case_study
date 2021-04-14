@@ -6,7 +6,7 @@
 ;;;   修改绘图方式，将 gsn_csm_contour overlay到 map上，需要单独绘制每个map，为之后的统计检验做准备
 ;;;   进行均值差异的 t 检验
 ;;; 21.04.07
-;;;   不再进行t检验,关掉,指绘制平均图的差异,添加shapefile,是我国一级河流的shp文件
+;;;   指绘制平均图的差异,添加shapefile,是我国一级河流的shp文件
 load "./shapefile_utils.ncl"
 begin
 
@@ -200,13 +200,13 @@ begin
   plot(i) = gsn_csm_map(wks, mpres)
   end do
   
-  res@gsnCenterString    = "COMRPH"
+  res@tiMainString    = "COMRPH"
   overlay(plot(0),gsn_csm_contour(wks, pre_cmorph_mean, res))
-  res@gsnCenterString    = "CN05.1"
+  res@tiMainString    = "CN05.1"
   overlay(plot(1),gsn_csm_contour(wks, pre_cn051_mean, res))
-  res@gsnCenterString    = "VR"
+  res@tiMainString    = "VR"
   overlay(plot(2),gsn_csm_contour(wks, pre_vr_mean, res))
-  res@gsnCenterString    = "RCM"
+  res@tiMainString    = "RCM"
   overlay(plot(3),gsn_csm_contour(wks, pre_rcm_mean, res))
 
 
@@ -215,16 +215,16 @@ begin
   res_error@cnMinLevelValF = -5.0
   ; res_error@cnLevelSpacingF = 0.5
 
-  resc@gsnCenterString    = "VR - CMORPH"
+  res_error@tiMainString    = "VR - CMORPH"
   overlay(plot(4),gsn_csm_contour(wks, vr_error_cmorph, res_error))
   overlay(plot(4),gsn_csm_contour(wks, vr_prob, res_prob))
-  resc@gsnCenterString    = "RCM - CMORPH"
+  res_error@tiMainString    = "RCM - CMORPH"
   overlay(plot(5),gsn_csm_contour(wks, rcm_error_cmorph, res_error))
   overlay(plot(5),gsn_csm_contour(wks, rcm_prob, res_prob))
-  res_error@gsnCenterString    = "VR - CN05.1"
+  res_error@tiMainString    = "VR - CN05.1"
   overlay(plot(6),gsn_csm_contour(wks, vr_error_cn051, res_error))
   overlay(plot(6), gsn_csm_contour(wks, vr_prob, res_prob))
-  res@gsnCenterString    = "RCM - CN05.1"
+  res_error@tiMainString    = "RCM - CN05.1"
   overlay(plot(7),gsn_csm_contour(wks, rcm_error_cn051, res_error))
   overlay(plot(7), gsn_csm_contour(wks, rcm_prob, res_prob))
 
