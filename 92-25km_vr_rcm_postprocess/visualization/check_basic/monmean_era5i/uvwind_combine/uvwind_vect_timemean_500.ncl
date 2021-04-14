@@ -1,17 +1,22 @@
 ;   2021.03.27
 ;   进行风矢量异常的绘制，绘制vector & counter
-  
+;   2021.04.07
+;     准备好模式底的地形数据,如果有必要用此进行地形的mask  
 begin
 ;------------------------------------------------------------
-sellevels = (/850/)
+sellevels = (/500/)
 plot = new(5,graphic) ;定义子图数组 
-wks = gsn_open_wks("png","./output_pic/mean/" + "uvwnd_vector")
 ;------------------------------------------------------------
 do sellevel_ind = 0,0,1
 sellevel  = sellevels(sellevel_ind) ; test for loop on one level
+wks = gsn_open_wks("png","./output_pic/mean/" + "uvwnd_vector_" + sellevel)
 
 
 ;>>> read data
+    ; model topo data
+    f    = addfile("/raid52/yycheng/MPAS/REFERENCE/MODEL_CONSTANT/model_topo.nc", "r")
+    topo = f->$"zgrid"$(:,:,0)
+    ; printVarSummary(topo) 
     ; uwind
     ; 为数据读入选取对应的 ERA5I VR RCM的文件名、变量名
     file_in_ref = "sel_uwnd.mon.mean.nc"
@@ -80,13 +85,27 @@ sellevel  = sellevels(sellevel_ind) ; test for loop on one level
     ref_speed = wind_speed(ref_u_timemean, ref_v_timemean)
     vr_speed  = wind_speed(vr_u_timemean, vr_v_timemean)
     rcm_speed = wind_speed(rcm_u_timemean, rcm_v_timemean)
+    copy_VarCoords(vr_speed, vr_u_timemean) ; 做差之后注意重新拷贝属性
+    copy_VarCoords(rcm_speed, rcm_u_timemean)
+    copy_VarCoords(ref_speed, ref_u_timemean)
 
     ; 直接对风速做差
-    vr_speed_error  =  vr_speed - ref_speed
-    rcm_speed_error = rcm_speed - ref_speed
-    ; printVarSummary(vr_speed)
-    copy_VarCoords(vr_speed, vr_speed_error) ; 做差之后注意重新拷贝属性
-    copy_VarCoords(rcm_speed, rcm_speed_error)
+    vr_u_bias  = vr_u_timemean - ref_u_timemean
+    vr_v_bias  = vr_v_timemean - ref_v_timemean
+    rcm_u_bias = rcm_u_timemean - ref_u_timemean
+    rcm_v_bias = rcm_v_timemean - ref_v_timemean
+    copy_VarCoords(vr_u_timemean, vr_u_bias)
+    copy_VarCoords(vr_v_timemean, vr_v_bias)
+    copy_VarCoords(rcm_u_timemean, rcm_u_bias)
+    copy_VarCoords(rcm_v_timemean, rcm_v_bias)
+    ; 04.07 修改为对风矢量做差之后再进行做差
+    ; vr_speed_error  =  vr_speed - ref_speed
+    ; rcm_speed_error = rcm_speed - ref_speed
+    vr_speed_error = wind_speed(vr_u_bias , vr_v_bias)
+    rcm_speed_error = wind_speed(rcm_u_bias , rcm_v_bias)
+    
+    copy_VarCoords(vr_speed_error, vr_u_timemean) ; 做差之后注意重新拷贝属性
+    copy_VarCoords(rcm_speed_error, rcm_u_timemean)
     ;  计算和观测结果的偏差风
     ; vr_speed_error = wind_speed(vr_u_timemean - ref_u_timemean, vr_v_timemean - ref_v_timemean)
     ; rcm_speed_error = wind_speed(rcm_u_timemean - ref_u_timemean, rcm_v_timemean - ref_v_timemean)
@@ -108,6 +127,7 @@ sellevel  = sellevels(sellevel_ind) ; test for loop on one level
   mpres = res ; add map_plot
 ; --------------- 矢量图res ---------------------
   res_vect = res
+  res_vect_bias = res
 ; --------------- 等值线图的一些属性 ------------
   resc = res
   resc@cnInfoLabelOn        = False            ; turn on/off cn info label
@@ -132,15 +152,16 @@ sellevel  = sellevels(sellevel_ind) ; test for loop on one level
 
   resc@cnMinLevelValF = 0.
   resc@cnMaxLevelValF = 20.
-  resc@cnLevelSpacingF = 1. ;等值线间隔
+  resc@cnLevelSpacingF = 2. ;等值线间隔
 
   resc@lbOrientation = "Vertical" ; 把色板垂直地移动 
 
   res_diff = resc
-  res_diff@cnFillPalette = "GMT_polar"
+  ; res_diff@cnFillPalette = "GMT_polar"
+  res_diff@cnFillPalette = "grads_rainbow"
 
-  res_diff@cnMinLevelValF = -5.
-  res_diff@cnMaxLevelValF = 5.
+  res_diff@cnMaxLevelValF = 5.5
+  res_diff@cnMinLevelValF = 0.
   res_diff@cnLevelSpacingF = .5 ;等值线间隔
 
 ;--------------------地图区域设置——中国区域res@mp ------------------------
@@ -176,7 +197,7 @@ sellevel  = sellevels(sellevel_ind) ; test for loop on one level
 
   res_vect@vcLineArrowThicknessF      = 2
   res_vect@vcMinDistanceF             = 0.02
-  res_vect@vcRefLengthF               = 0.05
+  res_vect@vcRefLengthF               = 0.04
 
   ;;wind barb resources don't apply
   ;;        res_vect@vcGlyphStyle               = "WindBarb"
@@ -184,8 +205,8 @@ sellevel  = sellevels(sellevel_ind) ; test for loop on one level
   ;;        res_vect@vcWindBarbColor            = "Gray40"
 
   res_vect@vcRefAnnoOn               = True
-  res_vect@vcRefMagnitudeF           = 10 
-  res_vect@vcRefAnnoString1          = "10"
+  res_vect@vcRefMagnitudeF           = 20 
+  res_vect@vcRefAnnoString1          = "20"
 ;   res_vect@vcRefAnnoSide             = "Top"
   res_vect@vcRefAnnoSide             = "Left"
   res_vect@vcRefAnnoZone             = 5
@@ -200,11 +221,29 @@ sellevel  = sellevels(sellevel_ind) ; test for loop on one level
   res_vect@vcVectorDrawOrder         = "PostDraw"
 ;   res_vect@gsnRightString            = "Wind"
 
+; ------------- res vect bias setting ------------
+
+  res_vect_bias = res_vect
+  res_vect_bias@vcRefMagnitudeF           = 5
+  res_vect_bias@vcRefAnnoString1          = "5"
+
   
+;-------------- check plot variables -------------
+; printVarSummary(ref_u_timemean)
+; printVarSummary(vr_u_timemean)
+; printVarSummary(ref_speed)
+; printVarSummary(vr_speed)
+; printVarSummary(rcm_speed)
+; printVarSummary(vr_speed_error)
+; printVarSummary(rcm_speed_error)
+; printVarSummary(vr_u_bias)
+; printVarSummary(rcm_u_bias)
+
 
 ; -------------- exec PLOT func ------------------
+
   do i=0,5-1,1
-  plot(i) = gsn_csm_map(wks, mpres)
+    plot(i) = gsn_csm_map(wks, mpres)
   end do
 ;   map     = gsn_csm_map(wks,mpres)
 ;   contour = gsn_csm_contour(wks,t,cnres)
@@ -223,12 +262,12 @@ sellevel  = sellevels(sellevel_ind) ; test for loop on one level
   overlay(plot(2), vector_plot)
   overlay(plot(2), contour_plot)
 
-  vector_plot  = gsn_csm_vector(wks, vr_u_timemean - ref_u_timemean, vr_v_timemean - ref_v_timemean, res_vect)
+  vector_plot  = gsn_csm_vector(wks, vr_u_bias, rcm_u_bias, res_vect_bias)
   contour_plot = gsn_csm_contour(wks, vr_speed_error, res_diff)
   overlay(plot(3), vector_plot)
   overlay(plot(3), contour_plot)
 
-  vector_plot  = gsn_csm_vector(wks, rcm_u_timemean - ref_u_timemean, rcm_v_timemean - ref_v_timemean, res_vect)
+  vector_plot  = gsn_csm_vector(wks, rcm_v_bias, rcm_v_bias, res_vect_bias)
   contour_plot = gsn_csm_contour(wks, rcm_speed_error, res_diff)
   overlay(plot(4), vector_plot)
   overlay(plot(4), contour_plot)
