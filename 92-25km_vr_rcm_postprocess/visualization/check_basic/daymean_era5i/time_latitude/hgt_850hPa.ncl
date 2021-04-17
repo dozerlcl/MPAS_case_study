@@ -50,10 +50,10 @@ begin
 
 
 ;;;-----count time mean-----
-    pre_cn051_mean  = dim_avg_n_Wrap(pre_cn051(:,{:70},{130:}), (/2/) )
-    ; pre_cmorph_mean = dim_avg_n_Wrap(pre_cmorph, (/130/) )
-    pre_vr_mean     = dim_avg_n_Wrap(pre_vr(:,{:70},{130:}), (/2/) )
-    pre_rcm_mean    = dim_avg_n_Wrap(pre_rcm(:,{:70},{130:}), (/2/) )
+    pre_cn051_mean  = dim_avg_n_Wrap(pre_cn051(:,{:70},{110:}), (/2/) )
+    ; pre_cmorph_mean = dim_avg_n_Wrap(pre_cmorph, (/110/) )
+    pre_vr_mean     = dim_avg_n_Wrap(pre_vr(:,{:70},{110:}), (/2/) )
+    pre_rcm_mean    = dim_avg_n_Wrap(pre_rcm(:,{:70},{110:}), (/2/) )
     
     ; printVarSummary(pre_cn051_mean)
     printVarSummary(pre_vr_mean)

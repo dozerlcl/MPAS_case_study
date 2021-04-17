@@ -7,4 +7,4 @@ remark：CN05.1使用了MASK的数据，因此这里都是直接分析mask后的
 
 - t2m/  进行温度的后处理
         
-    
+- partial_preporcess/ 进行降水和温度的不同分区拆分的前处理部分    
