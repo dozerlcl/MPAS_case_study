@@ -14,7 +14,7 @@ start_time=`date +%s`              #定义脚本运行的开始时间
 exec 3<>/tmp/fd1                   #创建文件描述符，以可读（<）可写（>）的方式关联管道文件，这时候文件描述符3就有了有名管道文件的所有特性
 rm -rf /tmp/fd1                    #关联后的文件描述符拥有管道文件的所有特性,所以这时候管道文件可以删除，我们留下文件描述符来用就可以了
 
-for ((i=1;i<=2;i++))
+for ((i=1;i<=5;i++))
 do
         echo >&3                   #&3代表引用文件描述符3，这条命令代表往管道里面放入了一个"令牌"
 done
@@ -38,7 +38,7 @@ do
 read -u3                           #代表从管道中读取一个令牌
 #----
 {
-    # echo "${IFILE} exist!"
+    echo "${IFILE} exist!"
     FILEOUT="monmean_`basename ${IFILE}`"
     # echo $FILEOUT
     ##-----

@@ -10,19 +10,19 @@ begin
 
 ;;;>>>plot set
     plot = new(3, graphic) ;定义子图数组
-    wks = gsn_open_wks("png","./output_pic/"+"precip_03-15_lonmean")
+    wks = gsn_open_wks("png","./output_pic/"+"precip_03-15_lat-time")
 ;;;>>>data reader
     ; ;   mask 之后集中存放降水数据的位置：   /raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res
-    dir_cn051 = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res/"
+    dir_cn051 = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res_dayofyear/"
     filename_cn051 = "ydaymean_mask_sel_CN05.1_Pre_1961_2018_daily_025x025.nc"
     
     ; dir_cmorph = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res/"
     ; filename_cmorph = "mask_sel_CMORPH_03-15.nc"
     
-    dir_vr = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res/"
+    dir_vr = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res_dayofyear/"
     filename_vr = "ydaymean_mask_vr_pre_03-15.nc"
     
-    dir_rcm = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res/"
+    dir_rcm = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res_dayofyear/"
     filename_rcm = "ydaymean_mask_rcm_pre_03-15.nc"
 
     f = addfile(dir_cn051 + filename_cn051, "r") 
@@ -53,21 +53,6 @@ begin
     pre_vr_mean     = dim_avg_n_Wrap(pre_vr(:,{20:50},{110:130}), (/2/) )
     pre_rcm_mean    = dim_avg_n_Wrap(pre_rcm(:,{20:50},{110:130}), (/2/) )
     
-    ; vr_error_cn051  = pre_vr_mean - pre_cn051_mean
-    ; rcm_error_cn051 = pre_rcm_mean - pre_cn051_mean
-    ; copy_VarMeta(pre_vr_mean, vr_error_cn051)
-    ; copy_VarMeta(pre_rcm_mean, rcm_error_cn051)
-
-    ; vr_error_cmorph = pre_vr_mean - pre_cmorph_mean
-    ; rcm_error_cmorph = pre_rcm_mean - pre_cmorph_mean
-    ; copy_VarMeta(pre_vr_mean, vr_error_cmorph)
-    ; copy_VarMeta(pre_rcm_mean, rcm_error_cmorph)
-    ; printVarSummary(pre_vr_mean)
-    ; printVarSummary(pre_rcm_mean)
-    ; printVarSummary(pre_cmorph_mean)
-    ; printVarSummary(pre_cn051_mean)
-    ; printMinMax(pre_vr_mean, 1)
-
     ; printVarSummary(pre_cn051_mean)
     printVarSummary(pre_vr_mean)
 ;;;PLOT
@@ -104,18 +89,31 @@ res                  = True                ; plot mods desired
  res@cnLevelSpacingF      =  1. 
 
  ;;;-----add time axix -----
- printVarSummary(pre_vr_mean&Time)
+;  print(pre_vr_mean&Time)
   restick = True
-  restick@ttmFormat = "%c"
+  restick@ttmFormat = "%n/%d"
   restick@ttmAxis = "XB"
-
+  restick@ttmMinorStride = 5
+  restick@ttmNumTicks    = 10
+; restick@ttmValues = (/(/2015,4,1,0,0,0/), \
+;                       (/2015,5,1,0,0,0/), \
+;                       (/2015,6,1,0,0,0/), \
+;                       (/2015,7,1,0,0,0/), \
+;                       (/2015,8,1,0,0,0/), \
+;                       (/2015,9,1,0,0,0/) /)
 ;  plot(0) = gsn_csm_lat_time(wks, pre_cn051_mean(lat|:, time|:), res ) 
   time_axis_labels(pre_cn051_mean&time, res, restick)
+  res@gsnLeftString = "CN05.1"
+  res@gsnRightString = "mm/day"
  plot(0) = gsn_csm_contour(wks, pre_cn051_mean(lat|:, time|:), res ) 
 ;  plot(1) = gsn_csm_lat_time(wks, pre_vr_mean(latitude|:, Time|:), res ) 
   time_axis_labels(pre_vr_mean&Time, res, restick)
+  res@gsnLeftString = "VR"
+  res@gsnRightString = "mm/day"
  plot(1) = gsn_csm_contour(wks, pre_vr_mean(latitude|:, Time|:), res ) 
   ; time_axis_labels(pre__mean&Time, res, restick)
+  res@gsnLeftString = "RCM"
+  res@gsnRightString = "mm/day"
  plot(2) = gsn_csm_contour(wks, pre_rcm_mean(latitude|:, Time|:), res ) 
 
 ; ; ; ;;;;----------------------------------------------panel seeting
@@ -126,7 +124,7 @@ res                  = True                ; plot mods desired
 ;   ; pres@gsnPanelFigureStrings = (/"","4","4","4","5","5","5","6","6","6","7","7","7","8","8","8","M","M","M"/)
 ; ;   pres@amJust                = "TopLeft" ;调整标签顺序
   pres@gsnPanelRowSpec       = True
-  gsn_panel(wks,plot,(/1, 3/),pres)
+  gsn_panel(wks,plot,(/1, 2/),pres)
 
 
 end
