@@ -171,8 +171,9 @@ wks = gsn_open_wks("png","./output_pic/mean/" + "uvwnd_vector_" + sellevel)
   mpres@mpDataSetName = "/m2data2/yycheng/playground/NCL-noob-s-practices/till2020.06/NCL-Chinamap-master/database/Earth..4" ; 使用大气所的dataset数据
   mpres@mpOutlineOn=True
   mpres@mpOutlineSpecifiers=(/"China","Taiwan"/)
-  mpres@mpCountyLineThicknessF = 10
+  ; mpres@mpCountyLineThicknessF = 10
   ; mpres@mpOutlineSpecifiers=
+  mpres@mpNationalLineThicknessF = 4
   mpres@mpFillOn=False
 ;-------------------------------------------------------变量/x/y/刻度设置  
 ;   res@pmTickMarkDisplayMode = "Always"
@@ -247,6 +248,10 @@ wks = gsn_open_wks("png","./output_pic/mean/" + "uvwnd_vector_" + sellevel)
   end do
 ;   map     = gsn_csm_map(wks,mpres)
 ;   contour = gsn_csm_contour(wks,t,cnres)
+  ; clean left string
+  res_vect@gsnLeftString = ""
+  res_vect_bias@gsnLeftString = ""
+
   res_vect@tiMainString = "ERA5I"
   vector_plot  = gsn_csm_vector(wks, ref_u_timemean, ref_v_timemean, res_vect)
   contour_plot = gsn_csm_contour(wks, ref_speed, resc)
@@ -283,7 +288,7 @@ end do
 
 ;;;;--------------------------panel seeting---------------------------------
   pres = True
-  pres@txString              = "2003-2015" + " 850hPa mean" 
+  pres@txString              = "2003-2015" + " 500hPa mean" 
   ; pres@gsnPanelLabelBar      = False ; 公用一个色标
   ; pres@gsnPanelMainFontHeightF = 0.0002
   ; pres@gsnPanelFigureStrings = (/"","4","4","4","5","5","5","6","6","6","7","7","7","8","8","8","M","M","M"/)

@@ -248,6 +248,9 @@ wks = gsn_open_wks("png","./output_pic/mean/" + "uvwnd_vector_" + sellevel)
   end do
 ;   map     = gsn_csm_map(wks,mpres)
 ;   contour = gsn_csm_contour(wks,t,cnres)
+  ; clean left string
+  res_vect@gsnLeftString = ""
+  res_vect_bias@gsnLeftString = ""
   resc@tiMainString = "ERA5I"
    vector_plot  = gsn_csm_vector(wks, ref_u_timemean, ref_v_timemean, res_vect)
   contour_plot = gsn_csm_contour(wks, ref_speed, resc)
