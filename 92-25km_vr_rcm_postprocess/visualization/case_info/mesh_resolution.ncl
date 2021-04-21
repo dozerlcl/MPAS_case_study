@@ -135,6 +135,7 @@ begin
   res@mpOutlineOn=True
   res@mpOutlineSpecifiers=(/"China","Taiwan"/)
   res@mpCountyLineThicknessF = 10
+  res@mpNationalLineThicknessF = 4.
   ; res@mpOutlineSpecifiers=
   ; res@mpFillOn=False
 
@@ -157,12 +158,13 @@ begin
 
   ;;;----------------change progection--------------------------
 
-;   res@mpLimitMode       = "Angles"
-;   res@mpLeftAngleF      = leftAngle
-;   res@mpRightAngleF     = rightAngle
-;   res@mpBottomAngleF    = bottomAngle
-;   res@mpTopAngleF       = topAngle
+  ;   res@mpLimitMode       = "Angles"
+  ; res@mpLeftAngleF      = leftAngle
+  ;   res@mpRightAngleF     = rightAngle
+  ;   res@mpBottomAngleF    = bottomAngle
+  ;   res@mpTopAngleF       = topAngle
   res@mpLimitMode       = "LatLon"
+  ; res@mpLimitMode       = "LambertEqualArea"
   res@mpMinLatF      = mpminlat
   res@mpMaxLatF      = mpmaxlat
   res@mpMinLonF      = mpminlon
@@ -222,12 +224,13 @@ begin
           (/110, 98, 30, 22/),  \
           (/123, 110, 34, 25/), \
           (/123, 110, 42, 34/), \
-          (/135, 117, 54, 42/)  \
+          (/135, 117, 54, 42/),  \
+          (/140, 70, 55, 15/)  \
         /)
-  boxname = (/"SW", "YZ", "NC", "NE"/)
+  boxname = (/"SW", "YZ", "NC", "NE", "PLOT"/)
 
-  dum = new(16,graphic)
-  do ind_box =0,3 ; loop box
+  dum = new(20,graphic)
+  do ind_box =0,4 ; loop box
     lonmax = lonlatbox(ind_box, 0)
     lonmin = lonlatbox(ind_box, 1)
     latmax = lonlatbox(ind_box, 2)
