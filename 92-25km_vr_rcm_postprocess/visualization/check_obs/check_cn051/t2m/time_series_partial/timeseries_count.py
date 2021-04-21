@@ -16,9 +16,9 @@ def mean_count(path_in, file_ref, varname_ref, file_vr, varname_vr, file_rcm, va
     ds_vr = xr.open_dataset(path_in + "/" + file_vr)
     ds_rcm = xr.open_dataset(path_in + "/" + file_rcm)
 
-    cn051_mean  = ds_obs['pre'].mean(dim=['lon','lat']).rolling(time=5, center=True).mean()
-    vr_mean     = ds_vr['precip_MPAS'].mean(dim=["longitude","latitude"]).rolling(Time=5, center=True).mean()
-    rcm_mean    = ds_rcm['precip_MPAS'].mean(dim=["longitude","latitude"]).rolling(Time=5, center=True).mean()
+    cn051_mean  = ds_obs['tm'].mean(dim=['lon','lat'])#.rolling(time=5, center=True).mean()
+    vr_mean     = ds_vr['t2m'].mean(dim=["longitude","latitude"]) - 273.15#.rolling(Time=5, center=True).mean() - 273.15
+    rcm_mean    = ds_rcm['t2m'].mean(dim=["longitude","latitude"]) - 273.15#.rolling(Time=5, center=True).mean() - 273.15
     # cmorph_mean = ds_cmorph['cmorph'].mean(dim=["lon","lat","lev"]) # remove single dimension
 
     return [cn051_mean, vr_mean, rcm_mean]
@@ -39,9 +39,9 @@ def std_count(path_in, file_ref, varname_ref, file_vr, varname_vr, file_rcm, var
     ds_vr = xr.open_dataset(path_in + "/" + file_vr)
     ds_rcm = xr.open_dataset(path_in + "/" + file_rcm)
 
-    vr_mean     = ds_vr['precip_MPAS'].std(dim=["longitude","latitude"]).rolling(Time=5, center=True).mean()
-    rcm_mean    = ds_rcm['precip_MPAS'].std(dim=["longitude","latitude"]).rolling(Time=5, center=True).mean()
+    cn051_mean  = ds_obs['tm'].std(dim=['lon','lat']).rolling(time=5, center=True).mean()
+    vr_mean     = ds_vr['t2m'].std(dim=["longitude","latitude"]).rolling(Time=5, center=True).mean()
+    rcm_mean    = ds_rcm['t2m'].std(dim=["longitude","latitude"]).rolling(Time=5, center=True).mean()
     # cmorph_mean = ds_cmorph['cmorph'].mean(dim=["lon","lat","lev"]) # remove single dimension
-    cn051_mean  = ds_obs['pre'].std(dim=['lon','lat']).rolling(time=5, center=True).mean()
 
     return [cn051_mean, vr_mean, rcm_mean]
