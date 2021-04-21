@@ -7,13 +7,19 @@
 ;;;   进行均值差异的 t 检验
 ;;; 21.04.07
 ;;;   指绘制平均图的差异,添加shapefile,是我国一级河流的shp文件
+;;; 21.04.21
+;;;   添加输出的pictype，修改输出文件名为bias_test
 load "./shapefile_utils.ncl"
 begin
 
 ;;;>>>plot set
   fignum = 8
   plot = new(fignum,graphic) ;定义子图数组
-  wks = gsn_open_wks("png","./output_pic/"+"precip_03-15_timemean_ttest")
+  pictype = "png"
+  ; wks_type = "png"
+  pictype@wkWidth = 1600 
+  pictype@wkHeight = 1600
+  wks = gsn_open_wks(pictype,"./output_pic/"+"precip_03-15_bias_ttest")
 ;;;>>>data reader
   ;   mask 之后集中存放降水数据的位置：   /raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res
   dir_cn051 = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res/"
@@ -237,6 +243,10 @@ do i = 0,7,1
   shapefile_path = "/raid52/yycheng/MPAS/REFERENCE/MODEL_CONSTANT/R1/" + "hyd1_4l.shp"
   plot_new_for_shape(i) = gsn_add_shapefile_polylines(wks, plot(i), shapefile_path ,plres)
 end do
+
+;;;---------------------- add latlonbox ----------------------------
+
+
 
 ;;;;--------------------------panel seeting---------------------------------
   pres = True
