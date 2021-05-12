@@ -45,8 +45,8 @@ begin
 
     mpminlat    = -5.
     mpmaxlat    = 65.
-    mpminlon    = 55.
-    mpmaxlon    = 145.
+    mpminlon    = 60.
+    mpmaxlon    = 140.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -60,10 +60,12 @@ begin
   gsn_define_colormap(wks,colors)
 
   ; fname = getenv("FNAME")
-  ; fname = "/raid52/yycheng/MPAS/92-25km_VR_2003/" + "ea.grid.nc"
-  fname = "/m2data2/yycheng/MPAS/TOOLS/MPAS-Limited-Area/" + "china_rcm.grid.nc"
+  ; 修改到VR的网格，画出RCM的截断
+  fname_vr = "/raid52/yycheng/MPAS/MESH/tpemip_grid/vr_area/" + "ea.grid.nc"
+  ; fname_rcm = "/m2data2/yycheng/MPAS/TOOLS/MPAS-Limited-Area/" + "china_rcm.grid.nc"
+  fname_rcm = "/raid52/yycheng/MPAS/MESH/tpemip_grid/rcm_area/" + "china_rcm.grid.nc"
   ; fname = "/m2data2/yycheng/MPAS/MESH/x1.40962/" + "x1.40962.grid.nc"
-  f = addfile(fname,"r")
+  f = addfile(fname_rcm,"r")
 
   lonCell   = f->lonCell(:) * r2d
   latCell   = f->latCell(:) * r2d
@@ -90,16 +92,32 @@ begin
      res@cnFillOn             = True
      res@cnLinesOn            = False
      res@cnLineLabelsOn       = False
-     res@cnFillPalette         = "Cat12"; 用GMT_gray 进行填色。即调用了第2种色板(调色板设置)
+     res@cnFillPalette         = "Cat12"
      res@cnLevelSelectionMode = "ExplicitLevels"
     ;  res@cnLevels             = (/20,25,30,35,40,50/)
-     res@cnLevels             = (/20,25,30,35/)
+    ;  res@cnLevels             = (/20,25,30,35/)
+    res@cnLevels             = (/20,22,24,28,35,40,45/)
     ;  res@cnFillColors         = (/1,3,5,7,9,10,11,12/)
-     res@cnFillColors         = (/1,3,5,7,9/)
+    ;  res@cnFillColors         = (/1,3,5,7,9/)
+    ; res@cnFillColors         = (/1,2,4,5,7,8,9,10/)
+    res@cnFillColors         = (/2,3,4,5,1,1,1,11/)
+    res@cnLineDashSegLenF          = 0.18          ; assist in controlling concentration
+    res@cnLineLabelInterval        = 1             ; default = 2
+    res@cnLineLabelPlacementMode   = "constant"    ; choose constant label method
+    res@cnLineLabelFontHeightF     = 0.008         ; linelabel sizs
+    res@cnLinesOn            = True
+    res@cnLineLabelsOn       = True
   else
-     res@cnFillOn             = False
-     res@cnLinesOn            = True
-     res@cnLineLabelsOn       = True
+    res@cnFillOn             = False
+    res@cnLinesOn            = True
+    res@cnLineLabelsOn       = True
+    res@cnLevelSelectionMode = "ExplicitLevels"
+    res@cnLevels             = (/18,20,22,24,28,35,40,45/)
+    res@cnLineDashSegLenF          = 0.18          ; assist in controlling concentration
+    res@cnLineLabelInterval        = 1             ; default = 2
+    res@cnLineLabelPlacementMode   = "constant"    ; choose constant label method
+    res@cnLineLabelFontHeightF     = 0.008         ; linelabel sizs
+
   end if
 
   res@cnLevelSpacingF      = 8.0
@@ -140,26 +158,87 @@ begin
   ; res@mpFillOn=False
 
   ;;;---------------add lon\lat grid and tick mark
-  res@mpGridAndLimbOn   = True ; turn on grid
+  ; res@mpGridAndLimbOn   = True ; turn on grid
 
-  ;;;---------------add lon\lat grid ticks----------------------
-  res@mpGridAndLimbOn   = True ; turn on grid
-  res@pmTickMarkDisplayMode  = "always" ; pm tickmark
-  ; res@mpGridAndLimbDrawOrder = "Draw"
-  ; res@tiMainString           = "Lat/lon grid"
+  ; ;;;---------------add lon\lat grid ticks----------------------
+  ; res@mpGridAndLimbOn   = True ; turn on grid
+  ; ; res@pmTickMarkDisplayMode  = "always" ; pm tickmark
+  ; ; res@mpGridAndLimbDrawOrder = "Draw"
+  ; ; res@tiMainString           = "Lat/lon grid"
   ; res@mpGridSpacingF         = 10.
   ; res@mpGridLineThicknessF   = 2.0
-  ; res@mpGridLineColor        = "Gray30"
-  ; res@mpGridAndLimbOn        = True
-  ; res@pmTickMarkDisplayMode  = "Always"           ; turn on tickmarks
-  res@mpGridAndLimbDrawOrder = "PostDraw"          ; Draw grid befres
-  res@mpGridLatSpacingF = 10
-  res@mpGridLonSpacingF = 10
+  ; ; res@mpGridLineColor        = "Gray30"
+  ; ; res@mpGridAndLimbOn        = True
+  ; ; res@pmTickMarkDisplayMode  = "Always"           ; turn on tickmarks
+  ; res@mpGridAndLimbDrawOrder = "PostDraw"          ; Draw grid befres
+  ; res@mpGridLatSpacingF = 15
+  ; res@mpGridLonSpacingF = 15
+;-------------------------------------------------------变量/x/y/刻度设置  
+  ; res@pmTickMarkDisplayMode = "Always"
+  ; res@pmTickMarkDisplayMode = "Conditional"
+  ; res@pmTickMarkZone
+
+  ; res@gsnMajorLatSpacing = 15              ; change maj lat tm spacing
+  ; res@gsnMajorLonSpacing = 15              ; change maj lon tm spacing
+  ; res@gsnMinorLatSpacing = 2
+  ; res@gsnMinorLonSpacing = 2
+
+  ; res@mpGridAndLimbOn=True             ;设置经纬线
+  ; res@mpGridLineThicknessF=0.5
+  ; res@mpGridLineDashPattern=2
+  ; res@mpGridSpacingF=10
+
+;  Put labels with the degree symbol on the X and Y axes.
+  ; res@tmXUseBottom = False
+  ; res@tmXTOn = True
+  ; res@tmXMinorGrid = 20
+  ; res@tmYMinorGrid = 20
+
+  res@tmYLOn = True
+  res@tmXBOn = True
+
+  ; res@tmYMinorGrid = False
+  ; res@tmXMinorGrid = False
+  res@gsnMinorLonSpacing = 5.
+  res@gsnMinorLatSpacing = 5.
+  
+  res@tmYLLabelStride      =  1              ;-- write only every 3rd label
+  res@tmYLLabelFontHeightF =  0.014          ;-- change major lat tickmark spacing
+  res@tmYLMajorLengthF     =  0.02           ;-- change the tickmark length
+  res@tmYLMinorLengthF     =  0.01           ;-- change the tickmark length
+  ; res@tmYLMajorLineColor   = "blue"          ;-- change major tickmarks color
+  ; res@tmXMajorGrid = 20.
+  ; res@tmYMajorGrid = 15.
+  ; res@tmXMinorGrid = 2.
+  ; res@tmYMinorGrid = 3.
+  ; res@gsnMajorLatSpacing = 15.
+  ; res@gsnMajorLonSpacing = 15.
+  ; res@gsnMinorLatSpacing = 3.
+  ; res@gsnMinorLonSpacing = 2.
+  ; res@tmXBMinorOn = True
+  ; res@tmXBMinorPerMajor = 5.
+  res@tmXMajorGridLineDashPattern = 8
+  res@tmYMajorGridLineDashPattern = 8
+  ; res@tmXBMajorLineColor   = "grey20"        ;-- change major tickmarks color
+  res@tmXMajorGridLineColor =   "grey40"
+  res@tmYMajorGridLineColor =   "grey40"
+  ; res@tmXMajorGridLineColor =   "grey20"
+
+
+  res@tmXBMode   = "Explicit"
+  res@tmXBValues = ispan(60,150,15)
+  res@tmXBLabels = (/"60~S~o~N~E", "75~S~o~N~E","90~S~o~N~E", \
+                     "105~S~o~N~E","120~S~o~N~E","135~S~o~N~E","150~S~o~N~E"/) ;;; ~S~o~N~ reference to degree
+
+  res@tmYLMode   = "Explicit"
+  res@tmYLValues = ispan(0,60,15)
+  res@tmYLLabels = (/"0~S~o~N~N","15~S~o~N~N",\
+                     "30~S~o~N~N","45~S~o~N~N","60~S~o~N~N"/)
 
   ;;;----------------change progection--------------------------
 
   ;   res@mpLimitMode       = "Angles"
-  ; res@mpLeftAngleF      = leftAngle
+  ;   res@mpLeftAngleF      = leftAngle
   ;   res@mpRightAngleF     = rightAngle
   ;   res@mpBottomAngleF    = bottomAngle
   ;   res@mpTopAngleF       = topAngle
@@ -185,21 +264,7 @@ begin
   fld_min = minSpacingKm / (f->meshDensity(:)^0.25)
   fld_max = maxSpacingKm / (f->meshDensity(:)^0.25)
   res@cnLineDashPattern = 0
-  map = gsn_csm_contour_map_ce(wks,fld_min,res)
-  ;;;-----------add_map_tickmarks2函数的参数传入靠tres完成---------
-  
- tmres          = True
-;  tmres@gsnMaximize = True
-
-;---Set the values you want for the map tickmarks.
-  tmres@tmXBLabelFontHeightF = 0.012         ; Default is a bit large
-
-;---We're putting tickmarks on all four axes.
-  tmres@tmYLValues = ispan(0,50,10)
-  tmres@tmYRValues = ispan(0,50,10)
-  tmres@tmXBValues = ispan(70,140,10)
-  tmres@tmXTValues = ispan(60,140,10)
-
+  map = gsn_csm_contour_map(wks,fld_min,res)
 
 ;----- add latlonbox -----
 
@@ -238,7 +303,10 @@ begin
     str = boxname(ind_box)
     xpts = (/ lonmin,  lonmin,  lonmax, lonmax, lonmin/)
     ypts = (/latmin, latmax, latmax, latmin, latmin/)
-
+      if (ind_box.eq.4) then
+        resp@gsLineThicknessF = 5.
+        resp@gsLineDashPattern = 3.
+      end if
     ; draw each line separately. Each line must contain two points.
     do i = 0, 3
       dum(i+ind_box*4)=gsn_add_polyline(wks, map, xpts(i:i+1), ypts(i:i+1), resp)      
