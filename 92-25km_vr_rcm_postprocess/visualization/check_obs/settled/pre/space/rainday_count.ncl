@@ -14,7 +14,7 @@ function count_rainday(cn051, cmorph, vr, rcm)
 begin
 
 ;;;-----count wet day-----
-
+  ;----- rainday intensity -----
   cn051_flitter = where(cn051.gt.0.1, cn051, cn051@_FillValue)
   cmorph_flitter = where(cmorph.gt.0.1, cmorph, cmorph@_FillValue)
   vr_flitter    = where(vr.gt.0.1, vr, vr@_FillValue)
@@ -31,15 +31,20 @@ begin
   copy_VarCoords(rcm(0,: ,:), rcm_rainday_intensity)
   ; pre_vr = where(pre_vr.gt.0.1, pre_vr, pre_vr@_FillValue)
   ; pre_rcm = where(pre_rcm.gt.0.1, pre_rcm, pre_vr@_FillValue)
-  cn051_rainday = where(cn051.gt.0.1, 1, 0)
-  cmorph_rainday = where(cmorph.gt.0.1, 1, 0)
-  vr_rainday    = where(vr.gt.0.1, 1, 0)
-  rcm_rainday   = where(rcm.gt.0.1, 1, 0)
+  ; ----- rainday ----- 
+  ; VR和RCM的差异太小
+  ; 重新设定阈值计算，25mm作为降水阈值
+  cn051_rainday = where(cn051.gt.0.099, 1, 0)
+  cmorph_rainday = where(cmorph.gt.0.099, 1, 0)
+  vr_rainday    = where(vr.gt.0.099, 1, 0)
+  rcm_rainday   = where(rcm.gt.0.099, 1, 0)
 
-  cn051_rainday_mean = dim_avg_n_Wrap(cn051_rainday, 0)
-  cmorph_rainday_mean = dim_avg_n_Wrap(cmorph_rainday, 0)
-  vr_rainday_mean = dim_avg_n_Wrap(vr_rainday, 0)
-  rcm_rainday_mean = dim_avg_n_Wrap(rcm_rainday, 0)
+  dims_cn051 = dimsizes(cn051)
+  print(dims_cn051(0))
+  cn051_rainday_mean = dim_sum_n_Wrap(cn051_rainday, 0)  * 30. / dims_cn051(0)
+  cmorph_rainday_mean = dim_sum_n_Wrap(cmorph_rainday, 0)  * 30./ dims_cn051(0)
+  vr_rainday_mean = dim_sum_n_Wrap(vr_rainday, 0)  * 30./ dims_cn051(0)
+  rcm_rainday_mean = dim_sum_n_Wrap(rcm_rainday, 0)  * 30./ dims_cn051(0)
   copy_VarCoords(cn051(0, :, :), cn051_rainday_mean)
   copy_VarCoords(cmorph(0, :, :), cmorph_rainday_mean)
   copy_VarCoords(vr(0, :, :), vr_rainday_mean)
@@ -85,7 +90,7 @@ begin
   rcm  = f->$"precip_MPAS"$
   
 ;;;-----select time index -----
-  time_all = cd_calendar(pre_vr&Time, 0)
+  time_all = cd_calendar(vr&Time, 0)
   ind_am  = ind( (time_all(:,1).eq.4) .or. (time_all(:,1).eq.5) )
   ind_jja = ind( (time_all(:,1).eq.6) .or. (time_all(:,1).eq.7) .or. (time_all(:,1).eq.8) )
 ;;;----- count rainday -----
@@ -116,22 +121,22 @@ list_test = count_rainday(cn051(ind_jja, :, :), cmorph(ind_jja, :, :), vr(ind_jj
   filo = "rainday_mean.nc"
   system("rm -f "+ diro + filo) ;删除目录下的同名文件
   ncdf = addfile(diro + filo, "c") ; c表示创建netcdf文件
-  ncdf->$"am_cn051_rainday"$      = am_cn051_rainday_mean
+  ncdf->$"am_cn051_rainday"$      = am_cn051_rainday
   ncdf->$"am_cn051_intensity"$    = am_cn051_rainday_intensity
-  ncdf->$"am_cmorph_rainday"$     = am_cmorph_rainday_mean
+  ncdf->$"am_cmorph_rainday"$     = am_cmorph_rainday
   ncdf->$"am_cmorph_intensity"$   = am_cmorph_rainday_intensity
-  ncdf->$"am_vr_rainday"$         = am_vr_rainday_mean
+  ncdf->$"am_vr_rainday"$         = am_vr_rainday
   ncdf->$"am_vr_intensity"$       = am_vr_rainday_intensity
-  ncdf->$"am_rcm_rainday"$        = am_rcm_rainday_mean
+  ncdf->$"am_rcm_rainday"$        = am_rcm_rainday
   ncdf->$"am_rcm_intensity"$      = am_rcm_rainday_intensity
 
-  ncdf->$"jja_cn051_rainday"$      = jja_cn051_rainday_mean
+  ncdf->$"jja_cn051_rainday"$      = jja_cn051_rainday
   ncdf->$"jja_cn051_intensity"$    = jja_cn051_rainday_intensity
-  ncdf->$"jja_cmorph_rainday"$     = jja_cmorph_rainday_mean
+  ncdf->$"jja_cmorph_rainday"$     = jja_cmorph_rainday
   ncdf->$"jja_cmorph_intensity"$   = jja_cmorph_rainday_intensity
-  ncdf->$"jja_vr_rainday"$         = jja_vr_rainday_mean
+  ncdf->$"jja_vr_rainday"$         = jja_vr_rainday
   ncdf->$"jja_vr_intensity"$       = jja_vr_rainday_intensity
-  ncdf->$"jja_rcm_rainday"$        = jja_rcm_rainday_mean
+  ncdf->$"jja_rcm_rainday"$        = jja_rcm_rainday
   ncdf->$"jja_rcm_intensity"$      = jja_rcm_rainday_intensity
 
 

@@ -12,7 +12,8 @@
 ;;; 21.05.12
 ;;;   将原本的计算绘图的脚本拆分为两份，此为part2绘图部分
 ;;;   修改为 am 和 jja两部分的绘图
-
+;;; 21.05.13
+;;;   修改了绘图顺序 CN05.1 CMORPH VR RCM 之后为了读数据的方便都默认使用这个顺序
 load "./shapefile_utils.ncl"
 begin
 
@@ -209,9 +210,9 @@ begin
   ;-----am part mean-----
   res@gsnCenterString    = "COMRPH"
   res@gsnRightString     = "AM"
-  overlay(plot(0),gsn_csm_contour(wks, am_cmorph_mean, res))
+  overlay(plot(1),gsn_csm_contour(wks, am_cmorph_mean, res))
   res@gsnCenterString    = "CN05.1"
-  overlay(plot(1),gsn_csm_contour(wks, am_cn051_mean, res))
+  overlay(plot(0),gsn_csm_contour(wks, am_cn051_mean, res))
   res@gsnCenterString    = "VR"
   overlay(plot(2),gsn_csm_contour(wks, am_vr_mean, res))
   res@gsnCenterString    = "RCM"
@@ -219,9 +220,9 @@ begin
   ;-----jja part mean-----
   res@gsnCenterString    = "COMRPH"
     res@gsnRightString    = "JJA"
-  overlay(plot(4),gsn_csm_contour(wks, jja_cmorph_mean, res))
+  overlay(plot(5),gsn_csm_contour(wks, jja_cmorph_mean, res))
   res@gsnCenterString    = "CN05.1"
-  overlay(plot(5),gsn_csm_contour(wks, jja_cn051_mean, res))
+  overlay(plot(4),gsn_csm_contour(wks, jja_cn051_mean, res))
   res@gsnCenterString    = "VR"
   overlay(plot(6),gsn_csm_contour(wks, jja_vr_mean, res))
   res@gsnCenterString    = "RCM"
@@ -232,51 +233,51 @@ begin
   res_error@gsnRightString    = "AM"
     res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", am_vr_cmorph_coef)\
  + " " + "rmsd=" + sprintf("%5.3f", am_vr_cmorph_rmsd)
-  overlay(plot(8),gsn_csm_contour(wks, am_vr_error_cmorph, res_error))
-  overlay(plot(8),gsn_csm_contour(wks, am_vr_prob, res_prob))
+  overlay(plot(10),gsn_csm_contour(wks, am_vr_error_cmorph, res_error))
+  overlay(plot(10),gsn_csm_contour(wks, am_vr_prob, res_prob))
   
   res_error@gsnCenterString    = "(RCM - CMORPH)"
     res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", am_rcm_cmorph_coef)\ 
  + " " + "rmsd=" + sprintf("%5.3f", am_rcm_cmorph_rmsd)
-  overlay(plot(9),gsn_csm_contour(wks, am_rcm_error_cmorph, res_error))
-  overlay(plot(9),gsn_csm_contour(wks, am_rcm_prob, res_prob))
+  overlay(plot(11),gsn_csm_contour(wks, am_rcm_error_cmorph, res_error))
+  overlay(plot(11),gsn_csm_contour(wks, am_rcm_prob, res_prob))
   
   res_error@gsnCenterString    = "(VR - CN05.1)"
     res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", am_vr_cn051_coef)\
  + " " + "rmsd=" + sprintf("%5.3f", am_vr_cn051_rmsd)
-  overlay(plot(10),gsn_csm_contour(wks, am_vr_error_cn051, res_error))
-  overlay(plot(10), gsn_csm_contour(wks, am_vr_prob, res_prob))
+  overlay(plot(8),gsn_csm_contour(wks, am_vr_error_cn051, res_error))
+  overlay(plot(8), gsn_csm_contour(wks, am_vr_prob, res_prob))
 
   res_error@gsnCenterString    = "(RCM - CN05.1)"
   res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", am_rcm_cn051_coef)\
 + " " + "rmsd=" + sprintf("%5.3f", am_rcm_cn051_rmsd)
-  overlay(plot(11),gsn_csm_contour(wks, am_rcm_error_cn051, res_error))
-  overlay(plot(11), gsn_csm_contour(wks, am_rcm_prob, res_prob))
+  overlay(plot(9),gsn_csm_contour(wks, am_rcm_error_cn051, res_error))
+  overlay(plot(9), gsn_csm_contour(wks, am_rcm_prob, res_prob))
   ;-----jja part difference-----
   res_error@gsnCenterString    = "(VR - CMORPH)"
   res_error@gsnRightString    = "JJA"
   res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", jja_vr_cmorph_coef)\
  + " " + "rmsd=" + sprintf("%5.3f", jja_vr_cmorph_rmsd)
-  overlay(plot(12),gsn_csm_contour(wks, jja_vr_error_cmorph, res_error))
-  overlay(plot(12),gsn_csm_contour(wks, jja_vr_prob, res_prob))
+  overlay(plot(14),gsn_csm_contour(wks, jja_vr_error_cmorph, res_error))
+  overlay(plot(14),gsn_csm_contour(wks, jja_vr_prob, res_prob))
   
   res_error@gsnCenterString    = "(RCM - CMORPH)"
     res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", jja_rcm_cmorph_coef)\ 
  + " " + "rmsd=" + sprintf("%5.3f", jja_rcm_cmorph_rmsd)
-  overlay(plot(13),gsn_csm_contour(wks, jja_rcm_error_cmorph, res_error))
-  overlay(plot(13),gsn_csm_contour(wks, jja_rcm_prob, res_prob))
+  overlay(plot(15),gsn_csm_contour(wks, jja_rcm_error_cmorph, res_error))
+  overlay(plot(15),gsn_csm_contour(wks, jja_rcm_prob, res_prob))
   
   res_error@gsnCenterString    = "(VR - CN05.1)"
     res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", jja_vr_cn051_coef)\
  + " " + "rmsd=" + sprintf("%5.3f", jja_vr_cn051_rmsd)
-  overlay(plot(14),gsn_csm_contour(wks, jja_vr_error_cn051, res_error))
-  overlay(plot(14), gsn_csm_contour(wks, jja_vr_prob, res_prob))
+  overlay(plot(12),gsn_csm_contour(wks, jja_vr_error_cn051, res_error))
+  overlay(plot(12), gsn_csm_contour(wks, jja_vr_prob, res_prob))
 
   res_error@gsnCenterString    = "(RCM - CN05.1)"
   res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", jja_rcm_cn051_coef)\
 + " " + "rmsd=" + sprintf("%5.3f", jja_rcm_cn051_rmsd)
-  overlay(plot(15),gsn_csm_contour(wks, jja_rcm_error_cn051, res_error))
-  overlay(plot(15), gsn_csm_contour(wks, jja_rcm_prob, res_prob))
+  overlay(plot(13),gsn_csm_contour(wks, jja_rcm_error_cn051, res_error))
+  overlay(plot(13), gsn_csm_contour(wks, jja_rcm_prob, res_prob))
 
 ;;;-----------------------add shape file ----------------------------------
 
