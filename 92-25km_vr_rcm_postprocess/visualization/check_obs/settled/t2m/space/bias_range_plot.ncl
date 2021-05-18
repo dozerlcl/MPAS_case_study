@@ -14,68 +14,38 @@
 ;;;   修改为 am 和 jja两部分的绘图
 ;;; 21.05.13
 ;;;   修改了绘图顺序 CN05.1 CMORPH VR RCM 之后为了读数据的方便都默认使用这个顺序
+;;;   修改到T2M的绘图，舍弃cmorph
+;;; 21.05.14
+;;;   绘制温度的最高最低的差值，即温度range
 load "./shapefile_utils.ncl"
 begin
 
 ;;;>>>plot set
-  fignum = 16
+  fignum = 10
   plot = new(fignum,graphic) ;定义子图数组
   pictype = "png"
   ; wks_type = "png"
   pictype@wkWidth = 3000
   pictype@wkHeight = 3000
-  wks = gsn_open_wks(pictype,"./output_pic/"+"precip_98-17_bias_ttest")
+  wks = gsn_open_wks(pictype,"./output_pic/"+"t2m_98-17_bias_range")
 ;;;>>>data reader
-  diri = "/m2data2/yycheng/playground/MPAS_case_study/92-25km_vr_rcm_postprocess/visualization/check_obs/settled/pre/space/output_nc/"
-  fili = "ttest_bias.nc"
+  diri = "/m2data2/yycheng/playground/MPAS_case_study/92-25km_vr_rcm_postprocess/visualization/check_obs/settled/t2m/space/output_nc/"
+  fili = "range.nc"
   ; am
   ncdf = addfile(diri + fili, "r") ; c表示创建netcdf文件
-  am_cmorph_mean = ncdf->$"am_cmorph_mean"$
-  am_cn051_mean  = ncdf->$"am_cn051_mean"$
-  am_vr_mean     = ncdf->$"am_vr_mean"$
-  am_rcm_mean    = ncdf->$"am_rcm_mean"$
-  am_vr_prob_cn051     = ncdf->$"am_vr_prob_cn051"$
-  am_rcm_prob_cn051    = ncdf->$"am_rcm_prob_cn051"$
-  am_vr_prob_cmorph     = ncdf->$"am_vr_prob_cmorph"$
-  am_rcm_prob_cmorph    = ncdf->$"am_rcm_prob_cmorph"$
+  am_range_cn051  = ncdf->$"am_range_cn051"$
+  am_range_vr     = ncdf->$"am_range_vr"$
+  am_range_rcm    = ncdf->$"am_range_rcm"$
   am_vr_error_cn051   =  ncdf->$"am_vr_error_cn051"$
   am_rcm_error_cn051  =  ncdf->$"am_rcm_error_cn051"$
-  am_vr_error_cmorph  =  ncdf->$"am_vr_error_cmorph"$
-  am_rcm_error_cmorph =  ncdf->$"am_rcm_error_cmorph"$
-  ; 作为leftstring的统计量
-  am_vr_cn051_rmsd  = ncdf->$"am_vr_cn051_rmsd"$
-  am_rcm_cn051_rmsd = ncdf->$"am_rcm_cn051_rmsd"$
-  am_vr_cn051_coef  = ncdf->$"am_vr_cn051_coef"$
-  am_rcm_cn051_coef = ncdf->$"am_rcm_cn051_coef"$
-
-  am_vr_cmorph_rmsd = ncdf->$"am_vr_cmorph_rmsd"$
-  am_rcm_cmorph_rmsd= ncdf->$"am_rcm_cmorph_rmsd"$
-  am_vr_cmorph_coef = ncdf->$"am_vr_cmorph_coef"$
-  am_rcm_cmorph_coef= ncdf->$"am_rcm_cmorph_coef"$
   ; jja
-  jja_cmorph_mean = ncdf->$"jja_cmorph_mean"$
-  jja_cn051_mean  = ncdf->$"jja_cn051_mean"$ 
-  jja_vr_mean     = ncdf->$"jja_vr_mean"$
-  jja_rcm_mean    = ncdf->$"jja_rcm_mean"$
-  jja_vr_prob_cn051     = ncdf->$"jja_vr_prob_cn051"$
-  jja_rcm_prob_cn051    = ncdf->$"jja_rcm_prob_cn051"$
-  jja_vr_prob_cmorph     = ncdf->$"jja_vr_prob_cmorph"$
-  jja_rcm_prob_cmorph    = ncdf->$"jja_rcm_prob_cmorph"$
+  jja_range_cn051  = ncdf->$"jja_range_cn051"$
+  jja_range_vr     = ncdf->$"jja_range_vr"$
+  jja_range_rcm    = ncdf->$"jja_range_rcm"$
   jja_vr_error_cn051   =  ncdf->$"jja_vr_error_cn051"$
   jja_rcm_error_cn051  =  ncdf->$"jja_rcm_error_cn051"$
-  jja_vr_error_cmorph  =  ncdf->$"jja_vr_error_cmorph"$
-  jja_rcm_error_cmorph =  ncdf->$"jja_rcm_error_cmorph"$
 
-  ; 作为leftstring的统计量
-  jja_vr_cn051_rmsd  = ncdf->$"jja_vr_cn051_rmsd"$
-  jja_rcm_cn051_rmsd = ncdf->$"jja_rcm_cn051_rmsd"$
-  jja_vr_cn051_coef  = ncdf->$"jja_vr_cn051_coef"$
-  jja_rcm_cn051_coef = ncdf->$"jja_rcm_cn051_coef"$
 
-  jja_vr_cmorph_rmsd = ncdf->$"jja_vr_cmorph_rmsd"$
-  jja_rcm_cmorph_rmsd= ncdf->$"jja_rcm_cmorph_rmsd"$
-  jja_vr_cmorph_coef = ncdf->$"jja_vr_cmorph_coef"$
-  jja_rcm_cmorph_coef= ncdf->$"jja_rcm_cmorph_coef"$
 ;;;-----count abs error-----
 
 
@@ -134,6 +104,7 @@ begin
   res@gsnCenterStringFontHeightF    = 0.03
   res@gsnLeftStringFontHeightF      = 0.020
   res@gsnRightStringFontHeightF     = 0.020
+
   ;;;;----- 等值线标注 + 等值线色标标签 -----
   res@cnLineLabelsOn       = False
   ; res@cnLineLabelInterval = 2
@@ -146,9 +117,9 @@ begin
   res@lbBoxEndCapStyle = "TriangleBothEnds"
   res@lbTitleOn = True
   res@lbTitleFontHeightF = 0.02
-  res@lbTitleString = "mm/day"
+  res@lbTitleString = "degC"
   res@lbBoxMinorExtentF = 0.15
-  res@lbLabelStride = 2
+  res@lbLabelStride = 1
   res@lbLabelAutoStride = False
   res@lbLabelFontHeightF = 0.015
 ;--------------------等值线设置----------------------
@@ -156,27 +127,28 @@ begin
   res@lbOrientation = "Vertical" ; 把色板垂直地移动 
   res@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
   ; res@cnLevelSelectionMode  = "ExplicitLevels"
-  ; res@cnFillPalette         = "precip2_17lev"; 
-  res@cnFillPalette         = "WhiteBlueGreenYellowRed"; 
+  ; res@cnFillPalette         = "precip2_17lev";
+  ; res@cnFillPalette   = "temp_19lev" 
+  res@cnFillPalette   = "GMT_haxby" 
   ; res@cnLevels              = (/-5,-4,-3,-2,-1, 0, 2, 4, 6, 8, 10, 12, 16, 18, 22/)
   ; res@cnFillColors  = ispan(0, 17, 1)   
   res_error = res
   res_error@lbLabelStride = 2
   ; res@cnLevels          = (/1,2,3,4,5,6,7,8,9,10,15,20,25/); -1 为透明
-  res@cnMinLevelValF = 0.
-  res@cnMaxLevelValF = 13.
-  res@cnLevelSpacingF = 1 ;等值线间隔
-  ; res_error@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
-  res_error@cnLevelSelectionMode  = "ExplicitLevels"
-  res_error@cnFillPalette         = "precip4_diff_19lev"
-  res_error@cnFillPalette         = "precip_diff_12lev"
-  ; res_error@cnFillPalette         = "BlueDarkOrange18"
+  res@cnMinLevelValF = 4
+  res@cnMaxLevelValF = 20.
+  res@cnLevelSpacingF = 2 ;等值线间隔
+  res_error@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
+  ; res_error@cnLevelSelectionMode  = "ExplicitLevels"
+  ; res_error@cnFillPalette         = "precip4_diff_19lev"
+  ; res_error@cnFillPalette         = "precip_diff_12lev"
+  res_error@cnFillPalette         = "BlueDarkOrange18"
   ; res_error@cnLinesOn = True
   ; res@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
-  ; res_error@cnMaxLevelValF =  5.0
-  ; res_error@cnMinLevelValF = -5.0
-  ; res_error@cnLevelSpacingF = 1.
-  res_error@cnLevels          = (/-5, -4, -3, -2, -1, 0, 1, 2 ,3, 4, 5/); -1 为透明
+  res_error@cnMaxLevelValF =  4.0
+  res_error@cnMinLevelValF = -4.0
+  res_error@cnLevelSpacingF = 0.5
+  ; res_error@cnLevels          = (/-5, -4, -3, -2, -1, 0, 1, 2 ,3, 4, 5/); -1 为透明
 
 
 ;----------------------------prob 显著性检验 res设置-------------
@@ -201,7 +173,7 @@ begin
   res_prob@cnFillPatterns       = (/6, -1/)     ; the patterns 
 
   res_prob@cnMonoFillScale      = False            ; want different densities                                                            
-  res_prob@cnFillScales         = (/0.5, 1/)    ; change densities                                                                        
+  res_prob@cnFillScales         = (/1, 1/)    ; change densities                                                                        
   res_prob@cnMonoFillColor      =True                                                                                                     
   res_prob@cnFillDotSizeF       = 0.002
 
@@ -213,76 +185,38 @@ begin
   ; print(vr_space_coef)
   ; print(rcm_space_coef)
   ;-----am part mean-----
-  res@gsnCenterString    = "COMRPH"
   res@gsnRightString     = "AM"
-  overlay(plot(1),gsn_csm_contour(wks, am_cmorph_mean, res))
   res@gsnCenterString    = "CN05.1"
-  overlay(plot(0),gsn_csm_contour(wks, am_cn051_mean, res))
+  overlay(plot(0),gsn_csm_contour(wks, am_range_cn051, res))
   res@gsnCenterString    = "VR"
-  overlay(plot(2),gsn_csm_contour(wks, am_vr_mean, res))
+  overlay(plot(1),gsn_csm_contour(wks, am_range_vr, res))
   res@gsnCenterString    = "RCM"
-  overlay(plot(3),gsn_csm_contour(wks, am_rcm_mean, res))
+  overlay(plot(2),gsn_csm_contour(wks, am_range_rcm, res))
   ;-----jja part mean-----
-  res@gsnCenterString    = "COMRPH"
     res@gsnRightString    = "JJA"
-  overlay(plot(5),gsn_csm_contour(wks, jja_cmorph_mean, res))
   res@gsnCenterString    = "CN05.1"
-  overlay(plot(4),gsn_csm_contour(wks, jja_cn051_mean, res))
+  overlay(plot(3),gsn_csm_contour(wks, jja_range_cn051, res))
   res@gsnCenterString    = "VR"
-  overlay(plot(6),gsn_csm_contour(wks, jja_vr_mean, res))
+  overlay(plot(4),gsn_csm_contour(wks, jja_range_vr, res))
   res@gsnCenterString    = "RCM"
-  overlay(plot(7),gsn_csm_contour(wks, jja_rcm_mean, res))
+  overlay(plot(5),gsn_csm_contour(wks, jja_range_rcm, res))
 
   ;-----am part difference-----
-  res_error@gsnCenterString    = "(VR - CMORPH)"
   res_error@gsnRightString    = "AM"
-    res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", am_vr_cmorph_coef)\
- + " " + "rmsd=" + sprintf("%5.3f", am_vr_cmorph_rmsd)
-  overlay(plot(10),gsn_csm_contour(wks, am_vr_error_cmorph, res_error))
-  overlay(plot(10),gsn_csm_contour(wks, am_vr_prob_cmorph, res_prob))
-  
-  res_error@gsnCenterString    = "(RCM - CMORPH)"
-    res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", am_rcm_cmorph_coef)\ 
- + " " + "rmsd=" + sprintf("%5.3f", am_rcm_cmorph_rmsd)
-  overlay(plot(11),gsn_csm_contour(wks, am_rcm_error_cmorph, res_error))
-  overlay(plot(11),gsn_csm_contour(wks, am_rcm_prob_cmorph, res_prob))
-  
+    
   res_error@gsnCenterString    = "(VR - CN05.1)"
-    res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", am_vr_cn051_coef)\
- + " " + "rmsd=" + sprintf("%5.3f", am_vr_cn051_rmsd)
-  overlay(plot(8),gsn_csm_contour(wks, am_vr_error_cn051, res_error))
-  overlay(plot(8), gsn_csm_contour(wks, am_vr_prob_cn051, res_prob))
+  overlay(plot(6),gsn_csm_contour(wks, am_vr_error_cn051, res_error))
 
   res_error@gsnCenterString    = "(RCM - CN05.1)"
-  res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", am_rcm_cn051_coef)\
-+ " " + "rmsd=" + sprintf("%5.3f", am_rcm_cn051_rmsd)
-  overlay(plot(9),gsn_csm_contour(wks, am_rcm_error_cn051, res_error))
-  overlay(plot(9), gsn_csm_contour(wks, am_rcm_prob_cn051, res_prob))
-  ;-----jja part difference-----
-  res_error@gsnCenterString    = "(VR - CMORPH)"
+  overlay(plot(7),gsn_csm_contour(wks, am_rcm_error_cn051, res_error))
+
+  ;-----jja part difference-----  
   res_error@gsnRightString    = "JJA"
-  res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", jja_vr_cmorph_coef)\
- + " " + "rmsd=" + sprintf("%5.3f", jja_vr_cmorph_rmsd)
-  overlay(plot(14),gsn_csm_contour(wks, jja_vr_error_cmorph, res_error))
-  overlay(plot(14),gsn_csm_contour(wks, jja_vr_prob_cmorph, res_prob))
-  
-  res_error@gsnCenterString    = "(RCM - CMORPH)"
-    res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", jja_rcm_cmorph_coef)\ 
- + " " + "rmsd=" + sprintf("%5.3f", jja_rcm_cmorph_rmsd)
-  overlay(plot(15),gsn_csm_contour(wks, jja_rcm_error_cmorph, res_error))
-  overlay(plot(15),gsn_csm_contour(wks, jja_rcm_prob_cmorph, res_prob))
-  
   res_error@gsnCenterString    = "(VR - CN05.1)"
-    res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", jja_vr_cn051_coef)\
- + " " + "rmsd=" + sprintf("%5.3f", jja_vr_cn051_rmsd)
-  overlay(plot(12),gsn_csm_contour(wks, jja_vr_error_cn051, res_error))
-  overlay(plot(12), gsn_csm_contour(wks, jja_vr_prob_cn051, res_prob))
+  overlay(plot(8),gsn_csm_contour(wks, jja_vr_error_cn051, res_error))
 
   res_error@gsnCenterString    = "(RCM - CN05.1)"
-  res_error@gsnLeftString   = "coef=" + sprintf("%5.3f", jja_rcm_cn051_coef)\
-+ " " + "rmsd=" + sprintf("%5.3f", jja_rcm_cn051_rmsd)
-  overlay(plot(13),gsn_csm_contour(wks, jja_rcm_error_cn051, res_error))
-  overlay(plot(13), gsn_csm_contour(wks, jja_rcm_prob_cn051, res_prob))
+  overlay(plot(9),gsn_csm_contour(wks, jja_rcm_error_cn051, res_error))
 
 ;;;-----------------------add shape file ----------------------------------
 
@@ -297,14 +231,14 @@ end do
 
 ;;;;--------------------------panel seeting---------------------------------
   pres = True
-  pres@txString              = "1998-2017" + " mean and ttest" 
+  pres@txString              = "1998-2017 t2m range" 
   ; pres@gsnPanelLabelBar      = False ; 公用一个色标
   ; pres@gsnPanelMainFontHeightF = 0.0002
   pres@gsnPanelFigureStringsFontHeightF = 0.01
   pres@gsnPanelFigureStrings = (/"a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s"/)
   ; pres@amJust                = "TopLeft" ;调整标签顺序
   pres@gsnPanelRowSpec       = True
-  gsn_panel(wks,plot,(/4, 4, 4, 4/),pres)
+  gsn_panel(wks,plot,(/3, 3, 2, 2/),pres)
 
 
 end

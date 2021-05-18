@@ -61,23 +61,6 @@ begin
   res@cnFillOn             = True
   res@gsnAddCyclic=False
 
-  ;;;;----- 等值线标注 + 等值线色标标签 -----
-  res@cnLineLabelsOn       = False
-  ; res@cnLineLabelInterval = 2
-  res@cnLineLabelPlacementMode = "Computed"
-  res@cnLineLabelDensityF = 1.5
-  res@cnLinesOn            = False ;填色线条 
-  ; res@cnLineLabelPlacementMode = "Constant"
-  ; res@pmLabelBarWidthF = 0.1
-  ; res@pmLabelBarHeightF = 0.7
-  res@lbBoxEndCapStyle = "TriangleBothEnds"
-  res@lbTitleOn = True
-  res@lbTitleFontHeightF = 0.02
-  res@lbTitleString = "day/month"
-  res@lbBoxMinorExtentF = 0.15
-  res@lbLabelStride = 1
-  res@lbLabelAutoStride = False
-  res@lbLabelFontHeightF = 0.015
 ;-------------------------------------------------------地图区域设置——中国区域res@mp
   mpres@mpDataBaseVersion = "Ncarg4_1"   ;地图采用中等分辨率
   ; mpres@mpDataSetName="Earth..4"
@@ -120,33 +103,53 @@ begin
   res@gsnCenterStringFontHeightF    = 0.03
   res@gsnLeftStringFontHeightF      = 0.020
   res@gsnRightStringFontHeightF     = 0.020
-
+  ;;;;----- 等值线标注 + 等值线色标标签 -----
+  res@cnLineLabelsOn       = False
+  ; res@cnLineLabelInterval = 2
+  res@cnLineLabelPlacementMode = "Computed"
+  res@cnLineLabelDensityF = 1.5
+  res@cnLinesOn            = False ;填色线条 
+  ; res@cnLineLabelPlacementMode = "Constant"
+  ; res@pmLabelBarWidthF = 0.1
+  ; res@pmLabelBarHeightF = 0.7
+  res@lbBoxEndCapStyle = "TriangleBothEnds"
+  res@lbTitleOn = True
+  res@lbTitleFontHeightF = 0.02
+  res@lbTitleString = "day/month"
+  res@lbBoxMinorExtentF = 0.15
+  res@lbLabelStride = 2
+  res@lbLabelAutoStride = False
+  res@lbLabelFontHeightF = 0.015
 ;--------------------等值线设置----------------------
   resc = res ; for difference
   res@lbOrientation = "Vertical" ; 把色板垂直地移动 
   ; res@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
   res@cnLevelSelectionMode  = "ExplicitLevels"
-  res@cnFillPalette         = "precip2_17lev"; 
+  ; res@cnFillPalette         = "precip2_17lev"; 
+  res@cnFillPalette         = "WhiteBlueGreenYellowRed"; 
   ; res@cnLevels              = (/-5,-4,-3,-2,-1, 0, 2, 4, 6, 8, 10, 12, 16, 18, 22/)
   ; res@cnFillColors  = ispan(0, 17, 1)   
   res_error = res
-  res@cnLevels          = (/1,5,10,15,20,25,28,30/); -1 为透明
+  ; res@cnLevels          = (/1,5,10,15,20,21,22,23,24,25,26,27,28,29,30/); -1 为透明
   ; res@cnLevels          = (/1,2,3,4,5,10/); -1 为透明
+  res@cnLevels          = (/0,5,10,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30/); -1 为透明
   ; res@cnMinLevelValF = 0.
-  ; res@cnMaxLevelValF = 33.
-  ; res@cnLevelSpacingF = 3. ;等值线间隔
+  ; res@cnMaxLevelValF = 30.
+  ; res@cnLevelSpacingF = 1. ;等值线间隔
   ; res_error@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
   res_error@cnLevelSelectionMode  = "ExplicitLevels"
   ; res_error@cnFillPalette         = "precip4_diff_19lev"
-  res_error@cnFillPalette         = "precip2_17lev"; 
+  ; res_error@cnFillPalette         = "precip2_17lev"; 
   ; res_error@cnFillPalette         = "precip_diff_12lev"
-  ; res_error@cnFillPalette         = "BlueDarkOrange18"
+  res_error@cnFillPalette         = "BlueDarkOrange18"
+  res_error@cnFillPalette         = "WhiteBlueGreenYellowRed"
   ; res_error@cnLinesOn = True
   ; res@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
   ; res_error@cnMaxLevelValF = 16
-  ; res_error@cnMinLevelValF = 0.
-  ; res_error@cnLevelSpacingF = 2.
-  res_error@cnLevels          = (/0, 2, 4, 6, 8, 10, 12, 14, 20/); 
+  ; res_error@cnMinLevelValF = 4.
+  ; res_error@cnLevelSpacingF = 1.
+  ; res_error@cnLevels          = (/0, 2, 4, 6,7, 8,9, 10,11, 12,13, 14, 15,20/); 
+  res_error@cnLevels          = (/0, 2, 4, 6, 8, 9, 10, 11, 12, 13, 14, 15/); 
   ; res_error@cnLevels          = (/0,1,2,3,4/); 
   res_error@lbTitleString = "mm/rainday"
 
@@ -209,8 +212,8 @@ begin
 
 ;;;-----------------------add shape file ----------------------------------
 
-plot_new_for_shape = new(8, graphic)
-do i = 0,7,1
+plot_new_for_shape = new(fignum, graphic)
+do i = 0,fignum - 1,1
   plres             = True           ; resource list for polylines
   plres@gsLineColor = "blue"
   shapefile_path = "/raid52/yycheng/MPAS/REFERENCE/MODEL_CONSTANT/R1/" + "hyd1_4l.shp"

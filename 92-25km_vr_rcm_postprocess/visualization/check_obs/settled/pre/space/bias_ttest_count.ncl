@@ -30,11 +30,22 @@ begin
   rcm_variance  = dim_variance_n(pre_rcm, 0)
   dims_vr       = dimsizes(pre_vr)
   series_num    = dims_vr(0)
-  vr_prob       = ttest(pre_cn051_mean, cn051_variance, series_num, pre_vr_mean, vr_variance, series_num, True, False)
-  rcm_prob      = ttest(pre_cn051_mean, cn051_variance, series_num, pre_rcm_mean, rcm_variance, series_num, True, False)
-  copy_VarCoords(pre_cn051_mean, vr_prob)
-  copy_VarCoords(pre_cn051_mean, rcm_prob)
-  return ([/pre_cn051_mean, pre_cmorph_mean, pre_vr_mean, pre_rcm_mean, vr_prob, rcm_prob/])
+  vr_prob_cn051       = ttest(pre_cn051_mean, cn051_variance, series_num, pre_vr_mean, vr_variance, series_num, True, False)
+  rcm_prob_cn051      = ttest(pre_cn051_mean, cn051_variance, series_num, pre_rcm_mean, rcm_variance, series_num, True, False)
+  copy_VarCoords(pre_cn051_mean, vr_prob_cn051)
+  copy_VarCoords(pre_cn051_mean, rcm_prob_cn051)
+  ;;; 使用CMORPH进行平均值的显著性检验
+  cmorph_variance= dim_variance_n(pre_cmorph, 0)
+  ; vr_variance   = dim_variance_n(pre_vr, 0)
+  ; rcm_variance  = dim_variance_n(pre_rcm, 0)
+  ; dims_vr       = dimsizes(pre_vr)
+  ; series_num    = dims_vr(0)
+  vr_prob_cmorph       = ttest(pre_cmorph_mean, cmorph_variance, series_num, pre_vr_mean, vr_variance, series_num, True, False)
+  rcm_prob_cmorph      = ttest(pre_cmorph_mean, cmorph_variance, series_num, pre_rcm_mean, rcm_variance, series_num, True, False)
+  copy_VarCoords(pre_cmorph_mean, vr_prob_cmorph)
+  copy_VarCoords(pre_cmorph_mean, rcm_prob_cmorph)
+  return ([/pre_cn051_mean, pre_cmorph_mean, pre_vr_mean, pre_rcm_mean, vr_prob_cn051, rcm_prob_cn051\
+  , vr_prob_cmorph, rcm_prob_cmorph/])
 end
 
 begin
@@ -84,8 +95,10 @@ begin
   am_cmorph_mean = list_test[1]
   am_vr_mean     = list_test[2]
   am_rcm_mean    = list_test[3]
-  am_vr_prob         = list_test[4]
-  am_rcm_prob        = list_test[5]
+  am_vr_prob_cn051         = list_test[4]
+  am_rcm_prob_cn051        = list_test[5]
+  am_vr_prob_cmorph         = list_test[6]
+  am_rcm_prob_cmorph        = list_test[7]
   delete(list_test)
   ; jja
   list_test = count_bias(pre_cn051(ind_jja,:,:), pre_cmorph(ind_jja,0,:,:), pre_vr(ind_jja,:,:), pre_rcm(ind_jja,:,:))
@@ -94,8 +107,10 @@ begin
   jja_cmorph_mean = list_test[1]
   jja_vr_mean     = list_test[2]
   jja_rcm_mean    = list_test[3]
-  jja_vr_prob         = list_test[4]
-  jja_rcm_prob        = list_test[5]
+  jja_vr_prob_cn051         = list_test[4]
+  jja_rcm_prob_cn051        = list_test[5]
+  jja_vr_prob_cmorph         = list_test[6]
+  jja_rcm_prob_cmorph        = list_test[7]
 
   delete(list_test)
   ;;;-----count bias -----
@@ -163,8 +178,10 @@ begin
   ncdf->$"am_vr_mean"$     = am_vr_mean
   ncdf->$"am_rcm_mean"$    = am_rcm_mean
 
-  ncdf->$"am_vr_prob"$     = am_vr_prob
-  ncdf->$"am_rcm_prob"$    = am_rcm_prob
+  ncdf->$"am_vr_prob_cn051"$     = am_vr_prob_cn051
+  ncdf->$"am_rcm_prob_cn051"$     = am_rcm_prob_cn051
+  ncdf->$"am_vr_prob_cmorph"$    = am_vr_prob_cmorph
+  ncdf->$"am_rcm_prob_cmorph"$    = am_rcm_prob_cmorph
 
   ncdf->$"am_vr_error_cn051"$    = am_vr_error_cn051
   ncdf->$"am_rcm_error_cn051"$    = am_rcm_error_cn051
@@ -188,8 +205,10 @@ begin
   ncdf->$"jja_vr_mean"$    = jja_vr_mean
   ncdf->$"jja_rcm_mean"$   = jja_rcm_mean
 
-  ncdf->$"jja_vr_prob"$    = jja_vr_prob
-  ncdf->$"jja_rcm_prob"$   = jja_rcm_prob
+  ncdf->$"jja_vr_prob_cn051"$    = jja_vr_prob_cn051
+  ncdf->$"jja_rcm_prob_cn051"$    = jja_rcm_prob_cn051
+  ncdf->$"jja_vr_prob_cmorph"$   = jja_vr_prob_cmorph
+  ncdf->$"jja_rcm_prob_cmorph"$   = jja_rcm_prob_cmorph
 
   ncdf->$"jja_vr_error_cn051"$    = jja_vr_error_cn051
   ncdf->$"jja_rcm_error_cn051"$    = jja_rcm_error_cn051
