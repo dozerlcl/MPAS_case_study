@@ -18,7 +18,7 @@ begin
   wk_type@cnRasterCellSizeF = 1. / 3000
   wk_type@wkWidth  = 3000
   wk_type@wkHeight = 3000
-  wks = gsn_open_wks(wk_type,"./output_pic/"+"hgt_500_03-15_lat-time")
+  wks = gsn_open_wks(wk_type,"./output_pic/"+"hgt_500_98-17_lat-time")
 
 ;;;>>>data reader
     ; ;   mask 之后集中存放降水数据的位置：   /raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res
@@ -28,11 +28,11 @@ begin
     ; dir_cmorph = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res/"
     ; filename_cmorph = "mask_sel_CMORPH_03-15.nc"
     
-    dir_vr = "/raid52/yycheng/MPAS/VR_postprocess/VR_merge/diag_daily/hgt/"
-    filename_vr = "ydaymean_hgt_VR_03-15.nc"
+    dir_vr = "/raid52/yycheng/MPAS/VR_postprocess/VR_merge/diag_daily_selected/hgt/"
+    filename_vr = "ydaymean_hgt_VR_98-17.nc"
     
-    dir_rcm = "/raid52/yycheng/MPAS/RCM_postprocess/RCM_merge/diag_daily/hgt/"
-    filename_rcm = "ydaymean_hgt_RCM_03-15.nc"
+    dir_rcm = "/raid52/yycheng/MPAS/RCM_postprocess/RCM_merge/diag_daily_selected/hgt/"
+    filename_rcm = "ydaymean_hgt_RCM_98-17.nc"
 
     f = addfile(dir_cn051 + filename_cn051, "r") 
     pre_cn051 = f->$"hgt"$(:, {500}, :, :)
@@ -129,7 +129,7 @@ res                  = True                ; plot mods desired
   ;                       (/2015,7,1,0,0,0/), \
   ;                       (/2015,8,1,0,0,0/), \
   ;                       (/2015,9,1,0,0,0/) /) 
-  res@tiMainString = "CN05.1"
+  res@tiMainString = "ERA5I"
   time_axis_labels(pre_cn051_mean&time, res, restick)
   time_axis_labels(pre_cn051_mean&time, res_singlec, restick)
   ; res@gsnLeftString = 

@@ -5,7 +5,9 @@
 ;   修改为将每年RCM和VR的误差合并绘制，不同层次的图
 ;   2021.01.18 
 ;   _timemean
-;   计算不同层次的 所有时间上的平均值    
+;   计算不同层次的 所有时间上的平均值
+;   2021.05.24
+;   固定到500层次绘制，拆分时间为am和jja    
 begin
   ; selyear  = 2003
   ; do selyear=2003,2015,1
@@ -21,22 +23,23 @@ begin
 ;>>> read data
   dir_in_ref  = "/raid52/yycheng/MPAS/REFERENCE/ERA5I_NC/ERA5I_NC_monthy"
   file_in_ref = "sel_hgt.mon.mean.nc"
-  
-  modtype = "VR"
-  dir_in_vr   = "/raid52/yycheng/MPAS/"+modtype+"_postprocess/"+modtype+"_merge/diag_mean_mon/"
-  file_in_vr  = "monmean_2003-2015"+"_"+modtype+"_diag.nc"
 
   f = addfile(dir_in_ref + "/" + file_in_ref ,"r")
   ref_hgt_alllevel=f->$"hgt"$
   ref_hgt = ref_hgt_alllevel(:,{sellevel},:,:)
+
+  modtype = "VR"
+  dir_in_vr   = "/raid52/yycheng/MPAS/"+modtype+"_postprocess/"+modtype+"_merge/diag_monthly/"
+  file_in_vr  = "monmean_98-17"+"_"+modtype+"_diag.nc"
+
   f = addfile(dir_in_vr + "/" + file_in_vr, "r")
   ; time | 5 对应 4=8 共五个月
   vr_varname = "height_"+sellevel+"hPa"
   vr_hgt=f->$vr_varname$
   
   modtype = "RCM"
-  dir_in_vr   = "/raid52/yycheng/MPAS/"+modtype+"_postprocess/"+modtype+"_merge/diag_mean_mon/"
-  file_in_vr  = "monmean_2003-2015"+"_"+modtype+"_diag.nc"
+  dir_in_vr   = "/raid52/yycheng/MPAS/"+modtype+"_postprocess/"+modtype+"_merge/diag_monthly/"
+  file_in_vr  = "monmean_98-17"+"_"+modtype+"_diag.nc"
 
   f = addfile(dir_in_vr + "/" + file_in_vr, "r")
 
@@ -169,7 +172,7 @@ begin
 
 ; ; ;;;;----------------------------------------------panel seeting
   pres = True
-  pres@txString              = "2003-2015" + "500hPa HGT" 
+  pres@txString              = "1998-2017 " + "500hPa HGT" 
 ; ;   pres@gsnPanelLabelBar      = False ; 公用一个色标
 ; ; ;   pres@gsnPanelMainFontHeightF = 0.0002
   ; pres@gsnPanelFigureStrings = (/"","4","4","4","5","5","5","6","6","6","7","7","7","8","8","8","M","M","M"/)

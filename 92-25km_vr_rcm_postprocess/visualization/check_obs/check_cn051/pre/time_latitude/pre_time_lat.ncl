@@ -10,7 +10,7 @@ begin
 
 ;;;>>>plot set
     plot = new(3, graphic) ;定义子图数组
-    wks = gsn_open_wks("png","./output_pic/"+"precip_03-15_lat-time")
+    wks = gsn_open_wks("png","./output_pic/"+"precip_98-17_lat-time")
 ;;;>>>data reader
     ; ;   mask 之后集中存放降水数据的位置：   /raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res
     dir_cn051 = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res_dayofyear/"
@@ -20,10 +20,10 @@ begin
     ; filename_cmorph = "mask_sel_CMORPH_03-15.nc"
     
     dir_vr = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res_dayofyear/"
-    filename_vr = "ydaymean_mask_vr_pre_03-15.nc"
+    filename_vr = "ydaymean_mask_vr_pre_98-17.nc"
     
     dir_rcm = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res_dayofyear/"
-    filename_rcm = "ydaymean_mask_rcm_pre_03-15.nc"
+    filename_rcm = "ydaymean_mask_rcm_pre_98-17.nc"
 
     f = addfile(dir_cn051 + filename_cn051, "r") 
     pre_cn051 = f->$"pre"$
@@ -48,10 +48,10 @@ begin
     ; printVarSummary(pre_rcm)
 
 ;;;-----count time mean-----
-    pre_cn051_mean  = dim_avg_n_Wrap(pre_cn051(:,{20:50},{110:130}), (/2/) )
+    pre_cn051_mean  = dim_avg_n_Wrap(pre_cn051(:,{20:55},{110:140}), (/2/) )
     ; pre_cmorph_mean = dim_avg_n_Wrap(pre_cmorph, (/3/) )
-    pre_vr_mean     = dim_avg_n_Wrap(pre_vr(:,{20:50},{110:130}), (/2/) )
-    pre_rcm_mean    = dim_avg_n_Wrap(pre_rcm(:,{20:50},{110:130}), (/2/) )
+    pre_vr_mean     = dim_avg_n_Wrap(pre_vr(:,{20:55},{110:140}), (/2/) )
+    pre_rcm_mean    = dim_avg_n_Wrap(pre_rcm(:,{20:55},{110:140}), (/2/) )
     
     ; printVarSummary(pre_cn051_mean)
     printVarSummary(pre_vr_mean)

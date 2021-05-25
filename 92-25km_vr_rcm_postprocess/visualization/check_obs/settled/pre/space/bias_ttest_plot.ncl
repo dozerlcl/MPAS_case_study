@@ -91,7 +91,8 @@ begin
   res@lbLabelBarOn         = True            ; turn on/off individual cb's
   res@cnFillOn             = True
   res@gsnAddCyclic=False
-
+  ; res@cnFillMode           = "RasterFill"
+  res@pmTickMarkDisplayMode       = "always"          ; nicer tick mark labels
 ;-------------------------------------------------------地图区域设置——中国区域res@mp
   mpres@mpDataBaseVersion = "Ncarg4_1"   ;地图采用中等分辨率
   ; mpres@mpDataSetName="Earth..4"

@@ -8,7 +8,7 @@ fignum = 5
 ;------------------------------------------------------------
 
 sellevel  = sellevels(0) ; test for loop on one level
-wks = gsn_open_wks("png","./output_pic/mean/" + "qflux_vector_" + sellevel)
+wks = gsn_open_wks("png","./output_pic/mean/" + "qflux_vector_1998-2017_" + sellevel)
 plot = new(fignum,graphic) ;定义子图数组 
 
 
@@ -38,8 +38,8 @@ plot = new(fignum,graphic) ;定义子图数组
         ref_q=f->$ref_varname$(:,{sellevel},:,:)
     ;VR
         modtype = "VR"
-        dir_in_vr   = "/raid52/yycheng/MPAS/"+modtype+"_postprocess/"+modtype+"_merge/diag_mean_mon/"
-        file_in_vr  = "monmean_2003-2015"+"_"+modtype+"_diag.nc"
+        dir_in_vr   = "/raid52/yycheng/MPAS/"+modtype+"_postprocess/"+modtype+"_merge/diag_monthly/"
+        file_in_vr  = "monmean_98-17"+"_"+modtype+"_diag.nc"
         f = addfile(dir_in_vr + "/" + file_in_vr, "r")
         vr_u=f->$"uzonal_850hPa"$
         vr_v=f->$"umeridional_850hPa"$
@@ -47,8 +47,8 @@ plot = new(fignum,graphic) ;定义子图数组
 
     ;RCM
         modtype = "RCM"
-        dir_in_rcm   = "/raid52/yycheng/MPAS/"+modtype+"_postprocess/"+modtype+"_merge/diag_mean_mon/"
-        file_in_rcm  = "monmean_2003-2015"+"_"+modtype+"_diag.nc"
+        dir_in_rcm   = "/raid52/yycheng/MPAS/"+modtype+"_postprocess/"+modtype+"_merge/diag_monthly/"
+        file_in_rcm  = "monmean_98-17"+"_"+modtype+"_diag.nc"
         f = addfile(dir_in_rcm + "/" + file_in_rcm, "r")
         rcm_u=f->$"uzonal_850hPa"$
         rcm_v=f->$"umeridional_850hPa"$
@@ -72,6 +72,9 @@ plot = new(fignum,graphic) ;定义子图数组
     vr_v_qflux  = vr_q  * vr_v
     rcm_u_qflux = rcm_q * rcm_u
     rcm_v_qflux = rcm_q * rcm_v
+    printVarSummary(era_u_qflux)
+    printVarSummary(vr_u_qflux)
+
     ; mean 
     era_u_qflux_mean = dim_avg_n(era_u_qflux, 0)
     era_v_qflux_mean = dim_avg_n(era_v_qflux, 0)
@@ -270,7 +273,7 @@ plot = new(fignum,graphic) ;定义子图数组
 
 ;;;;--------------------------panel seeting---------------------------------
   pres = True
-  pres@txString              = "2003-2015" + " 850hPa mean" 
+  pres@txString              = "1998-2017" + " 850hPa mean" 
   ; pres@gsnPanelLabelBar      = False ; 公用一个色标
   ; pres@gsnPanelMainFontHeightF = 0.0002
   ; pres@gsnPanelFigureStrings = (/"","4","4","4","5","5","5","6","6","6","7","7","7","8","8","8","M","M","M"/)
