@@ -3,7 +3,7 @@
 #       daily的CN05.1资料进行对比，使用cdo进行
 #       注意修改目标路径的文件夹以及操作的类型 max mean min
 #   2021.05.10
-#       用以扩展变量的范围 98-17年
+#       用以扩展变量的范围 98-17年，最后进行了cdo merge
 model_type=VR
 opertype=max
 DATAINPUT=/raid52/yycheng/MPAS/${model_type}_postprocess/\
