@@ -5,8 +5,8 @@
 ;   把输出部分改为了文件夹内所有.nc文件的循环
 begin
 
-    pathin = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/ordata/"
-    f = addfile(pathin+"sel_CN05.1_Pre_1961_2018_daily_025x025.nc","r")
+    pathin = "/raid52/yycheng/MPAS/TP_60-3km/pre_daily/ordata/"
+    f = addfile(pathin+"CN05.1_2012_07.nc","r")
     v = f->$"pre"$
     v@lat = f->lat
     v@lon = f->lon
@@ -31,7 +31,7 @@ mask_array = where(mask_array .ne. mask_array@_FillValue, 1, mask_array@_FillVal
 print("-----check FillValue-----")
 print(mask_array@_FillValue)        
 ;-- delete, create, and write mask array to new file
-pathout = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res/"
+pathout = "/raid52/yycheng/MPAS/TP_60-3km/pre_daily/mask_res/"
 system("rm -f " + pathout + "mask_template.nc")
 fout = addfile(pathout+ "mask_template.nc","c")
 fout->mask_array = mask_array
