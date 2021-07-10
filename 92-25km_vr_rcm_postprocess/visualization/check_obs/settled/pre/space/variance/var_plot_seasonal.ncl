@@ -24,26 +24,24 @@ begin
   ; wks_type = "png"
   pictype@wkWidth = 3000
   pictype@wkHeight = 3000
-  wks = gsn_open_wks(pictype,"./output_pic/"+"precip_98-17_variance")
+  wks = gsn_open_wks(pictype,"./output_pic/"+"seasonal_precip_98-17_variance")
 ;;;>>>data reader
   diri = "/m2data2/yycheng/playground/MPAS_case_study/92-25km_vr_rcm_postprocess/visualization/check_obs/settled/pre/space/output_nc/"
   ; am
-  fili = "am_pre_variance.nc"
+  fili = "am_pre_variance_seasonal.nc"
   ncdf = addfile(diri + fili, "r") 
   am_cn051_var  = ncdf->$"cn051"$
   am_cmorph_var = ncdf->$"cmorph"$
   am_vr_var     = ncdf->$"vr"$
   am_rcm_var    = ncdf->$"rcm"$
   ; jja
-  fili = "jja_pre_variance.nc"
+  fili = "jja_pre_variance_seasonal.nc"
   ncdf = addfile(diri + fili, "r") 
   jja_cn051_var  = ncdf->$"cn051"$
   jja_cmorph_var = ncdf->$"cmorph"$
   jja_vr_var     = ncdf->$"vr"$
   jja_rcm_var    = ncdf->$"rcm"$
 
-;;;-----count abs error-----
-    printVarSummary(jja_cn051_var)
 
 ;;;-----PLOT------
   res = True  
@@ -110,22 +108,27 @@ begin
   ; res@cnLineLabelPlacementMode = "Constant"
   ; res@pmLabelBarWidthF = 0.1
   ; res@pmLabelBarHeightF = 0.7
-  res@lbBoxEndCapStyle = "TriangleBothEnds"
-  res@lbTitleOn = True
-  res@lbTitleFontHeightF = 0.02
-  res@lbTitleString = "(mm/day)^2"
-  res@lbBoxMinorExtentF = 0.15
-  res@lbLabelStride = 2
-  res@lbLabelAutoStride = False
-  res@lbLabelFontHeightF = 0.015
+  ; res@lbBoxEndCapStyle = "TriangleBothEnds"
+  ; res@lbTitleOn = True
+  ; res@lbTitleFontHeightF = 0.01
+  ; res@lbLabelFontHeightF = 0.01
+  ; res@lbTitleString = "(mm/day)^2"
+  ; res@lbBoxMinorExtentF = 0.15
+  ; res@lbLabelStride = 2
+  ; res@lbTopMarginF  = 0.5
+
+  ; res@lbLabelAutoStride = False
+  ; res@lbLabelFontHeightF = 0.015
 ;--------------------等值线设置----------------------
   res@lbOrientation = "Vertical" ; 把色板垂直地移动 
   res@cnLevelSelectionMode = "ManualLevels" ;等间隔地指定等值线范围
   res@cnMinLevelValF = 0.
-  res@cnMaxLevelValF = 500.
-  res@cnLevelSpacingF = 25 ;等值线间隔
+  res@cnMaxLevelValF = 36.
+  res@cnLevelSpacingF = 2 ;等值线间隔
   ; res@cnLevelSelectionMode  = "ExplicitLevels"
-  res@cnFillPalette         = "precip2_17lev"; 
+  ; res@cnFillPalette         = "precip2_17lev"; 
+  res@cnFillPalette         = "MPL_gist_ncar"; 
+  ; res@cnFillPalette         = "WhiteBlueGreenYellowRed"; 
 ;   res@cnFillPalette         = "WhiteBlueGreenYellowRed"; 
   ; res@cnLevels              = (/-5,-4,-3,-2,-1, 0, 2, 4, 6, 8, 10, 12, 16, 18, 22/)
   ; res@cnFillColors  = ispan(0, 17, 1)   
@@ -173,9 +176,21 @@ end do
 
 ;;;;--------------------------panel seeting---------------------------------
   pres = True
-  pres@txString              = "1998-2017" + " variance" 
+  pres@txString              = "1998-2017" + " seasonal precipitation variance" 
   pres@gsnPanelLabelBar      = True ; 公用一个色标
+  ; pres@lbTitleFontHeightF    = 0.05
+  pres@lbTitleOn             = True
+  pres@lbTitleString        = "mm/day"
   ; pres@gsnPanelMainFontHeightF = 0.0002
+  pres@lbBoxEndCapStyle = "TriangleBothEnds"
+  ; res@lbTitleOn = True
+  pres@lbTitleFontHeightF = 0.01
+  pres@lbLabelFontHeightF = 0.01
+  ; res@lbTitleString = "(mm/day)^2"
+  ; res@lbBoxMinorExtentF = 0.15
+  pres@lbLabelStride = 2
+  pres@lbTopMarginF  = .5
+  ; pres@lbBottomMarginF = 1.
   pres@gsnPanelFigureStringsFontHeightF = 0.01
   pres@gsnPanelFigureStrings = (/"a","b","c","d","e","f","g","h"/)
   ; pres@amJust                = "TopLeft" ;调整标签顺序
