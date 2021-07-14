@@ -25,7 +25,7 @@ begin
   pictype@wkHeight = 3000
   wks = gsn_open_wks(pictype,"./output_pic/"+"precip_98-17_rainday")
 ;;;>>>data reader
-  diri = "/m2data2/yycheng/playground/MPAS_case_study/92-25km_vr_rcm_postprocess/visualization/check_obs/settled/pre/space/output_nc/"
+  diri = "/m2data2/yycheng/playground/MPAS_case_study/92-25km_vr_rcm_postprocess/visualization/check_obs/settled/pre/space/mean/output_nc/"
   fili = "rainday_mean.nc"
   ; am
   ncdf = addfile(diri + fili, "r") ; c表示创建netcdf文件
@@ -132,6 +132,7 @@ begin
   res_error = res
   ; res@cnLevels          = (/1,5,10,15,20,21,22,23,24,25,26,27,28,29,30/); -1 为透明
   ; res@cnLevels          = (/1,2,3,4,5,10/); -1 为透明
+  ; res@cnLevels          = (/0,5,10,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30/); -1 为透明
   res@cnLevels          = (/0,5,10,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30/); -1 为透明
   ; res@cnMinLevelValF = 0.
   ; res@cnMaxLevelValF = 30.

@@ -34,10 +34,10 @@ begin
   ; ----- rainday ----- 
   ; VR和RCM的差异太小
   ; 重新设定阈值计算，25mm作为降水阈值
-  cn051_rainday = where(cn051.gt.0.099, 1, 0)
-  cmorph_rainday = where(cmorph.gt.0.099, 1, 0)
-  vr_rainday    = where(vr.gt.0.099, 1, 0)
-  rcm_rainday   = where(rcm.gt.0.099, 1, 0)
+  cn051_rainday = where(cn051.gt..1, 1, 0)
+  cmorph_rainday = where(cmorph.gt..1, 1, 0)
+  vr_rainday    = where(vr.gt..1, 1, 0)
+  rcm_rainday   = where(rcm.gt..1, 1, 0)
 
   dims_cn051 = dimsizes(cn051)
   print(dims_cn051(0))
@@ -117,7 +117,7 @@ list_test = count_rainday(cn051(ind_jja, :, :), cmorph(ind_jja, :, :), vr(ind_jj
   delete(list_test)
 ;;;>>> output preprocess refine
 
-  diro = "/m2data2/yycheng/playground/MPAS_case_study/92-25km_vr_rcm_postprocess/visualization/check_obs/settled/pre/space/output_nc/"
+  diro = "/m2data2/yycheng/playground/MPAS_case_study/92-25km_vr_rcm_postprocess/visualization/check_obs/settled/pre/space/mean/output_nc/"
   filo = "rainday_mean.nc"
   system("rm -f "+ diro + filo) ;删除目录下的同名文件
   ncdf = addfile(diro + filo, "c") ; c表示创建netcdf文件
