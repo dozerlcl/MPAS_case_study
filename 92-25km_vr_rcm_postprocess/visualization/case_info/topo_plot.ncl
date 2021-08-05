@@ -45,8 +45,8 @@ begin
 
     mpminlat    = -5.
     mpmaxlat    = 65.
-    mpminlon    = 60.
-    mpmaxlon    = 140.
+    mpminlon    = 50.
+    mpmaxlon    = 150.
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -58,7 +58,7 @@ begin
   ; wks_type = "png"
   pictype@wkWidth = 1600 
   pictype@wkHeight = 1600
-  wks = gsn_open_wks(pictype,"./output_pic/mesh_resolution_rcm")
+  wks = gsn_open_wks(pictype,"./output_pic/mesh_topo")
   colors = (/"white","black","lightskyblue1","lightskyblue1","bisque"/)
   gsn_define_colormap(wks,colors)
 
@@ -80,8 +80,10 @@ begin
   alpha = f->angleEdge(:)
 
   fname_topo = addfile("/raid52/yycheng/MPAS/REFERENCE/MODEL_CONSTANT/" + "model_topo.nc", "r")
-  zgrid = fname_topo->$"zgrid"$(0,:,:)
-
+  zgrid = fname_topo->$"zgrid"$(:,:,0)
+  printVarSummary(zgrid)
+  printVarSummary(zgrid&latitude)
+  printVarSummary(zgrid&longitude)
 
   res                      = True
   res@gsnMaximize          = True
@@ -94,38 +96,6 @@ begin
   res@sfYArray             = latCell
 
   res@cnFillMode           = "AreaFill"
-
-  if (filled) then
-     res@cnFillOn             = True
-     res@cnLinesOn            = False
-     res@cnLineLabelsOn       = False
-     res@cnFillPalette         = "Cat12"
-     res@cnLevelSelectionMode = "ExplicitLevels"
-    ;  res@cnLevels             = (/20,25,30,35,40,50/)
-    ;  res@cnLevels             = (/20,25,30,35/)
-    res@cnLevels             = (/20,22,24,28,35,40,45/)
-    ;  res@cnFillColors         = (/1,3,5,7,9,10,11,12/)
-    ;  res@cnFillColors         = (/1,3,5,7,9/)
-    ; res@cnFillColors         = (/1,2,4,5,7,8,9,10/)
-    res@cnFillColors         = (/2,3,4,5,1,1,1,11/)
-    res@cnLineDashSegLenF          = 0.18          ; assist in controlling concentration
-    res@cnLineLabelInterval        = 1             ; default = 2
-    res@cnLineLabelPlacementMode   = "constant"    ; choose constant label method
-    res@cnLineLabelFontHeightF     = 0.008         ; linelabel sizs
-    res@cnLinesOn            = True
-    res@cnLineLabelsOn       = True
-  else
-    res@cnFillOn             = False
-    res@cnLinesOn            = True
-    res@cnLineLabelsOn       = True
-    res@cnLevelSelectionMode = "ExplicitLevels"
-    res@cnLevels             = (/18,20,22,24,28,35,40,45/)
-    res@cnLineDashSegLenF          = 0.18          ; assist in controlling concentration
-    res@cnLineLabelInterval        = 1             ; default = 2
-    res@cnLineLabelPlacementMode   = "constant"    ; choose constant label method
-    res@cnLineLabelFontHeightF     = 0.008         ; linelabel sizs
-
-  end if
 
   res@cnLevelSpacingF      = 8.0
   res@cnInfoLabelOn        = True
@@ -162,45 +132,6 @@ begin
   res@mpOutlineSpecifiers        = (/"China","China:Provinces","Taiwan"/)
   res@mpCountyLineThicknessF = 10
   res@mpNationalLineThicknessF = 4.
-  ; res@mpOutlineSpecifiers=
-  ; res@mpFillOn=False
-
-  ;;;---------------add lon\lat grid and tick mark
-  ; res@mpGridAndLimbOn   = True ; turn on grid
-
-  ; ;;;---------------add lon\lat grid ticks----------------------
-  ; res@mpGridAndLimbOn   = True ; turn on grid
-  ; ; res@pmTickMarkDisplayMode  = "always" ; pm tickmark
-  ; ; res@mpGridAndLimbDrawOrder = "Draw"
-  ; ; res@tiMainString           = "Lat/lon grid"
-  ; res@mpGridSpacingF         = 10.
-  ; res@mpGridLineThicknessF   = 2.0
-  ; ; res@mpGridLineColor        = "Gray30"
-  ; ; res@mpGridAndLimbOn        = True
-  ; ; res@pmTickMarkDisplayMode  = "Always"           ; turn on tickmarks
-  ; res@mpGridAndLimbDrawOrder = "PostDraw"          ; Draw grid befres
-  ; res@mpGridLatSpacingF = 15
-  ; res@mpGridLonSpacingF = 15
-;-------------------------------------------------------变量/x/y/刻度设置  
-  ; res@pmTickMarkDisplayMode = "Always"
-  ; res@pmTickMarkDisplayMode = "Conditional"
-  ; res@pmTickMarkZone
-
-  ; res@gsnMajorLatSpacing = 15              ; change maj lat tm spacing
-  ; res@gsnMajorLonSpacing = 15              ; change maj lon tm spacing
-  ; res@gsnMinorLatSpacing = 2
-  ; res@gsnMinorLonSpacing = 2
-
-  ; res@mpGridAndLimbOn=True             ;设置经纬线
-  ; res@mpGridLineThicknessF=0.5
-  ; res@mpGridLineDashPattern=2
-  ; res@mpGridSpacingF=10
-
-;  Put labels with the degree symbol on the X and Y axes.
-  ; res@tmXUseBottom = False
-  ; res@tmXTOn = True
-  ; res@tmXMinorGrid = 20
-  ; res@tmYMinorGrid = 20
 
   res@tmYLOn = True
   res@tmXBOn = True
@@ -214,17 +145,7 @@ begin
   res@tmYLLabelFontHeightF =  0.014          ;-- change major lat tickmark spacing
   res@tmYLMajorLengthF     =  0.02           ;-- change the tickmark length
   res@tmYLMinorLengthF     =  0.01           ;-- change the tickmark length
-  ; res@tmYLMajorLineColor   = "blue"          ;-- change major tickmarks color
-  ; res@tmXMajorGrid = 20.
-  ; res@tmYMajorGrid = 15.
-  ; res@tmXMinorGrid = 2.
-  ; res@tmYMinorGrid = 3.
-  ; res@gsnMajorLatSpacing = 15.
-  ; res@gsnMajorLonSpacing = 15.
-  ; res@gsnMinorLatSpacing = 3.
-  ; res@gsnMinorLonSpacing = 2.
-  ; res@tmXBMinorOn = True
-  ; res@tmXBMinorPerMajor = 5.
+
   res@tmXMajorGridLineDashPattern = 8
   res@tmYMajorGridLineDashPattern = 8
   ; res@tmXBMajorLineColor   = "grey20"        ;-- change major tickmarks color
@@ -261,6 +182,46 @@ begin
   res@mpShapeMode  = "FreeAspect"
   res@vpWidthF      = 0.8
   res@vpHeightF     = 0.4
+
+  ; add to res_topo cannot !
+  ; res_topo = res
+
+  ;;;---------------- add color bar setting --------------------
+
+
+  if (filled) then
+     res@cnFillOn             = True
+     res@cnLinesOn            = False
+     res@cnLineLabelsOn       = False
+     res@cnFillPalette         = "Cat12"
+     res@cnLevelSelectionMode = "ExplicitLevels"
+    ;  res@cnLevels             = (/20,25,30,35,40,50/)
+    ;  res@cnLevels             = (/20,25,30,35/)
+    res@cnLevels             = (/20,22,24,28,35,40,45/)
+    ;  res@cnFillColors         = (/1,3,5,7,9,10,11,12/)
+    ;  res@cnFillColors         = (/1,3,5,7,9/)
+    ; res@cnFillColors         = (/1,2,4,5,7,8,9,10/)
+    res@cnFillColors         = (/2,3,4,5,1,1,1,11/)
+    res@cnLineDashSegLenF          = 0.18          ; assist in controlling concentration
+    res@cnLineLabelInterval        = 1             ; default = 2
+    res@cnLineLabelPlacementMode   = "constant"    ; choose constant label method
+    res@cnLineLabelFontHeightF     = 0.008         ; linelabel sizs
+    res@cnLinesOn            = True
+    res@cnLineLabelsOn       = True
+  else
+    res@cnFillOn             = False
+    res@cnLinesOn            = True
+    res@cnLineLabelsOn       = True
+    res@cnLevelSelectionMode = "ExplicitLevels"
+    res@cnLevels             = (/18,20,22,24,28,35,40,45/)
+    res@cnLineDashSegLenF          = 0.18          ; assist in controlling concentration
+    res@cnLineLabelInterval        = 1             ; default = 2
+    res@cnLineLabelPlacementMode   = "constant"    ; choose constant label method
+    res@cnLineLabelFontHeightF     = 0.008         ; linelabel sizs
+
+  end if
+
+
   ;;;----------------change progection--------------------------
 
   minSpacingKm = sqrt(min(f->areaCell(:))*2.0/sqrt(3.0))*6371.229
@@ -337,35 +298,46 @@ do i = 0,0,1
 end do
 
 ;----- 绘制地形数据
-  gsn_define_colormap(wks,"MPL_terrain")
+
+res_topo = True
+  ; gsn_define_colormap(wks,"MPL_terrain")
   nColors = 96
-  cnLevels = fspan(0,5000,97)
+  cnLevels = fspan(0,6000,97)
   nLevels = dimsizes(cnLevels)
   nIntervals = nLevels - 1
-  res_topo = True
-     res_topo@cnFillOn             = True
-     res_topo@cnLinesOn            = False
-     res_topo@cnLineLabelsOn       = False
-    ;  res_topo@cnFillPalette         = "Cat12"
-     res_topo@cnLevelSelectionMode = "ExplicitLevels"
-     delete(res_topo@cnLevels)
-     res_topo@cnLevels             = cnLevels
-    ;  res_topo@cnLevels             = (/20,25,30,35/)
-    ; res_topo@cnLevels             = (/20,22,24,28,35,40,45/)
-    ;  res_topo@cnFillColors         = (/1,3,5,7,9,10,11,12/)
-    ;  res_topo@cnFillColors         = (/1,3,5,7,9/)
-    ; res_topo@cnFillColors         = (/1,2,4,5,7,8,9,10/)
-    ; res_topo@cnFillColors         = (/2,3,4,5,1,1,1,11/)
-    res_topo@cnLineDashSegLenF          = 0.18          ; assist in controlling concentration
-    res_topo@cnLineLabelInterval        = 1             ; default = 2
-    res_topo@cnLineLabelPlacementMode   = "constant"    ; choose constant label method
-    res_topo@cnLineLabelFontHeightF     = 0.008         ; linelabel sizs
-    res_topo@cnLinesOn            = True
-    res_topo@cnLineLabelsOn       = True
+  res_topo@cnFillOn             = True
+  res_topo@cnLinesOn            = False
+  res_topo@cnLineLabelsOn       = False
+  ;  res_topo@cnFillPalette         = "Cat12"
+  res_topo@cnLevelSelectionMode = "ExplicitLevels"
+  res_topo@cnFillPalette         = "MPL_gist_earth"
+  res_topo@cnLevels             = cnLevels
+  res_topo@cnLineDashSegLenF          = 0.18          ; assist in controlling concentration
+  res_topo@cnLineLabelInterval        = 1             ; default = 2
+  res_topo@cnLineLabelPlacementMode   = "constant"    ; choose constant label method
+  res_topo@cnLineLabelFontHeightF     = 0.008         ; linelabel sizs
+  ; ; res_topo@cnLinesOn            = True
+  ; ; res_topo@cnLineLabelsOn       = True
 
-  overlay(map, gsn_csm_contour(wks, zgrid, res_topo))
-  ; overlay(map, topo_map)
-  draw(map)
-  frame(wks)
+  ; ;   res@mpTopAngleF       = topAngle
+  ; res_topo@mpLimitMode       = "LatLon"
+  ; ; res_topo@mpLimitMode       = "LambertEqualArea"
+  ; res_topo@mpMinLatF      = mpminlat
+  ; res_topo@mpMaxLatF      = mpmaxlat
+  ; res_topo@mpMinLonF      = mpminlon
+  ; res_topo@mpMaxLonF      = mpmaxlon
+  ; res_topo@mpProjection      = projection
+  ; ; res_topo@mpDataBaseVersion = "Mediumres_topo"
+  ; res_topo@mpCenterLatF      = cenLat
+  ; res_topo@mpCenterLonF      = cenLon
+
+
+
+topo_map = gsn_csm_contour_map(wks, zgrid, res_topo)
+; overlay(map, topo_map)
+; draw(map)
+draw(topo_map)
+
+frame(wks)
 
 end
