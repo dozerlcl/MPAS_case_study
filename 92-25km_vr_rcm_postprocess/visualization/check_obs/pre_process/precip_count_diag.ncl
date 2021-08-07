@@ -1,4 +1,4 @@
-;;;     11.16 MPAS后处理部分 将MPAS和观测的CMORPH进行对比
+;;;     11.16 MPAS后处理部分 将MPAS和观测的CMORPH进行对比，处理降水到每一日，为此时间后24小时的降水
 ;;;         pre count 部分， 将文件整合，整合后的文件放到 ncdf 下
 ;;;     11.29 修改相应路径，将后处理部分单独并列出来
 ;;;         处理 %4y
@@ -7,6 +7,8 @@
 ;;;         输入数据为转到经纬度网格时候MPAS单独输出的降水以及温度之类的，不是diag 而是history部分
 ;;;     21.05.10 修改为处理合并后的diag中的降水变量
 ;;;             大小因为整理数据（去掉了此前输出变量的Time属性，以免和坐标混淆）少了2000KB
+;;;     21.08.07 将降水区域变大，修改掉了diri 和 diro 这两个输入输出位置
+
 begin
 
     ; year = 1998
@@ -16,7 +18,7 @@ begin
     ;;;>>>  prepare model data
     ; /raid52/yycheng/MPAS/VR_postprocess/VR_merge/diag_daily
     diri      = "/raid52/yycheng/MPAS/"+modeltype+"_postprocess/"+modeltype+\
-    "_merge/diag_daily/"
+    "_merge_large/diag_daily/"
     fili      = year + "_"+modeltype+"_diag.nc"
     f_mod = addfile(diri+fili,"r")
     ;;; read time labels    
@@ -45,7 +47,7 @@ begin
     printVarSummary(pre_mod_daily)
 ; ;;;>>> output preprocess refine
 
-    diro = "/raid52/yycheng/MPAS/"+modeltype+"_postprocess/"+modeltype+"_merge/pre_daily/"
+    diro = "/raid52/yycheng/MPAS/"+modeltype+"_postprocess/"+modeltype+"_merge_large/pre_daily/"
     filo = "daily_pre_" + year + ".nc"
     system("rm -f "+ diro + filo) ;删除目录下的同名文件
     ncdf = addfile(diro + filo, "c") ; c表示创建netcdf文件
