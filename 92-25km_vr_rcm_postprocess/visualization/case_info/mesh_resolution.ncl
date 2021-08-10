@@ -1,6 +1,7 @@
 ;;      11.25 进行resolution的绘制，tickmark添加较为困难，暂时先搁置
 ;;        tick.ncl 是绘制tickmark的外部函数，参考NCL官网；mptick_9.ncl
-
+;;      2021.08.01
+;;      改坏了，想叠加一个topo，之后考虑使用python来实现这部分
 
 
 load "$NCARG_ROOT/lib/ncarg/nclscripts/csm/gsn_code.ncl"
