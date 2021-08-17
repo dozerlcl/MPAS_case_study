@@ -1,12 +1,11 @@
 
 
-def taylor_count(path_in, file_ref, varname_ref, file_vr, varname_vr, file_rcm, varname_rcm):
+def taylor_count_space(path_in, file_ref, varname_ref, file_vr, varname_vr, file_rcm, varname_rcm):
     "计算泰勒图诸要素,进行了归一化处理 \
     ,path_in 数据主要路径，file_ref参考数据路径，file_vr,vr数据，varname_ref数据中变量名 \
     "
     import xarray as xr
     import numpy  as np
-    import seaborn as sns
     import pandas as pd
     import matplotlib.pyplot as plt
     import skill_metrics as sm
