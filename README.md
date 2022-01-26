@@ -1,7 +1,10 @@
 此文件夹放置了MPAS的一些运行案例以及相应的后处理集
 
 2022.01.25
-将平均态的AM JJA两个时段，改为 MJJA 的平均态
+new branch : mjja
+将平均态的AM JJA两个时段，改为 MJJA 的平均态, daily variation 改为从05-01到09-01
+
+内容的简单说明：
 ```
 MPAS_overview.md
     简单的MPAS使用手册，对应的使用例在case中可以找到
