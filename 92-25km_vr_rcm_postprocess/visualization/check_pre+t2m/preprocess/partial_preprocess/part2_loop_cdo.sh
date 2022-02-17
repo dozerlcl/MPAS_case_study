@@ -7,9 +7,10 @@
 #       South west SW 22-30N 98-110E
 
 #part2 循环使用CDO将文件夹重新放置到四个subfolder中
-#       注意修改处理的数据类型
-in_dir=/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA_large/pre
-out_dir=/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA_large/partial_pre
+#       注意修改处理的数据类型 还需要修改最后的target
+
+in_dir=/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA_large/t2m
+out_dir=/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA_large/partial_t2m
 # 创建和此前结构相同的子目录
 # get items in $in_dir
 x=( $(find "${in_dir}" ! -type d -name "*.nc") );
@@ -45,7 +46,7 @@ do
             slat=18.
             nlat=26.
             wlon=107.
-            elon=126.
+            elon=123.
         elif [ $dir == "SW" ] # south west
         then
             slat=22.
@@ -64,7 +65,7 @@ do
         { 
             echo "$item"; 
             # target="${item/mask_pre/partial_pre/${dir}}"
-            target="${item/pre/partial_pre/${dir}}"
+            target="${item/t2m/partial_t2m/${dir}}"
             echo $target
             cdo sellonlatbox,${wlon},${elon},${slat},${nlat} ${item} ${target}
         }

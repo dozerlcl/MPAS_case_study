@@ -3,11 +3,14 @@
 ;       有 T2M 和 PRE 两部分需要mask，注意修改路径,变量名等
 ;   2021.04.17
 ;   把输出部分改为了文件夹内所有.nc文件的循环
+;   2022.02.15
+;   重新计算3hr采样的气温
+
 begin
 
-    pathin = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/ordata/"
-    f = addfile(pathin+"sel_CN05.1_Pre_1961_2018_daily_025x025.nc","r")
-    v = f->$"pre"$
+    pathin = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_t2m/ordata_6hr/"
+    f = addfile(pathin+"sel_CN05.1_Tm_1961_2018_daily_025x025.nc","r")
+    v = f->$"tm"$
     v@lat = f->lat
     v@lon = f->lon
 
@@ -31,7 +34,7 @@ mask_array = where(mask_array .ne. mask_array@_FillValue, 1, mask_array@_FillVal
 print("-----check FillValue-----")
 print(mask_array@_FillValue)        
 ;-- delete, create, and write mask array to new file
-pathout = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_pre/mask_res/"
+pathout = "/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA/mask_t2m/mask_res_6hr/"
 system("rm -f " + pathout + "mask_template.nc")
 fout = addfile(pathout+ "mask_template.nc","c")
 fout->mask_array = mask_array

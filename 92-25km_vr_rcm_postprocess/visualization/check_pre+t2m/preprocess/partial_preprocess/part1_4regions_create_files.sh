@@ -7,8 +7,8 @@
 #       South west SW 22-30N 98-110E
 
 #part1 创建 NE NC YZ SW四个文件夹
-in_dir=/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA_large/pre
-out_dir=/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA_large/partial_pre
+in_dir=/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA_large/t2m
+out_dir=/raid52/yycheng/MPAS/REFERENCE/TEMP_DATA_large/partial_t2m
 mkdir ${out_dir}
 mkdir ${out_dir}/NE
 mkdir ${out_dir}/NC
