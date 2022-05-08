@@ -1,2 +1,7 @@
 *.png
 *.nc
+*.eps
+*.jpg
+*.pdf
+*.db
+output_*
